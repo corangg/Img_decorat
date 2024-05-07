@@ -2,9 +2,15 @@
     <!-- Base application theme. -->
 
     <style name="Theme.Img_decorat" parent="Theme.Material3.DayNight.NoActionBar" >
-        <item name="overlapAnchor">false</item>
-        <item name="android:dropDownVerticalOffset">?attr/actionBarSize</item>
 
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">200dp</item>
+
+
+    </style>
+
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.PopupMenu.Overflow">
+       <!--// <item name="android:popupBackground">@drawable/menu_background</item>  &lt;!&ndash; 메뉴 배경 &ndash;&gt;-->
     </style>
 
 

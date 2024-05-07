@@ -2,27 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
+    <!--<item
         android:id="@+id/menu_add"
         android:title="추가"
-        android:icon="@drawable/ic_add"
-        app:showAsAction="always"/>
-
-    <item
-        android:id="@+id/menu_Load"
-        android:title="열기"
-        app:showAsAction="never"
+        android:icon="@android:drawable/ic_input_add"
+        android:iconTint="@color/white"
+        app:showAsAction="always"
         />
 
     <item
-        android:id="@+id/menu_save"
-        android:title="저장"
-        app:showAsAction="never"
-        />
+        android:id="@+id/menu_dropdown"
+        android:title="메뉴"
+        android:icon="@android:drawable/ic_menu_add"
+        app:showAsAction="always"/>-->
 
-    <item
-        android:id="@+id/menu_extract"
-        android:title="추출"
-        app:showAsAction="never"
-        />
 </menu>
