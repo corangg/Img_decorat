@@ -4,6 +4,7 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.PopupMenu
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -38,10 +39,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         setSupportActionBar(binding.mainToolbar)
-        binding.mainToolbar.title = "test"//리스트 가져와서 바꿔야함
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        /*binding.mainToolbar.title = "test"//리스트 가져와서 바꿔야함*/
         drawerToggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.drawer_open,R.string.drawer_close)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         drawerToggle.syncState()
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -60,4 +63,8 @@ class MainActivity : AppCompatActivity() {
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         return super.onPrepareOptionsMenu(menu)
     }
+
+
+
+
 }

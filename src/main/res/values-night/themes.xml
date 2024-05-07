@@ -1,7 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Img_decorat" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Theme.Img_decorat" parent="Theme.Material3.DayNight.NoActionBar" >
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">?attr/actionBarSize</item>
+        <item name="android:dropDownWidth">48dp</item>
+        <item name="android:actionBarSize">48dp</item>
+        <!--<item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>-->
+
+
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="toolbarNavigationButtonStyle">@style/AppTheme.Actionbar</item>
+        <item name="android:actionOverflowButtonStyle">@style/AppTheme.OverFlow</item>
+
+    </style>
+
+
+    <style name="AppTheme.Actionbar" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:tint">#5C5C5C</item>
+    </style>
+
+    <style name="AppTheme.OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">#ffffff</item>
     </style>
 </resources>

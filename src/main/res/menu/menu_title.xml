@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/toorbar_name"
-        android:title="name" />
 
     <item
-        android:id="@+id/toorbar_a"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="save"
-        app:showAsAction="always"
-        android:iconTint="#ff0000"/>
+        android:id="@+id/menu_add"
+        android:title="추가"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="always"/>
+
     <item
-        android:id="@+id/toorbar_save"
-        android:icon="@drawable/img_save"
-        android:title="save"
-        app:showAsAction="always"
-        android:iconTint="@color/white"/>
+        android:id="@+id/menu_Load"
+        android:title="열기"
+        app:showAsAction="never"
+        />
+
     <item
-        android:id="@+id/toorbar_extract"
-        android:icon="@drawable/img_extract"
-        android:title="extract"
-        app:showAsAction="always"
-        android:iconTint="@color/white"/>
+        android:id="@+id/menu_save"
+        android:title="저장"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/menu_extract"
+        android:title="추출"
+        app:showAsAction="never"
+        />
 </menu>
