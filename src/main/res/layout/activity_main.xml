@@ -88,10 +88,6 @@
                     android:layout_gravity="center"
                     android:id="@+id/recycle_meun" />
             </LinearLayout>
-
-
-
-
         </RelativeLayout>
 
         <LinearLayout

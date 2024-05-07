@@ -32,14 +32,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.img_decorat.R
 import com.example.img_decorat.RequestCode
 import com.example.img_decorat.databinding.ActivityMainBinding
+import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
 import com.example.img_decorat.viewmodel.MainViewModel
 
-class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener {
+class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAdapter.OnItemClickListener {
     private lateinit var binding : ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
     lateinit var drawerToggle: ActionBarDrawerToggle
     lateinit var menuAdapter: MenuAdapter
+    lateinit var layerAdapter: LayerAdapter
 
     private val imagesList = mutableListOf<Uri>()
 
@@ -55,6 +57,8 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener {
             } ?: data?.data?.let { uri ->
                 imagesList.add(uri)
             }
+
+            viewModel.updateLayerList(imagesList)
         }
     }
 
@@ -75,6 +79,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener {
         checkPermission()
         setToolbar()
         menuAdapterSet()
+        //layerAdapterSet()
         setObserve()
     }
     private fun checkPermission(){
@@ -100,6 +105,14 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener {
             DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
         )
     }
+
+    private fun layerAdapterSet(list : MutableList<Uri>){
+        binding.recycleLayer.layoutManager = LinearLayoutManager(this)
+        layerAdapter = LayerAdapter(list,this)
+
+        binding.recycleLayer.adapter = layerAdapter
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(drawerToggle.onOptionsItemSelected(item)){
@@ -128,6 +141,10 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener {
             }else{
                 binding.menuView.visibility = View.GONE
             }
+        }
+
+        viewModel.layerList.observe(this){
+            layerAdapterSet(it)
         }
     }
 

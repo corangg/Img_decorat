@@ -15,7 +15,7 @@ class MainViewModel @Inject constructor() : ViewModel(){
     val openGalleryEvent : MutableLiveData<Unit> = MutableLiveData()
     val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
 
-    val imgList : MutableList<Uri> = mutableListOf()//바로 적용안되면 라이브데이터로 바꿔야함
+    val layerList : MutableLiveData<MutableList<Uri>> = MutableLiveData(mutableListOf())//바로 적용안되면 라이브데이터로 바꿔야함
 
 
     fun openGallery(){
@@ -32,6 +32,12 @@ class MainViewModel @Inject constructor() : ViewModel(){
 
     fun closeMenu(){
         openMenuEvent.value = false
+    }
+
+    fun updateLayerList(list: MutableList<Uri>){
+        layerList.value = list
+        true
+
     }
 
 }
