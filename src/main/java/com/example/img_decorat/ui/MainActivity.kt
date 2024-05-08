@@ -4,11 +4,14 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -21,7 +24,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.ImgLayerData
 import com.example.img_decorat.R
 import com.example.img_decorat.RequestCode
@@ -61,7 +66,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         checkPermission()
         setToolbar()
         menuAdapterSet()
-        //layerAdapterSet()
+        itemTouchHelper()
         setObserve()
     }
     private fun checkPermission(){
@@ -95,6 +100,46 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         binding.recycleLayer.adapter = layerAdapter
     }
 
+    private fun layerSet(list : LinkedList<ImgLayerData>){
+        for(i in  list){
+            if(i.check){
+                val imageView = ImageView(this).apply {
+                    layoutParams = FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    setImageURI(i.uri)
+                }
+                binding.imgView.addView(imageView)
+            }
+        }
+    }
+
+    fun itemTouchHelper(){
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                val fromPos = viewHolder.adapterPosition
+                val toPos = target.adapterPosition
+                //layerAdapter.moveItem(fromPos, toPos)
+
+                viewModel.changeLayer(fromPos, toPos)
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(binding.recycleLayer)
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(drawerToggle.onOptionsItemSelected(item)){
@@ -108,8 +153,11 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
     }
 
     override fun onCheckedClick(position: Int, checked: Boolean) {
-
         viewModel.updateChecked(position, checked)
+    }
+
+    override fun onLayerDelete(position: Int) {
+        viewModel.deleteLayer(position)
     }
 
     private fun setObserve(){
@@ -132,6 +180,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
         viewModel.layerList.observe(this){
             layerAdapterSet(it)
+            layerSet(it)
         }
     }
 

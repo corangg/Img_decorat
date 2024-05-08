@@ -65,7 +65,28 @@ class MainViewModel @Inject constructor() : ViewModel(){
         }
     }
 
+    fun deleteLayer(position: Int){
+        if(imagesList.size > position){
+            imagesList.removeAt(position)
+
+            layerList.value = imagesList
+        }
+    }
+
     fun addLayer(){
+
+    }
+
+    fun changeLayer(fromPos: Int, toPos: Int){
+        if(imagesList.size>fromPos||imagesList.size>toPos){
+            val data = imagesList[toPos]
+
+            imagesList.set(toPos,imagesList[fromPos])
+            imagesList.set(fromPos,data)
+
+            layerList.value = imagesList
+
+        }
 
     }
 
