@@ -72,6 +72,39 @@
                 android:layout_below="@+id/main_toolbar"
                 android:background="@color/white"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/img_view"
+                android:layout_below="@id/line_toolbar"
+                android:layout_above="@id/edit_view"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="80dp"
+                android:background="#2D2D2D" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:id="@+id/edit_view"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+            <!--<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#2D2D2D" />
+
+            </LinearLayout>-->
+            
+            
+
             <LinearLayout
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
@@ -89,22 +122,35 @@
                     android:id="@+id/recycle_meun" />
             </LinearLayout>
         </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="160dp"
+        
+        <RelativeLayout
+            android:layout_width="170dp"
             android:layout_height="match_parent"
             android:layout_marginTop="100dp"
             android:layout_marginBottom="80dp"
             android:background="@drawable/bg_drawer_layout"
             android:id="@+id/main_drawer_view"
-            android:orientation="vertical"
             android:layout_gravity="start" >
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:paddingTop="20dp"
+                android:layout_marginBottom="80dp"
                 android:id="@+id/recycle_layer" />
-        </LinearLayout>
+            <ImageButton
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:id="@+id/layer_add"
+                android:layout_alignParentBottom="true"
+                android:layout_marginHorizontal="67dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/ic_add"
+                android:backgroundTint="@color/white"
+                android:onClick="@{()->viewmodel.addLayer()}"/>
+        </RelativeLayout>
+
+
 <!--        리사이클러뷰로 바꿔야함-->
 
 

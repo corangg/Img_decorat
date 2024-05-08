@@ -4,18 +4,11 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -29,36 +22,25 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.img_decorat.ImgLayerData
 import com.example.img_decorat.R
 import com.example.img_decorat.RequestCode
 import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
 import com.example.img_decorat.viewmodel.MainViewModel
+import java.util.LinkedList
 
-class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAdapter.OnItemClickListener {
+class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAdapter.OnLayerItemClickListener {
     private lateinit var binding : ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
     lateinit var drawerToggle: ActionBarDrawerToggle
     lateinit var menuAdapter: MenuAdapter
     lateinit var layerAdapter: LayerAdapter
 
-    private val imagesList = mutableListOf<Uri>()
-
     val requestGalleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if(it.resultCode == Activity.RESULT_OK && it.data != null){
-            val data = it.data
-
-            data?.clipData?.let{ clipData ->
-                for (i in 0 until clipData.itemCount) {
-                    val imageUri: Uri = clipData.getItemAt(i).uri
-                    imagesList.add(imageUri)
-                }
-            } ?: data?.data?.let { uri ->
-                imagesList.add(uri)
-            }
-
-            viewModel.updateLayerList(imagesList)
+            viewModel.setImgLayerList(it.data)
         }
     }
 
@@ -106,7 +88,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         )
     }
 
-    private fun layerAdapterSet(list : MutableList<Uri>){
+    private fun layerAdapterSet(list : LinkedList<ImgLayerData>){
         binding.recycleLayer.layoutManager = LinearLayoutManager(this)
         layerAdapter = LayerAdapter(list,this)
 
@@ -123,6 +105,11 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
     override fun onItemClick(position: Int) {
         position
+    }
+
+    override fun onCheckedClick(position: Int, checked: Boolean) {
+
+        viewModel.updateChecked(position, checked)
     }
 
     private fun setObserve(){

@@ -5,6 +5,9 @@
 
         <item name="overlapAnchor">false</item>
         <item name="android:dropDownVerticalOffset">200dp</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
+
 
 
     </style>

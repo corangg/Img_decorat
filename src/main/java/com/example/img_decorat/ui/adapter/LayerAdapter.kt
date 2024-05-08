@@ -1,26 +1,30 @@
 package com.example.img_decorat.ui.adapter
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.img_decorat.ImgLayerData
 import com.example.img_decorat.databinding.ItemLayerBinding
-import com.example.img_decorat.databinding.ItemMenuBinding
+import java.util.LinkedList
 
 class LayerViewHolder(val binding: ItemLayerBinding): RecyclerView.ViewHolder(binding.root){
-    fun bindLayer(uri: Uri){
-        if(uri != null){
-            Glide.with(binding.root).load(uri).into(binding.layerImg)
+    fun bindLayer(layerData: ImgLayerData, position: Int){
+        val num = position + 1
+        binding.layerNum.text = num.toString()
+
+        if(layerData.uri != null){
+            Glide.with(binding.root).load(layerData.uri).into(binding.layerImg)
         }
 
+        binding.check.isChecked = layerData.check//체크되면 체크된 값 리턴해야할듯
     }
 }
 
-class LayerAdapter(val layerList: MutableList<Uri>, val onItemClickListener: LayerAdapter.OnItemClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class LayerAdapter(val layerList: LinkedList<ImgLayerData>, val onLayerItemClickListener: OnLayerItemClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    interface OnItemClickListener{//드래그 할꺼라 바꿔야 할ㄷ스
-        fun onItemClick(position: Int)
+    interface OnLayerItemClickListener{//드래그 할꺼라 바꿔야 할ㄷ스
+        fun onCheckedClick(position: Int, checked : Boolean)
     }
 
     override fun getItemCount(): Int {
@@ -33,33 +37,11 @@ class LayerAdapter(val layerList: MutableList<Uri>, val onItemClickListener: Lay
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as LayerViewHolder).binding
 
-        holder.bindLayer(layerList[position])
+        holder.bindLayer(layerList[position], position)
+
+        binding.check.setOnClickListener {
+            onLayerItemClickListener.onCheckedClick(position, binding.check.isChecked)
+        }
     }
 
 }
-/*
-class LayerViewHolder(val binding: ItemMenuBinding): RecyclerView.ViewHolder(binding.root)
-
-class LayerAdapter(val menuList: MutableList<String>, val onItemClickListener: OnItemClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-
-    interface OnItemClickListener{
-        fun onItemClick(position: Int)
-    }
-
-    override fun getItemCount(): Int {
-        return menuList.size
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
-            = LayerViewHolder(ItemMenuBinding.inflate(LayoutInflater.from(parent.context),parent,false))
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val binding = (holder as LayerViewHolder).binding
-
-        binding.menuText.text = menuList[position]
-
-        binding.itemMenu.setOnClickListener {
-            onItemClickListener.onItemClick(position)
-        }
-    }
-}*/
