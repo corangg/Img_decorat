@@ -96,7 +96,6 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
     private fun layerAdapterSet(list : LinkedList<ImgLayerData>){
         binding.recycleLayer.layoutManager = LinearLayoutManager(this)
         layerAdapter = LayerAdapter(list,this)
-
         binding.recycleLayer.adapter = layerAdapter
     }
 
@@ -108,7 +107,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
                         FrameLayout.LayoutParams.WRAP_CONTENT,
                         FrameLayout.LayoutParams.WRAP_CONTENT
                     )
-                    setImageURI(i.uri)
+                    setImageBitmap(i.bitMap)
                 }
                 binding.imgView.addView(imageView)
             }
@@ -126,9 +125,8 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
             ): Boolean {
                 val fromPos = viewHolder.adapterPosition
                 val toPos = target.adapterPosition
-                //layerAdapter.moveItem(fromPos, toPos)
+                layerAdapter.moveItem(fromPos, toPos)
 
-                viewModel.changeLayer(fromPos, toPos)
                 return true
             }
 
