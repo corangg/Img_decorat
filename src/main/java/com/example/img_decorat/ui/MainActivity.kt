@@ -104,7 +104,9 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         )
     }
 
-    private fun layerSet(list : LinkedList<ImgLayerData>){
+    private fun layerSet(){
+        val list = viewModel.layerList.value?:LinkedList<ImgLayerData>()
+        binding.imgView.removeAllViews()
         for(i in  list){
             if(i.check){
                 val imageView = ImageView(this).apply {
@@ -132,6 +134,8 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
                 val fromPos = viewHolder.adapterPosition
                 val toPos = target.adapterPosition
                 layerAdapter.moveItem(fromPos, toPos)
+
+                layerSet()
 
                 return true
             }
@@ -189,7 +193,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
         viewModel.layerList.observe(this){
             layerAdapterSet(it)
-            layerSet(it)
+            layerSet()
         }
     }
 
