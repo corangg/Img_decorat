@@ -99,6 +99,9 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         binding.recycleLayer.layoutManager = LinearLayoutManager(this)
         layerAdapter = LayerAdapter(list,this)
         binding.recycleLayer.adapter = layerAdapter
+        binding.recycleLayer.addItemDecoration(
+            DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
+        )
     }
 
     private fun layerSet(list : LinkedList<ImgLayerData>){
@@ -151,6 +154,11 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
     override fun onItemClick(position: Int) {
         position
+    }
+
+    override fun onLayerItemClick(position: Int) {
+        viewModel.selectLayer(position)
+
     }
 
     override fun onCheckedClick(position: Int, checked: Boolean) {

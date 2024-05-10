@@ -31,7 +31,7 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
 
 
-    val imagesList = LinkedList<ImgLayerData>()
+    var imagesList = LinkedList<ImgLayerData>()
     val layerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())//바로 적용안되면 라이브데이터로 바꿔야함
 
 
@@ -83,9 +83,9 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
 
     fun updateChecked(position: Int, checked: Boolean){
         if(imagesList.size > position){
-            val bitmap = imagesList[position].bitMap
-            val id = imagesList[position].id
-            val layerData = ImgLayerData(bitmap,checked,id)
+            var layerData: ImgLayerData = imagesList[position]
+            layerData.check = checked
+
             imagesList.set(position,layerData)
 
             layerList.value = imagesList
@@ -116,6 +116,18 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     fun createTransparentBitmap(width: Int, height: Int): Bitmap {
         return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).apply {
             eraseColor(Color.TRANSPARENT)
+        }
+    }
+
+    fun selectLayer(position: Int){
+        if(imagesList.size > position){
+            val selectedItem = imagesList.find { it.select }
+
+            selectedItem?.let {
+                it.select = false }
+
+            imagesList[position].select = true
+            layerList.value = imagesList
         }
     }
 

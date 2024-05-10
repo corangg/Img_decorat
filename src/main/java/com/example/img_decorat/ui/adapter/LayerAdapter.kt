@@ -1,10 +1,13 @@
 package com.example.img_decorat.ui.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.img_decorat.ImgLayerData
+import com.example.img_decorat.R
 import com.example.img_decorat.databinding.ItemLayerBinding
 import java.util.Collections
 import java.util.LinkedList
@@ -23,11 +26,12 @@ class LayerViewHolder(val binding: ItemLayerBinding): RecyclerView.ViewHolder(bi
 }
 
 class LayerAdapter(val layerList: LinkedList<ImgLayerData>, val onLayerItemClickListener: OnLayerItemClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     interface OnLayerItemClickListener{//드래그 할꺼라 바꿔야 할ㄷ스
         fun onCheckedClick(position: Int, checked : Boolean)
 
         fun onLayerDelete(position: Int)
+
+        fun onLayerItemClick(position: Int)
     }
 
     override fun getItemCount(): Int {
@@ -42,6 +46,13 @@ class LayerAdapter(val layerList: LinkedList<ImgLayerData>, val onLayerItemClick
 
         holder.bindLayer(layerList[position], position)
 
+        binding.itemLayer.setBackgroundColor(if (layerList[position].select) 0xFF202020.toInt() else Color.TRANSPARENT)
+
+
+        binding.itemLayer.setOnClickListener {
+            onLayerItemClickListener.onLayerItemClick(position)
+        }
+
         binding.check.setOnClickListener {
             onLayerItemClickListener.onCheckedClick(position, binding.check.isChecked)
         }
@@ -49,6 +60,8 @@ class LayerAdapter(val layerList: LinkedList<ImgLayerData>, val onLayerItemClick
         binding.layerDelete.setOnClickListener {
             onLayerItemClickListener.onLayerDelete(position)
         }
+
+
     }
 
     fun moveItem(fromPosition: Int, toPosition: Int) {
