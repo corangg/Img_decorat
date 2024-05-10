@@ -4,7 +4,9 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -103,6 +105,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         for(i in  list){
             if(i.check){
                 val imageView = ImageView(this).apply {
+                    id = i.id
                     layoutParams = FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.WRAP_CONTENT,
                         FrameLayout.LayoutParams.WRAP_CONTENT

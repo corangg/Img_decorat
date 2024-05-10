@@ -8,7 +8,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.activity.result.ActivityResult
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,31 +51,41 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
         openMenuEvent.value = false
     }
 
+    fun setID() : Int{
+        val id =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                View.generateViewId()
+            } else {
+                ViewCompat.generateViewId()
+            }
+        return id
+    }
+
     fun setImgLayerList(data: Intent?){
         data?.clipData?.let{ clipData ->
             for (i in 0 until clipData.itemCount) {
                 val imageUri: Uri = clipData.getItemAt(i).uri
                 val bitmap = uriToBitmap(getApplication<Application>().applicationContext,imageUri)
                 if(bitmap != null){
-                    val layerData = ImgLayerData(bitmap,false)
+                    val layerData = ImgLayerData(bitmap,false,setID())
                     imagesList.add(layerData)
                 }
             }
         } ?: data?.data?.let { uri ->
             val bitmap = uriToBitmap(getApplication<Application>().applicationContext,uri)
             if(bitmap != null){
-                val layerData = ImgLayerData(bitmap,false)
+                val layerData = ImgLayerData(bitmap,false,setID())
                 imagesList.add(layerData)
             }
         }
-
         layerList.value = imagesList
     }
 
     fun updateChecked(position: Int, checked: Boolean){
         if(imagesList.size > position){
             val bitmap = imagesList[position].bitMap
-            val layerData = ImgLayerData(bitmap,checked)
+            val id = imagesList[position].id
+            val layerData = ImgLayerData(bitmap,checked,id)
             imagesList.set(position,layerData)
 
             layerList.value = imagesList
@@ -80,14 +95,15 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     fun deleteLayer(position: Int){
         if(imagesList.size > position){
             imagesList.removeAt(position)
-
             layerList.value = imagesList
         }
     }
 
     fun addLayer(){
-        //val layerData = ImgLayerData(null,false)
-
+        val bitmap = createTransparentBitmap(1024,1024)
+        val layerData = ImgLayerData(bitmap,false,setID())
+        imagesList.add(layerData)
+        layerList.value = imagesList
     }
 
 
