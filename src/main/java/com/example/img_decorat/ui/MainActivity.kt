@@ -99,9 +99,6 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         binding.recycleLayer.layoutManager = LinearLayoutManager(this)
         layerAdapter = LayerAdapter(list,this)
         binding.recycleLayer.adapter = layerAdapter
-        binding.recycleLayer.addItemDecoration(
-            DividerItemDecoration(this,LinearLayoutManager.VERTICAL)
-        )
     }
 
     private fun layerSet(){
