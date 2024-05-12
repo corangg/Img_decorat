@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.ImgLayerData
 import com.example.img_decorat.R
 import com.example.img_decorat.RequestCode
+import com.example.img_decorat.ZoomableImageView
 import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
@@ -95,18 +96,36 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         )
     }
 
-    private fun layerAdapterSet(list : LinkedList<ImgLayerData>){
+    private fun layerAdapterSet(list : LinkedList<ImgLayerData>){//필요한것만 리셋해야할까?
         binding.recycleLayer.layoutManager = LinearLayoutManager(this)
         layerAdapter = LayerAdapter(list,this)
         binding.recycleLayer.adapter = layerAdapter
     }
+
+    /*private fun layerSet(){
+        val list = viewModel.layerList.value?:LinkedList<ImgLayerData>()
+        binding.imgView.removeAllViews()
+        for(i in  list){
+            if(i.check){
+                val imageView = ImageView(this).apply {
+                    id = i.id
+                    layoutParams = FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    setImageBitmap(i.bitMap)
+                }
+                binding.imgView.addView(imageView)
+            }
+        }
+    }*/
 
     private fun layerSet(){
         val list = viewModel.layerList.value?:LinkedList<ImgLayerData>()
         binding.imgView.removeAllViews()
         for(i in  list){
             if(i.check){
-                val imageView = ImageView(this).apply {
+                val imageView = ZoomableImageView(this,null).apply {
                     id = i.id
                     layoutParams = FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.WRAP_CONTENT,

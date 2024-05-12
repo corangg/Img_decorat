@@ -82,6 +82,12 @@
                 android:layout_marginBottom="80dp"
                 android:background="#2D2D2D" />
 
+          <!--  <com.example.img_decorat.ZoomableImageView
+                android:id="@+id/zoomableImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_add" />-->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
