@@ -120,12 +120,12 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         }
     }*/
 
-    private fun layerSet(){
+    private fun layerSet(){//할떄마다 레이어뷰 초기화 돼서 줄인거 리셋됨
         val list = viewModel.layerList.value?:LinkedList<ImgLayerData>()
         binding.imgView.removeAllViews()
         for(i in  list){
             if(i.check){
-                val imageView = ZoomableImageView(this,null).apply {
+                val imageView = ZoomableImageView(this).apply {
                     id = i.id
                     layoutParams = FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.WRAP_CONTENT,

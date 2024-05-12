@@ -8,19 +8,26 @@ import androidx.appcompat.widget.AppCompatImageView
 import kotlin.math.max
 import kotlin.math.min
 
-class ZoomableImageView(context: Context, attrs: AttributeSet) : AppCompatImageView(context, attrs) {
+class ZoomableImageView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
+) : AppCompatImageView(context, attrs, defStyle) {
+
     private var scaleFactor = 1.0f
     private val scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        scaleGestureDetector.onTouchEvent(event)
-        return true
+    init {
+        // 이미지 뷰가 스케일 변화를 처리할 수 있도록 설정
+        setOnTouchListener { _, event ->
+            scaleGestureDetector.onTouchEvent(event)
+            true
+        }
     }
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             scaleFactor *= detector.scaleFactor
-            scaleFactor = max(0.1f, min(scaleFactor, 10.0f)) // 최소 크기와 최대 크기 제한
+            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f))
+
             scaleX = scaleFactor
             scaleY = scaleFactor
             return true
