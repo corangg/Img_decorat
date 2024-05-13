@@ -1,4 +1,4 @@
-package com.example.img_decorat.ui
+package com.example.img_decorat.ui.activity
 
 import android.Manifest
 import android.R
@@ -9,7 +9,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.RelativeLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -31,6 +33,7 @@ import com.example.img_decorat.RequestCode
 import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
+import com.example.img_decorat.ui.fragment.BackGroundFragment
 import com.example.img_decorat.viewmodel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.LinkedList
@@ -42,6 +45,8 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
     lateinit var drawerToggle: ActionBarDrawerToggle
     lateinit var menuAdapter: MenuAdapter
     lateinit var layerAdapter: LayerAdapter
+
+    lateinit var backGroundFragment: BackGroundFragment
 
     val requestGalleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if(it.resultCode == Activity.RESULT_OK && it.data != null){
@@ -67,6 +72,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
         checkPermission()
         setToolbar()
+        getScreenWith()
         menuAdapterSet()
         itemTouchHelper()
         setObserve()
@@ -85,6 +91,12 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
             com.example.img_decorat.R.string.drawer_close)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         drawerToggle.syncState()
+    }
+
+    private fun getScreenWith(){
+        val displayMetrics = resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        viewModel.screenWith = screenWidth
     }
 
     private fun menuAdapterSet(){
@@ -181,6 +193,20 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
                     binding.imgView.addView(i.img)
                 }
             }
+        }
+
+        viewModel.selectNavigationItem.observe(this){
+            when(it){
+                0->{
+                    backGroundFragment = BackGroundFragment()
+                    supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,backGroundFragment).commit()
+
+                }
+            }
+        }
+
+        viewModel.selectBackgroundScale.observe(this){
+            binding.imgView.layoutParams = it
         }
     }
 

@@ -11,6 +11,7 @@ import android.os.Build
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
+import androidx.constraintlayout.widget.Constraints.LayoutParams
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.ImageViewData
 import com.example.img_decorat.ImgLayerData
+import com.example.img_decorat.R
 import com.example.img_decorat.ZoomableImageView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Collections
@@ -27,9 +29,13 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(application: Application) : AndroidViewModel(application){
     val selectImg : MutableLiveData<Unit> = MutableLiveData()
+    var screenWith : Int = 0
+
     val imgTitle : MutableLiveData<String> = MutableLiveData("New_Image")
     val openGalleryEvent : MutableLiveData<Unit> = MutableLiveData()
     val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
+
+    val selectNavigationItem : MutableLiveData<Int> = MutableLiveData(-1)
 
 
     var layerList = LinkedList<ImgLayerData>()
@@ -40,7 +46,30 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
 
 
     fun bottomNavigationItemSelected(item : MenuItem):Boolean{
-        return true
+        when(item.itemId){
+            R.id.navigation_background->{
+                selectNavigationItem.value = 0
+                return true
+            }
+            R.id.navigation_split->{
+                selectNavigationItem.value = 1
+                return true
+            }
+            R.id.navigation_hue->{
+                selectNavigationItem.value = 2
+                return true
+            }
+            R.id.navigation_sticker->{
+                selectNavigationItem.value = 3
+                return true
+            }
+            R.id.navigation_text->{
+                selectNavigationItem.value = 4
+                return true
+            }
+
+        }
+        return false
     }
 
     fun openGallery(){
@@ -187,6 +216,48 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     fun swapImageView(fromPos: Int, toPos: Int){
         Collections.swap(imageViewList,fromPos,toPos)
         liveImageViewList.value = imageViewList
+    }
+
+    val selectBackgroundItem : MutableLiveData<Int> = MutableLiveData(-1)
+    val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
+
+
+    fun selectBackgroundScale(item:Int){
+
+
+        var layoutParams = FrameLayout.LayoutParams(0,0)
+        when(item){
+            0->{
+                layoutParams  = FrameLayout.LayoutParams(screenWith, screenWith)
+            }
+            1->{
+                val heightPx = screenWith * 0.75
+                layoutParams = FrameLayout.LayoutParams(screenWith, heightPx.toInt())
+            }
+            2->{
+                val withPx = screenWith * 0.75
+                layoutParams = FrameLayout.LayoutParams(withPx.toInt(),screenWith)
+            }
+            3->{
+                val heightPx = screenWith * 0.66
+                layoutParams = FrameLayout.LayoutParams(screenWith, heightPx.toInt())
+            }
+            4->{
+                val withPx = screenWith * 0.66
+                layoutParams = FrameLayout.LayoutParams(withPx.toInt(),screenWith)
+            }
+            5->{
+                val heightPx = screenWith * 0.5625
+                layoutParams = FrameLayout.LayoutParams(screenWith, heightPx.toInt())
+            }
+            6->{
+                val withPx = screenWith * 0.5625
+                layoutParams = FrameLayout.LayoutParams(withPx.toInt(),screenWith)
+            }
+        }
+        selectBackgroundItem.value = item
+        selectBackgroundScale.value = layoutParams
+
     }
 
 }

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.img_decorat.viewmodel.MainViewModel" />
+    </data>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragment.BackGroundFragment"
+        android:scrollbarAlwaysDrawHorizontalTrack="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/background_scale">
+
+            <LinearLayout
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:id="@+id/scale_1_1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:layout_marginLeft="10dp"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(0)}">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:gravity="center">
+
+                    <View
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/bg_scale" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1 : 1"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:id="@+id/scale_4_3"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(1)}">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:gravity="center">
+
+                    <View
+                        android:layout_width="48dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/bg_scale" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="4 : 3"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:id="@+id/scale_3_4"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(2)}">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:gravity="center">
+
+                    <View
+                        android:layout_width="36dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/bg_scale" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="3 : 4"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:id="@+id/scale_3_2"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(3)}">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:gravity="center">
+
+                    <View
+                        android:layout_width="36dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/bg_scale" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="3 : 2"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:id="@+id/scale_2_3"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(4)}">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:gravity="center">
+
+                    <View
+                        android:layout_width="24dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/bg_scale" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2 : 3"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:id="@+id/scale_16_9"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(5)}">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:gravity="center">
+
+                    <View
+                        android:layout_width="48dp"
+                        android:layout_height="27dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/bg_scale" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="16 : 9"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:id="@+id/scale_9_16"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(6)}">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:gravity="center">
+
+                    <View
+                        android:layout_width="27dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/bg_scale" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="9 : 16"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </HorizontalScrollView>
+</layout>

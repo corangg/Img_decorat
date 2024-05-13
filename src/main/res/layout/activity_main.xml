@@ -81,14 +81,27 @@
 
 
             <FrameLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/img_view"
                 android:layout_below="@+id/main_toolbar"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="120dp"
-                android:background="#2D2D2D" />
+                android:layout_above="@id/detail_navigaionView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
 
+                    android:id="@+id/img_view"
+                    android:background="#2D2D2D" />
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:id="@+id/detail_navigaionView"
+                android:background="@drawable/bg_detail_navigation"
+                android:layout_above="@id/bottom_navigation" />
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_navigation"
@@ -98,8 +111,6 @@
                 app:labelVisibilityMode="auto"
                 app:menu="@menu/bottom_navigation_menu"
                 app:onNavigationItemSelectedListener="@{(item)->viewmodel.bottomNavigationItemSelected(item)}"/>
-
-
         </RelativeLayout>
         
         <RelativeLayout
@@ -128,13 +139,5 @@
                 android:backgroundTint="@color/white"
                 android:onClick="@{()->viewmodel.addLayer()}"/>
         </RelativeLayout>
-
-
-<!--        리사이클러뷰로 바꿔야함-->
-
-
-
     </androidx.drawerlayout.widget.DrawerLayout>
-
-
 </layout>
