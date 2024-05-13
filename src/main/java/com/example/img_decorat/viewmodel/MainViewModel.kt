@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
+import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
@@ -37,6 +38,10 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     val imageViewList = LinkedList<ImageViewData>()
     val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
 
+
+    fun bottomNavigationItemSelected(item : MenuItem):Boolean{
+        return true
+    }
 
     fun openGallery(){
         openGalleryEvent.value = Unit

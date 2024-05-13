@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_background"
+        android:icon="@drawable/ic_background"
+        android:enabled="true"
+        android:title="배경" />
+
+    <item
+        android:id="@+id/navigation_split"
+        android:icon="@drawable/ic_split"
+        android:enabled="true"
+        android:title="자르기" />
+
+    <item
+        android:id="@+id/navigation_hue"
+        android:icon="@drawable/ic_hue"
+        android:enabled="true"
+        android:title="색조" />
+
+    <item
+        android:id="@+id/navigation_sticker"
+        android:icon="@drawable/ic_sticker"
+        android:enabled="true"
+        android:title="스티커" />
+
+    <item
+        android:id="@+id/navigation_text"
+        android:icon="@drawable/ic_text"
+        android:enabled="true"
+        android:title="텍스트" />
+
+   <!-- <item
+        android:id="@+id/navigation_pen"
+        android:icon="@drawable/ic_pen"
+        android:enabled="true"
+        android:title="펜" />-->
+</menu>

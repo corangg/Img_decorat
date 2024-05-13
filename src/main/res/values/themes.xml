@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
 
-    <style name="Theme.Img_decorat" parent="Theme.Material3.DayNight.NoActionBar" >
+    <style name="Theme.Img_decorat" parent="Theme.MaterialComponents.Light.NoActionBar" >
 
         <item name="overlapAnchor">false</item>
         <item name="android:dropDownVerticalOffset">200dp</item>
@@ -16,6 +16,13 @@
        <!--// <item name="android:popupBackground">@drawable/menu_background</item>  &lt;!&ndash; 메뉴 배경 &ndash;&gt;-->
     </style>
 
+ <!--   <style name="BottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">\
+        <item name="android:layout_height">60dp</item>
+        <item name="itemIconTint">@color/navigation_ic_color</item>
+        <item name="itemTextColor">@color/navigation_ic_color</item>
+        <item name="android:paddingBottom">0dp</item>
+    </style>
+-->
 
 
 </resources>

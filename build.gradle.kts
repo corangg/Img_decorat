@@ -59,7 +59,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation("com.google.android.material:material:1.6.0")//CardView
+    implementation("com.google.android.material:material:1.12.0")//CardView
 
     implementation("com.github.bumptech.glide:glide:4.13.0")//Glide
     kapt("com.github.bumptech.glide:compiler:4.13.0")

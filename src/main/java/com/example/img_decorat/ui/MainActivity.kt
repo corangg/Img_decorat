@@ -1,6 +1,7 @@
 package com.example.img_decorat.ui
 
 import android.Manifest
+import android.R
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.setPadding
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -25,13 +27,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.ImgLayerData
-import com.example.img_decorat.R
 import com.example.img_decorat.RequestCode
 import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
 import com.example.img_decorat.viewmodel.MainViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.LinkedList
+
 
 class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAdapter.OnLayerItemClickListener {
     private lateinit var binding : ActivityMainBinding
@@ -48,16 +51,19 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        binding = DataBindingUtil.setContentView(this, com.example.img_decorat.R.layout.activity_main)
         (binding as ViewDataBinding).lifecycleOwner = this
         binding.viewmodel = viewModel
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        /*enableEdgeToEdge()//이거 있으면 바텀네비게이션 강제 패딩 들어감
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(com.example.img_decorat.R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
-        }
+        }*/
+
+
+
 
         checkPermission()
         setToolbar()
@@ -65,6 +71,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         itemTouchHelper()
         setObserve()
     }
+
     private fun checkPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), RequestCode.OPEN_GALLERY_REQUEST_CODE)
@@ -74,7 +81,8 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
     private fun setToolbar(){
         setSupportActionBar(binding.mainToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        drawerToggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.drawer_open,R.string.drawer_close)
+        drawerToggle = ActionBarDrawerToggle(this, binding.drawerLayout, com.example.img_decorat.R.string.drawer_open,
+            com.example.img_decorat.R.string.drawer_close)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         drawerToggle.syncState()
     }
@@ -178,7 +186,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
     private fun buttionAnimation(button: ImageButton) {
         val button = button
-        val animation = AnimationUtils.loadAnimation(this, R.anim.anim_clicked)
+        val animation = AnimationUtils.loadAnimation(this, com.example.img_decorat.R.anim.anim_clicked)
         button.startAnimation(animation)
     }
 
