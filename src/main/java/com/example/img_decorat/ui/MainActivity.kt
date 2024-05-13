@@ -4,16 +4,11 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.FrameLayout
 import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -32,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.ImgLayerData
 import com.example.img_decorat.R
 import com.example.img_decorat.RequestCode
-import com.example.img_decorat.ZoomableImageView
 import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
@@ -51,7 +45,6 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
             viewModel.setImgLayerList(it.data)
         }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,46 +95,9 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         binding.recycleLayer.adapter = layerAdapter
     }
 
-    /*private fun layerSet(){
-        val list = viewModel.layerList.value?:LinkedList<ImgLayerData>()
-        binding.imgView.removeAllViews()
-        for(i in  list){
-            if(i.check){
-                val imageView = ImageView(this).apply {
-                    id = i.id
-                    layoutParams = FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.WRAP_CONTENT,
-                        FrameLayout.LayoutParams.WRAP_CONTENT
-                    )
-                    setImageBitmap(i.bitMap)
-                }
-                binding.imgView.addView(imageView)
-            }
-        }
-    }*/
-
-    private fun layerSet(){//할떄마다 레이어뷰 초기화 돼서 줄인거 리셋됨
-        val list = viewModel.layerList.value?:LinkedList<ImgLayerData>()
-        binding.imgView.removeAllViews()
-        for(i in  list){
-            if(i.check){
-                val imageView = ZoomableImageView(this).apply {
-                    id = i.id
-                    layoutParams = FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.WRAP_CONTENT,
-                        FrameLayout.LayoutParams.WRAP_CONTENT
-                    )
-                    setImageBitmap(i.bitMap)
-                }
-                binding.imgView.addView(imageView)
-            }
-        }
-    }
-
     fun itemTouchHelper(){
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
-        ) {
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -150,8 +106,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
                 val fromPos = viewHolder.adapterPosition
                 val toPos = target.adapterPosition
                 layerAdapter.moveItem(fromPos, toPos)
-
-                layerSet()
+                viewModel.swapImageView(fromPos,toPos)
 
                 return true
             }
@@ -207,9 +162,17 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
             }
         }
 
-        viewModel.layerList.observe(this){
+        viewModel.liveLayerList.observe(this){
             layerAdapterSet(it)
-            layerSet()
+        }
+
+        viewModel.liveImageViewList.observe(this){
+            binding.imgView.removeAllViews()//잠깐 쓰는거//새로 생성하면 비효율 적일거 같음
+            for(i in it){
+                if(i.visible == true){
+                    binding.imgView.addView(i.img)
+                }
+            }
         }
     }
 

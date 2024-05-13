@@ -9,3 +9,8 @@ data class ImgLayerData(
     val id : Int,
     var select : Boolean = false
 )
+
+data class ImageViewData(
+    val img : ZoomableImageView,
+    var visible : Boolean = true,
+)

@@ -1,6 +1,5 @@
 package com.example.img_decorat.viewmodel
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -11,15 +10,16 @@ import android.net.Uri
 import android.os.Build
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.ImageView
-import androidx.activity.result.ActivityResult
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.example.img_decorat.ImageViewData
 import com.example.img_decorat.ImgLayerData
-import dagger.hilt.android.internal.Contexts.getApplication
+import com.example.img_decorat.ZoomableImageView
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Collections
 import java.util.LinkedList
 import javax.inject.Inject
 
@@ -31,8 +31,11 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
 
 
-    var imagesList = LinkedList<ImgLayerData>()
-    val layerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())//바로 적용안되면 라이브데이터로 바꿔야함
+    var layerList = LinkedList<ImgLayerData>()
+    val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
+
+    val imageViewList = LinkedList<ImageViewData>()
+    val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
 
 
     fun openGallery(){
@@ -66,44 +69,57 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
             for (i in 0 until clipData.itemCount) {
                 val imageUri: Uri = clipData.getItemAt(i).uri
                 val bitmap = uriToBitmap(getApplication<Application>().applicationContext,imageUri)
+                val id = setID()
                 if(bitmap != null){
-                    val layerData = ImgLayerData(bitmap,false,setID())
-                    imagesList.add(layerData)
+                    val layerData = ImgLayerData(bitmap,false,id)
+                    layerList.add(layerData)
+                    addImageView(id,bitmap)
                 }
             }
         } ?: data?.data?.let { uri ->
             val bitmap = uriToBitmap(getApplication<Application>().applicationContext,uri)
+            val id = setID()
             if(bitmap != null){
-                val layerData = ImgLayerData(bitmap,false,setID())
-                imagesList.add(layerData)
+                val layerData = ImgLayerData(bitmap,false,id)
+                layerList.add(layerData)
+                addImageView(id,bitmap)
             }
         }
-        layerList.value = imagesList
+        liveLayerList.value = layerList
     }
 
     fun updateChecked(position: Int, checked: Boolean){
-        if(imagesList.size > position){
-            var layerData: ImgLayerData = imagesList[position]
+        if(layerList.size > position){
+            var layerData: ImgLayerData = layerList[position]
             layerData.check = checked
 
-            imagesList.set(position,layerData)
+            layerList.set(position,layerData)
 
-            layerList.value = imagesList
+            liveLayerList.value = layerList
+            if(checked){
+                checkedLayer(position)
+            }else{
+                unCheckedLayer(position)
+            }
         }
     }
 
     fun deleteLayer(position: Int){
-        if(imagesList.size > position){
-            imagesList.removeAt(position)
-            layerList.value = imagesList
+        if(layerList.size > position){
+            layerList.removeAt(position)
+            liveLayerList.value = layerList
+            imageViewList.removeAt(position)
+            liveImageViewList.value = imageViewList
         }
     }
 
     fun addLayer(){
-        val bitmap = createTransparentBitmap(1024,1024)
-        val layerData = ImgLayerData(bitmap,false,setID())
-        imagesList.add(layerData)
-        layerList.value = imagesList
+        val bitmap = createTransparentBitmap(1024,1024)//크기 임시임
+        val id = setID()
+        val layerData = ImgLayerData(bitmap,false,id)
+        layerList.add(layerData)
+        liveLayerList.value = layerList
+        addImageView(id,bitmap)
     }
 
 
@@ -120,15 +136,52 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     }
 
     fun selectLayer(position: Int){
-        if(imagesList.size > position){
-            val selectedItem = imagesList.find { it.select }
+        if(layerList.size > position){
+            val selectedItem = layerList.find { it.select }
 
             selectedItem?.let {
                 it.select = false }
 
-            imagesList[position].select = true
-            layerList.value = imagesList
+            layerList[position].select = true
+            liveLayerList.value = layerList
         }
+    }
+
+    fun checkedLayer(position: Int){
+        val checkedId = layerList[position].id
+        val targetItem = imageViewList.find{it.img.id == checkedId}
+
+        if(targetItem != null){
+            targetItem.visible = true
+            liveImageViewList.value = imageViewList
+        }
+    }
+
+    fun unCheckedLayer(position: Int){
+        val checkedId = layerList[position].id
+        val targetItem = imageViewList.find{it.img.id == checkedId}
+
+        if(targetItem != null){
+            targetItem.visible = false
+            liveImageViewList.value = imageViewList
+        }
+    }
+
+    fun addImageView(addId : Int, bitmap: Bitmap){
+        val imageView = ZoomableImageView(getApplication<Application>().applicationContext).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            )
+            id = addId
+            setImageBitmap(bitmap)
+        }
+        imageViewList.add(ImageViewData(imageView,false))
+    }
+
+    fun swapImageView(fromPos: Int, toPos: Int){
+        Collections.swap(imageViewList,fromPos,toPos)
+        liveImageViewList.value = imageViewList
     }
 
 }
