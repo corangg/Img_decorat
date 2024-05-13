@@ -27,16 +27,18 @@ class ZoomableImageView @JvmOverloads constructor(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        // 중심을 뷰의 중심으로 설정
         pivotX = w / 2f
         pivotY = h / 2f
     }
 
     override fun onTouch(v: View, event: MotionEvent): Boolean {
+        val pos = getCurrentImagePosition()
+        val viewSize = getCurrentImageSize()
+
         scaleGestureDetector.onTouchEvent(event)
+
         if (!scaleGestureDetector.isInProgress) {
-            val action = event.action
-            when (action) {
+            when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     lastTouchX = event.x
                     lastTouchY = event.y
@@ -53,7 +55,31 @@ class ZoomableImageView @JvmOverloads constructor(
                 }
             }
         }
-        return true
+
+        val touch = event.x >= pos.first && event.x <= pos.first + viewSize.first && event.y >= pos.second && event.y <= pos.second + viewSize.second
+
+        return touch
+    }
+
+    fun getCurrentImageSize(): Pair<Float, Float> {
+        val values = FloatArray(9)
+        matrix.getValues(values)
+        val scaleX = values[Matrix.MSCALE_X]
+        val scaleY = values[Matrix.MSCALE_Y]
+
+        val drawable = drawable ?: return Pair(0f, 0f)
+        val originalWidth = drawable.intrinsicWidth
+        val originalHeight = drawable.intrinsicHeight
+
+        return Pair(originalWidth * scaleX, originalHeight * scaleY)
+    }
+
+    fun getCurrentImagePosition(): Pair<Float, Float> {
+        val values = FloatArray(9)
+        matrix.getValues(values)
+        val transX = values[Matrix.MTRANS_X]
+        val transY = values[Matrix.MTRANS_Y]
+        return Pair(transX, transY)
     }
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
