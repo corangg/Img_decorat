@@ -54,6 +54,9 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     val imageViewList = LinkedList<ImageViewData>()
     val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
 
+    val lastTouchImageView : MutableLiveData<ZoomableImageView?> = MutableLiveData(null)
+    val lastTouchedImageId : MutableLiveData<Int> = MutableLiveData(-1)
+
 
     fun bottomNavigationItemSelected(item : MenuItem):Boolean{
         when(item.itemId){
@@ -79,6 +82,8 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
             }
             R.id.scale_item->{
                 selectbackgroundMenu.value = 0
+                lastTouchImageView.value
+                lastTouchedImageId.value
                 return true
             }
             R.id.paint_item->{
@@ -201,7 +206,22 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
 
             layerList[position].select = true
             liveLayerList.value = layerList
+            lastTouchedImageId.value = layerList[position].id
         }
+    }
+
+    fun selectLastImage(id: Int){
+        val selectedItem = layerList.find { it.select }
+
+        selectedItem?.let {
+            it.select = false }
+
+        val findItem = layerList.find { it.id == id }
+        findItem?.let {
+            it.select = true
+        }
+        liveLayerList.value = layerList
+        lastTouchedImageId.value = id
     }
 
     fun checkedLayer(position: Int){

@@ -5,13 +5,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -27,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.img_decorat.R
 import com.example.img_decorat.dataModels.ImgLayerData
 import com.example.img_decorat.RequestCode
 import com.example.img_decorat.databinding.ActivityMainBinding
@@ -148,7 +153,6 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
     override fun onLayerItemClick(position: Int) {
         viewModel.selectLayer(position)
-
     }
 
     override fun onCheckedClick(position: Int, checked: Boolean) {
@@ -185,6 +189,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
             binding.imgView.removeAllViews()//잠깐 쓰는거//새로 생성하면 비효율 적일거 같음
             for(i in it){
                 if(i.visible == true){
+                    i.img.setViewModel(viewModel)
                     binding.imgView.addView(i.img)
                 }
             }
@@ -222,6 +227,11 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
                 })
 
             }
+        }
+
+        viewModel.lastTouchedImageId.observe(this){
+            binding.imgView.invalidate()
+
         }
     }
 
