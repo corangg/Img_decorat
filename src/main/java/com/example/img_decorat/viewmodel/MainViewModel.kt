@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.ImageViewData
 import com.example.img_decorat.ImgLayerData
 import com.example.img_decorat.R
+import com.example.img_decorat.Util
 import com.example.img_decorat.ZoomableImageView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Collections
@@ -237,8 +238,12 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     val selectBackgroundItem : MutableLiveData<Int> = MutableLiveData(-1)
     val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
 
+    val backGroundColor : MutableLiveData<Int> = MutableLiveData()
 
 
+   fun selectBackgroundColor(position: Int){
+       backGroundColor.value = Util.colorsList[position]
+   }
 
 
 

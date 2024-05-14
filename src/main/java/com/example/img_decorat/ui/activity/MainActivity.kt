@@ -67,9 +67,6 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
             insets
         }*/
 
-
-
-
         checkPermission()
         setToolbar()
         getScreenWith()
@@ -198,21 +195,17 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         viewModel.selectNavigationItem.observe(this){
             when(it){
                 0->{
-                    //binding.backgroundMenu.visibility = View.VISIBLE
-                    //binding.detailNavigaionView.visibility = View.VISIBLE
                     backGroundFragment = BackGroundFragment()
                     supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,backGroundFragment).commit()
                 }
             }
         }
 
-        viewModel.selectbackgroundMenu.observe(this){
-            when(it){
-                0->{
-
-                }
-            }
+        viewModel.backGroundColor.observe(this){
+            binding.imgView.setBackgroundColor(it)
         }
+
+
 
         viewModel.selectBackgroundScale.observe(this){
             binding.imgView.layoutParams = it

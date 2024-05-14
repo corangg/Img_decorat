@@ -19,7 +19,6 @@ class BackGroundFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
     private lateinit var binding : FragmentBackGroundBinding
 
-    lateinit var selectScaleItem : LinearLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,45 +28,22 @@ class BackGroundFragment : Fragment() {
         (binding as ViewDataBinding).lifecycleOwner = this
         binding.viewmodel = viewModel
 
-        selectScaleItem = binding.backgroundScale
-
         setObserve()
         return binding.root
     }
 
     private fun setObserve(){
-        viewModel.selectBackgroundItem.observe(viewLifecycleOwner){
-            selectScaleItem.setBackgroundColor(0x00FF0000)
+
+        viewModel.selectbackgroundMenu.observe(viewLifecycleOwner){
             when(it){
                 0->{
-                    binding.scale11.setBackgroundResource(R.drawable.bg_selectitem)
-                    selectScaleItem = binding.scale11
+                    parentFragmentManager.beginTransaction().replace(binding.backgroundItemView.id,BackGroundScaleFragment()).commit()
                 }
                 1->{
-                    binding.scale43.setBackgroundResource(R.drawable.bg_selectitem)
-                    selectScaleItem = binding.scale43
-                }
-                2->{
-                    binding.scale34.setBackgroundResource(R.drawable.bg_selectitem)
-                    selectScaleItem = binding.scale34
-                }
-                3->{
-                    binding.scale32.setBackgroundResource(R.drawable.bg_selectitem)
-                    selectScaleItem = binding.scale32
-                }
-                4->{
-                    binding.scale23.setBackgroundResource(R.drawable.bg_selectitem)
-                    selectScaleItem = binding.scale23
-                }
-                5->{
-                    binding.scale169.setBackgroundResource(R.drawable.bg_selectitem)
-                    selectScaleItem = binding.scale169
-                }
-                6->{
-                    binding.scale916.setBackgroundResource(R.drawable.bg_selectitem)
-                    selectScaleItem = binding.scale916
+                    parentFragmentManager.beginTransaction().replace(binding.backgroundItemView.id,BackGroundColorFragment()).commit()
                 }
             }
         }
+
     }
 }
