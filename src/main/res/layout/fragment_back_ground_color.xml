@@ -13,17 +13,13 @@
         android:layout_height="match_parent"
         android:id="@+id/color_view"
         android:orientation="horizontal"
-        tools:context=".ui.fragment.BackGroundColorFragment">
-        <HorizontalScrollView
+        tools:context=".ui.fragment.BackGroundColorFragment"
+        android:padding="10dp"
+        android:layout_marginLeft="20dp">
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_marginLeft="20dp">
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/color_recyclerview"
-                android:scrollbars="horizontal"/>
-        </HorizontalScrollView>
+            android:id="@+id/color_recyclerview"
+            android:scrollbars="horizontal"/>
     </LinearLayout>
 </layout>

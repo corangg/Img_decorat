@@ -1,7 +1,7 @@
-package com.example.img_decorat
+package com.example.img_decorat.dataModels
 
 import android.graphics.Bitmap
-import android.net.Uri
+import com.example.img_decorat.ZoomableImageView
 
 data class ImgLayerData(
     val bitMap : Bitmap,
@@ -14,3 +14,5 @@ data class ImageViewData(
     val img : ZoomableImageView,
     var visible : Boolean = true,
 )
+
+

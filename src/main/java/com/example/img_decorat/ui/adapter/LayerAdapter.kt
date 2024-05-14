@@ -3,11 +3,9 @@ package com.example.img_decorat.ui.adapter
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.img_decorat.ImgLayerData
-import com.example.img_decorat.R
+import com.example.img_decorat.dataModels.ImgLayerData
 import com.example.img_decorat.databinding.ItemLayerBinding
 import java.util.Collections
 import java.util.LinkedList

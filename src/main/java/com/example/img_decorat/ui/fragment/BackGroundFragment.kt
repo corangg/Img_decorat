@@ -42,6 +42,10 @@ class BackGroundFragment : Fragment() {
                 1->{
                     parentFragmentManager.beginTransaction().replace(binding.backgroundItemView.id,BackGroundColorFragment()).commit()
                 }
+                2->{
+                    parentFragmentManager.beginTransaction().replace(binding.backgroundItemView.id,BackGroundImageFragment()).commit()
+                }
+
             }
         }
 

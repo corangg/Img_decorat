@@ -11,18 +11,26 @@ import android.os.Build
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
-import androidx.constraintlayout.widget.Constraints.LayoutParams
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.example.img_decorat.ImageViewData
-import com.example.img_decorat.ImgLayerData
+import androidx.lifecycle.viewModelScope
+import com.example.img_decorat.dataModels.ImageViewData
+import com.example.img_decorat.dataModels.ImgLayerData
 import com.example.img_decorat.R
+import com.example.img_decorat.RetrofitApi
+import com.example.img_decorat.UnsplashApiService
 import com.example.img_decorat.Util
 import com.example.img_decorat.ZoomableImageView
+import com.example.img_decorat.dataModels.UnsplashData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.util.Collections
 import java.util.LinkedList
 import javax.inject.Inject
@@ -79,6 +87,7 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
             }
             R.id.image_item->{
                 selectbackgroundMenu.value = 2
+                //testRE()
                 return true
             }
 
@@ -285,4 +294,26 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
 
     }
 
+    val imgSearch : MutableLiveData<String> = MutableLiveData()
+
+    val unsplashList: MutableLiveData<MutableList<UnsplashData>> = MutableLiveData()
+    val selectBackGroundImage : MutableLiveData<String> = MutableLiveData()
+
+    fun clickedImageSearch(){
+        viewModelScope.launch {
+            val keword = imgSearch.value
+            RetrofitApi.getRandomPhotos(keword)?.let {
+                unsplashList.value = it.toMutableList()
+            }
+        }
+    }
+
+    fun selectImage(position: Int){
+        val list = unsplashList.value
+        if(list != null){
+            if(list.size >=position){
+                selectBackGroundImage.value = list[position].urls.full
+            }
+        }
+    }
 }

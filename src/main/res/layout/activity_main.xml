@@ -86,7 +86,7 @@
                 android:layout_below="@+id/main_toolbar"
                 android:layout_above="@id/detail_navigaionView"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="60dp">
+                android:layout_marginTop="40dp">
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -94,7 +94,6 @@
                     android:id="@+id/img_view"
                     android:background="#2D2D2D" />
             </FrameLayout>
-
 
             <FrameLayout
                 android:layout_width="match_parent"

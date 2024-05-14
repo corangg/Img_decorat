@@ -1,41 +1,39 @@
 package com.example.img_decorat.ui.activity
 
 import android.Manifest
-import android.R
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.FrameLayout
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
-import android.widget.RelativeLayout
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.setPadding
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.img_decorat.ImgLayerData
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.example.img_decorat.dataModels.ImgLayerData
 import com.example.img_decorat.RequestCode
 import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
 import com.example.img_decorat.ui.fragment.BackGroundFragment
 import com.example.img_decorat.viewmodel.MainViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.LinkedList
 
 
@@ -209,6 +207,21 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
         viewModel.selectBackgroundScale.observe(this){
             binding.imgView.layoutParams = it
+        }
+
+        viewModel.selectBackGroundImage.observe(this){
+            if(it != null){
+                Glide.with(binding.root).load(it).into(object : CustomTarget<Drawable>() {
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        binding.imgView.background = resource
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+
+                    }
+                })
+
+            }
         }
     }
 
