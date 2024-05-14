@@ -35,7 +35,8 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     val openGalleryEvent : MutableLiveData<Unit> = MutableLiveData()
     val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
 
-    val selectNavigationItem : MutableLiveData<Int> = MutableLiveData(-1)
+    val selectNavigationItem : MutableLiveData<Int> = MutableLiveData(0)
+    val selectbackgroundMenu: MutableLiveData<Int> = MutableLiveData(0)
 
 
     var layerList = LinkedList<ImgLayerData>()
@@ -65,6 +66,18 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
             }
             R.id.navigation_text->{
                 selectNavigationItem.value = 4
+                return true
+            }
+            R.id.scale_item->{
+                selectbackgroundMenu.value = 0
+                return true
+            }
+            R.id.paint_item->{
+                selectbackgroundMenu.value = 1
+                return true
+            }
+            R.id.image_item->{
+                selectbackgroundMenu.value = 2
                 return true
             }
 
@@ -218,8 +231,15 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
         liveImageViewList.value = imageViewList
     }
 
+
+
+
     val selectBackgroundItem : MutableLiveData<Int> = MutableLiveData(-1)
     val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
+
+
+
+
 
 
     fun selectBackgroundScale(item:Int){

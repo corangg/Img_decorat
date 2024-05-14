@@ -198,8 +198,17 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         viewModel.selectNavigationItem.observe(this){
             when(it){
                 0->{
+                    //binding.backgroundMenu.visibility = View.VISIBLE
+                    //binding.detailNavigaionView.visibility = View.VISIBLE
                     backGroundFragment = BackGroundFragment()
                     supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,backGroundFragment).commit()
+                }
+            }
+        }
+
+        viewModel.selectbackgroundMenu.observe(this){
+            when(it){
+                0->{
 
                 }
             }
