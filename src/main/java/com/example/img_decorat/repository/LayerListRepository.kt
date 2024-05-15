@@ -26,10 +26,7 @@ class LayerListRepository @Inject constructor(
     private val imageDataRepository: ImageDataRepository) {
 
     var layerList = LinkedList<ImgLayerData>()
-    //val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
-
     var imageViewList = LinkedList<ImageViewData>()
-    //val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
 
     fun uriToBitmap(context: Context, imageUri: Uri): Bitmap? {
         context.contentResolver.openInputStream(imageUri).use { inputStream ->
@@ -144,7 +141,6 @@ class LayerListRepository @Inject constructor(
         }
         return layerList
     }
-
 
     fun swapImageView(fromPos: Int, toPos: Int):LinkedList<ImageViewData>{
         Collections.swap(imageViewList,fromPos,toPos)

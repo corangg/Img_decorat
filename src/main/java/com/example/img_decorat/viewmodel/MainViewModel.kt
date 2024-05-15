@@ -22,6 +22,7 @@ import com.example.img_decorat.repository.RetrofitApi
 import com.example.img_decorat.utils.Util
 import com.example.img_decorat.ui.view.EditableImageView
 import com.example.img_decorat.dataModels.UnsplashData
+import com.example.img_decorat.repository.BackgroundRepository
 import com.example.img_decorat.repository.ImageDataRepository
 import com.example.img_decorat.repository.LayerListRepository
 import com.example.img_decorat.utils.ColorList
@@ -34,25 +35,28 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     application: Application,
-    private val imageDataRepository: ImageDataRepository,
-    private val layerListRepository: LayerListRepository) : AndroidViewModel(application){
+    private val layerListRepository: LayerListRepository,
+    private val backgroundRepository: BackgroundRepository) : AndroidViewModel(application){
     var screenWith : Int = 0
 
     val imgTitle : MutableLiveData<String> = MutableLiveData("New_Image")
-    val openGalleryEvent : MutableLiveData<Unit> = MutableLiveData()
-    val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
+    val imgSearch : MutableLiveData<String> = MutableLiveData()
+    val selectBackGroundImage : MutableLiveData<String> = MutableLiveData()
 
     val selectNavigationItem : MutableLiveData<Int> = MutableLiveData(0)
     val selectbackgroundMenu: MutableLiveData<Int> = MutableLiveData(0)
-
-
-    //var layerList = LinkedList<ImgLayerData>()
-    val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
-
-    //var imageViewList = LinkedList<ImageViewData>()
-    val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
-
     val lastTouchedImageId : MutableLiveData<Int> = MutableLiveData(-1)
+    val selectBackgroundItem : MutableLiveData<Int> = MutableLiveData(-1)
+    val backGroundColor : MutableLiveData<Int> = MutableLiveData()
+
+    val openGalleryEvent : MutableLiveData<Unit> = MutableLiveData()
+    val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
+
+    val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
+    val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
+    val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
+    val unsplashList: MutableLiveData<MutableList<UnsplashData>> = MutableLiveData()
+
 
 
     fun bottomNavigationItemSelected(item : MenuItem):Boolean{
@@ -149,70 +153,19 @@ class MainViewModel @Inject constructor(
         lastTouchedImageId.value = id
     }
 
-
-
-
     fun swapImageView(fromPos: Int, toPos: Int){
         liveImageViewList.value = layerListRepository.swapImageView(fromPos,toPos)
     }
 
-
-
-
-    val selectBackgroundItem : MutableLiveData<Int> = MutableLiveData(-1)
-    val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
-
-    val backGroundColor : MutableLiveData<Int> = MutableLiveData()
-
-
-   fun selectBackgroundColor(position: Int){
-       backGroundColor.value = ColorList.colorsList[position]
-   }
-
-
-
-    fun selectBackgroundScale(item:Int){
-
-
-        var layoutParams = FrameLayout.LayoutParams(0,0)
-        when(item){
-            0->{
-                layoutParams  = FrameLayout.LayoutParams(screenWith, screenWith)
-            }
-            1->{
-                val heightPx = screenWith * 0.75
-                layoutParams = FrameLayout.LayoutParams(screenWith, heightPx.toInt())
-            }
-            2->{
-                val withPx = screenWith * 0.75
-                layoutParams = FrameLayout.LayoutParams(withPx.toInt(),screenWith)
-            }
-            3->{
-                val heightPx = screenWith * 0.66
-                layoutParams = FrameLayout.LayoutParams(screenWith, heightPx.toInt())
-            }
-            4->{
-                val withPx = screenWith * 0.66
-                layoutParams = FrameLayout.LayoutParams(withPx.toInt(),screenWith)
-            }
-            5->{
-                val heightPx = screenWith * 0.5625
-                layoutParams = FrameLayout.LayoutParams(screenWith, heightPx.toInt())
-            }
-            6->{
-                val withPx = screenWith * 0.5625
-                layoutParams = FrameLayout.LayoutParams(withPx.toInt(),screenWith)
-            }
-        }
-        selectBackgroundItem.value = item
-        selectBackgroundScale.value = layoutParams
-
+    fun selectBackgroundColor(position: Int){
+        backGroundColor.value = ColorList.colorsList[position]
     }
 
-    val imgSearch : MutableLiveData<String> = MutableLiveData()
+    fun selectBackgroundScale(item:Int){
+        selectBackgroundItem.value = item
+        selectBackgroundScale.value = backgroundRepository.setBackgroundScale(item, screenWith)
 
-    val unsplashList: MutableLiveData<MutableList<UnsplashData>> = MutableLiveData()
-    val selectBackGroundImage : MutableLiveData<String> = MutableLiveData()
+    }
 
     fun clickedImageSearch(){
         viewModelScope.launch {

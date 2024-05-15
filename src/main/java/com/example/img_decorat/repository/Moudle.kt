@@ -28,6 +28,12 @@ object Moudle {
         return LayerListRepository(context, imageDataRepository)
     }
 
+    @Singleton
+    @Provides
+    fun provideBackgroundRepository(): BackgroundRepository {
+        return BackgroundRepository()
+    }
+
 
 
 }
