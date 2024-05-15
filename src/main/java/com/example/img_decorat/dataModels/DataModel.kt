@@ -1,7 +1,7 @@
 package com.example.img_decorat.dataModels
 
 import android.graphics.Bitmap
-import com.example.img_decorat.ZoomableImageView
+import com.example.img_decorat.ui.view.EditableImageView
 
 data class ImgLayerData(
     val bitMap : Bitmap,
@@ -11,7 +11,7 @@ data class ImgLayerData(
 )
 
 data class ImageViewData(
-    val img : ZoomableImageView,
+    val img : EditableImageView,
     var visible : Boolean = true,
 )
 

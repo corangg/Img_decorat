@@ -2,20 +2,14 @@ package com.example.img_decorat.ui.activity
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -31,17 +25,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.example.img_decorat.R
 import com.example.img_decorat.dataModels.ImgLayerData
-import com.example.img_decorat.RequestCode
+import com.example.img_decorat.utils.RequestCode
 import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
 import com.example.img_decorat.ui.fragment.BackGroundFragment
 import com.example.img_decorat.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.LinkedList
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAdapter.OnLayerItemClickListener {
     private lateinit var binding : ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
@@ -63,12 +58,6 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         binding = DataBindingUtil.setContentView(this, com.example.img_decorat.R.layout.activity_main)
         (binding as ViewDataBinding).lifecycleOwner = this
         binding.viewmodel = viewModel
-        /*enableEdgeToEdge()//이거 있으면 바텀네비게이션 강제 패딩 들어감
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(com.example.img_decorat.R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }*/
 
         checkPermission()
         setToolbar()

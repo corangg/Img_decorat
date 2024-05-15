@@ -1,6 +1,5 @@
 package com.example.img_decorat.ui.fragment
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,10 +10,10 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.img_decorat.R
-import com.example.img_decorat.Util
+import com.example.img_decorat.utils.Util
 import com.example.img_decorat.databinding.FragmentBackGroundColorBinding
-import com.example.img_decorat.databinding.FragmentBackGroundScaleBinding
 import com.example.img_decorat.ui.adapter.ColorAdapter
+import com.example.img_decorat.utils.ColorList
 import com.example.img_decorat.viewmodel.MainViewModel
 
 class BackGroundColorFragment : Fragment(),ColorAdapter.OnColorItemClickListener {
@@ -42,7 +41,7 @@ class BackGroundColorFragment : Fragment(),ColorAdapter.OnColorItemClickListener
     private fun adapterSet(){
 
         binding.colorRecyclerview.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-        colorAdapter = ColorAdapter(Util.colorsList, this)
+        colorAdapter = ColorAdapter(ColorList.colorsList, this)
         binding.colorRecyclerview.adapter = colorAdapter
     }
     private fun setObserve(){

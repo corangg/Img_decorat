@@ -7,19 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.img_decorat.R
-import com.example.img_decorat.Util
 import com.example.img_decorat.dataModels.UnsplashData
-import com.example.img_decorat.databinding.FragmentBackGroundColorBinding
 import com.example.img_decorat.databinding.FragmentBackGroundImageBinding
-import com.example.img_decorat.ui.activity.MainActivity
-import com.example.img_decorat.ui.adapter.ColorAdapter
 import com.example.img_decorat.ui.adapter.ImageAdapter
 import com.example.img_decorat.viewmodel.MainViewModel
 

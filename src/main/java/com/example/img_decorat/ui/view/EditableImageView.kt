@@ -1,4 +1,4 @@
-package com.example.img_decorat
+package com.example.img_decorat.ui.view
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,20 +6,14 @@ import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.RectF
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
-import com.bumptech.glide.Glide.init
 import com.example.img_decorat.viewmodel.MainViewModel
-import kotlin.math.max
-import kotlin.math.min
-class ZoomableImageView @JvmOverloads constructor(
+
+class EditableImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener {
 

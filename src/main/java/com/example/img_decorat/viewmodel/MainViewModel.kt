@@ -18,26 +18,22 @@ import androidx.lifecycle.viewModelScope
 import com.example.img_decorat.dataModels.ImageViewData
 import com.example.img_decorat.dataModels.ImgLayerData
 import com.example.img_decorat.R
-import com.example.img_decorat.RetrofitApi
-import com.example.img_decorat.UnsplashApiService
-import com.example.img_decorat.Util
-import com.example.img_decorat.ZoomableImageView
+import com.example.img_decorat.repository.RetrofitApi
+import com.example.img_decorat.utils.Util
+import com.example.img_decorat.ui.view.EditableImageView
 import com.example.img_decorat.dataModels.UnsplashData
+import com.example.img_decorat.repository.ImageDataRepository
+import com.example.img_decorat.utils.ColorList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.util.Collections
 import java.util.LinkedList
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(application: Application) : AndroidViewModel(application){
-    val selectImg : MutableLiveData<Unit> = MutableLiveData()
+class MainViewModel @Inject constructor(
+    application: Application,
+    private val imageDataRepository: ImageDataRepository) : AndroidViewModel(application){
     var screenWith : Int = 0
 
     val imgTitle : MutableLiveData<String> = MutableLiveData("New_Image")
@@ -54,7 +50,6 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     val imageViewList = LinkedList<ImageViewData>()
     val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
 
-    val lastTouchImageView : MutableLiveData<ZoomableImageView?> = MutableLiveData(null)
     val lastTouchedImageId : MutableLiveData<Int> = MutableLiveData(-1)
 
 
@@ -82,8 +77,6 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
             }
             R.id.scale_item->{
                 selectbackgroundMenu.value = 0
-                lastTouchImageView.value
-                lastTouchedImageId.value
                 return true
             }
             R.id.paint_item->{
@@ -92,10 +85,8 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
             }
             R.id.image_item->{
                 selectbackgroundMenu.value = 2
-                //testRE()
                 return true
             }
-
         }
         return false
     }
@@ -116,7 +107,7 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
         openMenuEvent.value = false
     }
 
-    fun setID() : Int{
+    /*fun setID() : Int{
         val id =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 View.generateViewId()
@@ -124,14 +115,14 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
                 ViewCompat.generateViewId()
             }
         return id
-    }
+    }*/
 
     fun setImgLayerList(data: Intent?){
         data?.clipData?.let{ clipData ->
             for (i in 0 until clipData.itemCount) {
                 val imageUri: Uri = clipData.getItemAt(i).uri
                 val bitmap = uriToBitmap(getApplication<Application>().applicationContext,imageUri)
-                val id = setID()
+                val id = imageDataRepository.setID()
                 if(bitmap != null){
                     val layerData = ImgLayerData(bitmap,false,id)
                     layerList.add(layerData)
@@ -140,7 +131,7 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
             }
         } ?: data?.data?.let { uri ->
             val bitmap = uriToBitmap(getApplication<Application>().applicationContext,uri)
-            val id = setID()
+            val id = imageDataRepository.setID()
             if(bitmap != null){
                 val layerData = ImgLayerData(bitmap,false,id)
                 layerList.add(layerData)
@@ -177,7 +168,7 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
 
     fun addLayer(){
         val bitmap = createTransparentBitmap(1024,1024)//크기 임시임
-        val id = setID()
+        val id = imageDataRepository.setID()
         val layerData = ImgLayerData(bitmap,false,id)
         layerList.add(layerData)
         liveLayerList.value = layerList
@@ -245,7 +236,7 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
     }
 
     fun addImageView(addId : Int, bitmap: Bitmap){
-        val imageView = ZoomableImageView(getApplication<Application>().applicationContext).apply {
+        val imageView = EditableImageView(getApplication<Application>().applicationContext).apply {
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT
@@ -271,7 +262,7 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
 
 
    fun selectBackgroundColor(position: Int){
-       backGroundColor.value = Util.colorsList[position]
+       backGroundColor.value = ColorList.colorsList[position]
    }
 
 
