@@ -47,12 +47,10 @@ class MainViewModel @Inject constructor(
 
 
     var layerList = LinkedList<ImgLayerData>()
-    //val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
-    val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = layerListRepository.liveLayerList
+    val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
 
     var imageViewList = LinkedList<ImageViewData>()
-    //val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
-    val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = layerListRepository.liveImageViewList
+    val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
 
     val lastTouchedImageId : MutableLiveData<Int> = MutableLiveData(-1)
 
@@ -122,7 +120,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun setImgLayerList(data: Intent?){
-       /* data?.clipData?.let{ clipData ->
+        data?.clipData?.let{ clipData ->
             for (i in 0 until clipData.itemCount) {
                 val imageUri: Uri = clipData.getItemAt(i).uri
                 val bitmap = uriToBitmap(getApplication<Application>().applicationContext,imageUri)
@@ -141,17 +139,12 @@ class MainViewModel @Inject constructor(
                 layerList.add(layerData)
                 addImageView(id,bitmap)
             }
-        }*/
-        layerListRepository.setImgLayerList(data)
-
-        liveLayerList.value
-        liveImageViewList.value
-        true
+        }
 
         /* val pairList = layerListRepository.setImgLayerList(layerList,imageViewList,data)
         layerList = pairList.first
         imageViewList = pairList.second*/
-        //liveLayerList.value = layerList
+        liveLayerList.value = layerList
     }
 
     fun addImageView(addId : Int, bitmap: Bitmap){

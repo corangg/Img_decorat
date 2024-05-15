@@ -11,16 +11,23 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object Moudle {
+
+    @Provides
+    @Singleton
+    fun provideContext(@ApplicationContext context: Context): Context = context
+
     @Singleton
     @Provides
     fun provideImageDataRepository(): ImageDataRepository {
         return ImageDataRepository()
     }
 
-    @Singleton
     @Provides
-    fun provideLayerListRepository(@ApplicationContext context: Context): LayerListRepository {
-        return LayerListRepository(context,ImageDataRepository())
+    @Singleton
+    fun provideLayerListRepository(context: Context, imageDataRepository: ImageDataRepository): LayerListRepository {
+        return LayerListRepository(context, imageDataRepository)
     }
+
+
 
 }
