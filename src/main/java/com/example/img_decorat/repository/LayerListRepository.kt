@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.widget.FrameLayout
+import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
 import com.example.img_decorat.dataModels.ImageViewData
 import com.example.img_decorat.dataModels.ImgLayerData
@@ -15,6 +16,9 @@ import com.example.img_decorat.dataModels.ListData
 import com.example.img_decorat.ui.view.EditableImageView
 import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.util.Collections
 import java.util.LinkedList
 import javax.inject.Inject
@@ -33,6 +37,21 @@ class LayerListRepository @Inject constructor(
             return BitmapFactory.decodeStream(inputStream)
         }
     }
+
+    fun Context.bitmapToUri(bitmap: Bitmap): Uri? {
+        val file = File(cacheDir, "${System.currentTimeMillis()}.png")
+        return try {
+            val outputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            outputStream.flush()
+            outputStream.close()
+            FileProvider.getUriForFile(this, "${packageName}.provider", file)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     fun setImgLayerList(data: Intent?):LinkedList<ImgLayerData>{
         data?.clipData?.let{ clipData ->
             for (i in 0 until clipData.itemCount) {
@@ -145,5 +164,10 @@ class LayerListRepository @Inject constructor(
     fun swapImageView(fromPos: Int, toPos: Int):LinkedList<ImageViewData>{
         Collections.swap(imageViewList,fromPos,toPos)
         return imageViewList
+    }
+
+    fun setLastTouchedImage(id: Int): Uri{
+        val image = layerList.find { it.id == id }
+        return context.bitmapToUri(image!!.bitMap)!!//image!!.bitMap//null가능성 없는거 같긴한데...
     }
 }

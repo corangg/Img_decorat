@@ -57,6 +57,8 @@ class MainViewModel @Inject constructor(
     val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
     val unsplashList: MutableLiveData<MutableList<UnsplashData>> = MutableLiveData()
 
+    lateinit var lastTouchedImage : Uri
+
 
 
     fun bottomNavigationItemSelected(item : MenuItem):Boolean{
@@ -66,7 +68,11 @@ class MainViewModel @Inject constructor(
                 return true
             }
             R.id.navigation_split->{
-                selectNavigationItem.value = 1
+                val lastTouchedId = lastTouchedImageId.value
+                if(lastTouchedId != -1 && lastTouchedId != null){
+                    lastTouchedImage = layerListRepository.setLastTouchedImage(lastTouchedId)
+                    selectNavigationItem.value = 1
+                }
                 return true
             }
             R.id.navigation_hue->{

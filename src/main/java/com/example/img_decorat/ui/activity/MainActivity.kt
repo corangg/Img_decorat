@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -45,6 +46,11 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
     lateinit var layerAdapter: LayerAdapter
 
     lateinit var backGroundFragment: BackGroundFragment
+    var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if(it.resultCode == Activity.RESULT_OK){
+            true
+        }
+    }
 
     val requestGalleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if(it.resultCode == Activity.RESULT_OK && it.data != null){
@@ -66,6 +72,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         itemTouchHelper()
         setObserve()
     }
+
 
     private fun checkPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -189,6 +196,14 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
                 0->{
                     backGroundFragment = BackGroundFragment()
                     supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,backGroundFragment).commit()
+                }
+                1->{
+
+                    val image = viewModel.lastTouchedImage
+                    val intent = Intent(this, ImageSplitActivity::class.java)
+                    intent.putExtra("image",image)
+                    //startActivity(intent)
+                    startForResult.launch(intent)
                 }
             }
         }
