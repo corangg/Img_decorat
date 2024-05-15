@@ -2,6 +2,7 @@ package com.example.img_decorat.dataModels
 
 import android.graphics.Bitmap
 import com.example.img_decorat.ui.view.EditableImageView
+import java.util.LinkedList
 
 data class ImgLayerData(
     val bitMap : Bitmap,
@@ -16,3 +17,8 @@ data class ImageViewData(
 )
 
 
+data class ListData(
+    val layerList : LinkedList<ImgLayerData>,
+    val viewList : LinkedList<ImgLayerData>,
+
+)

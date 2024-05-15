@@ -23,6 +23,7 @@ import com.example.img_decorat.utils.Util
 import com.example.img_decorat.ui.view.EditableImageView
 import com.example.img_decorat.dataModels.UnsplashData
 import com.example.img_decorat.repository.ImageDataRepository
+import com.example.img_decorat.repository.LayerListRepository
 import com.example.img_decorat.utils.ColorList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -33,7 +34,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     application: Application,
-    private val imageDataRepository: ImageDataRepository) : AndroidViewModel(application){
+    private val imageDataRepository: ImageDataRepository,
+    private val layerListRepository: LayerListRepository) : AndroidViewModel(application){
     var screenWith : Int = 0
 
     val imgTitle : MutableLiveData<String> = MutableLiveData("New_Image")
@@ -45,10 +47,12 @@ class MainViewModel @Inject constructor(
 
 
     var layerList = LinkedList<ImgLayerData>()
-    val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
+    //val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
+    val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = layerListRepository.liveLayerList
 
-    val imageViewList = LinkedList<ImageViewData>()
-    val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
+    var imageViewList = LinkedList<ImageViewData>()
+    //val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
+    val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = layerListRepository.liveImageViewList
 
     val lastTouchedImageId : MutableLiveData<Int> = MutableLiveData(-1)
 
@@ -107,18 +111,18 @@ class MainViewModel @Inject constructor(
         openMenuEvent.value = false
     }
 
-    /*fun setID() : Int{
-        val id =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                View.generateViewId()
-            } else {
-                ViewCompat.generateViewId()
-            }
-        return id
-    }*/
+
+
+
+
+    fun uriToBitmap(context: Context, imageUri: Uri): Bitmap? {
+        context.contentResolver.openInputStream(imageUri).use { inputStream ->
+            return BitmapFactory.decodeStream(inputStream)
+        }
+    }
 
     fun setImgLayerList(data: Intent?){
-        data?.clipData?.let{ clipData ->
+       /* data?.clipData?.let{ clipData ->
             for (i in 0 until clipData.itemCount) {
                 val imageUri: Uri = clipData.getItemAt(i).uri
                 val bitmap = uriToBitmap(getApplication<Application>().applicationContext,imageUri)
@@ -137,9 +141,35 @@ class MainViewModel @Inject constructor(
                 layerList.add(layerData)
                 addImageView(id,bitmap)
             }
-        }
-        liveLayerList.value = layerList
+        }*/
+        layerListRepository.setImgLayerList(data)
+
+        liveLayerList.value
+        liveImageViewList.value
+        true
+
+        /* val pairList = layerListRepository.setImgLayerList(layerList,imageViewList,data)
+        layerList = pairList.first
+        imageViewList = pairList.second*/
+        //liveLayerList.value = layerList
     }
+
+    fun addImageView(addId : Int, bitmap: Bitmap){
+        val imageView = EditableImageView(getApplication<Application>().applicationContext).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            )
+            id = addId
+            setImageBitmap(bitmap)
+        }
+        imageViewList.add(ImageViewData(imageView,false))
+    }
+
+
+
+
+
 
     fun updateChecked(position: Int, checked: Boolean){
         if(layerList.size > position){
@@ -176,11 +206,7 @@ class MainViewModel @Inject constructor(
     }
 
 
-    fun uriToBitmap(context: Context, imageUri: Uri): Bitmap? {
-        context.contentResolver.openInputStream(imageUri).use { inputStream ->
-            return BitmapFactory.decodeStream(inputStream)
-        }
-    }
+
 
     fun createTransparentBitmap(width: Int, height: Int): Bitmap {
         return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).apply {
@@ -235,17 +261,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun addImageView(addId : Int, bitmap: Bitmap){
-        val imageView = EditableImageView(getApplication<Application>().applicationContext).apply {
-            layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-            )
-            id = addId
-            setImageBitmap(bitmap)
-        }
-        imageViewList.add(ImageViewData(imageView,false))
-    }
+
 
     fun swapImageView(fromPos: Int, toPos: Int){
         Collections.swap(imageViewList,fromPos,toPos)

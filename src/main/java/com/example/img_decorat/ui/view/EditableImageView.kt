@@ -82,6 +82,7 @@ class EditableImageView @JvmOverloads constructor(
         return true
     }
 
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawBorder(canvas)
