@@ -12,9 +12,15 @@ class Util {
             Color.BLACK,
             Color.WHITE,
             Color.TRANSPARENT,
-            Color.LTGRAY,
-            Color.GRAY,
-            Color.DKGRAY,
+            0xFFDCDCDC.toInt(),
+            0xFFD3D3D3.toInt(),
+            0xFFC0C0C0.toInt(),
+            0xFFA9A9A9.toInt(),
+            0xFF778899.toInt(),
+            0xFF708090.toInt(),
+            0xFF808080.toInt(),
+            0xFF696969.toInt(),
+            0xFF2F4F4F.toInt(),
             0xFFFFE4C4.toInt(),//비스크
             0xFFF5DEB3.toInt(),//휘트
             0xFFFFDAB9.toInt(),//피치퍼프
@@ -42,15 +48,106 @@ class Util {
             0xFFFF4500.toInt(),//오렌지레드
             0xFFFFA500.toInt(),//오렌지
             0xFFFF8C00.toInt(),//다크 오렌지
-            0xFFFFD700.toInt(),//골드
-            0xFFDAA520.toInt(),//콜덴로드
             0xFFB8860B.toInt(),//다크골덴로드
+            0xFFDAA520.toInt(),//콜덴로드
+            0xFFFFD700.toInt(),//골드
             Color.YELLOW,
-            Color.GREEN,
-            Color.CYAN,
-            Color.BLUE,
-            Color.MAGENTA,
-            )
+            0xFFFAFAD2.toInt(),//라이트골덴옐로우
+            0xFFEEE8AA.toInt(),//페일골덴로드
+            0xFFF0E68C.toInt(),//카키
+            0xFFBDB76B.toInt(),//다크카키
+            0xFF7CFC00.toInt(),//론그린
+            0xFFADFF2F.toInt(),//그린옐로우
+            0xFF7FFF00.toInt(),//샤르트뢰즈
+            Color.GREEN,//라임
+            0xFF32CD32.toInt(),//라임그린
+            0xFF9ACD32.toInt(),//옐로우그린
+            0xFF808000.toInt(),//올리브
+            0xFF6B8E23.toInt(),//올리브드랍
+            0xFF556B2F.toInt(),//다크올리브그린
+            0xFF228B22.toInt(),//포레스트그린
+            0xFF006400.toInt(),//다크그린
+            0xFF008000.toInt(),//그린
+            0xFF2E8B57.toInt(),//씨그린
+            0xFF3CB371.toInt(),//미디엄씨그린
+            0xFF8FBC8F.toInt(),//다크씨그린
+            0xFF90EE90.toInt(),//라이트그린
+            0xFF98FB98.toInt(),//페일그린
+            0xFF00FF7F.toInt(),//스프링그린
+            0xFF00FA9A.toInt(),//미디엄스프링그린
+            0xFF008080.toInt(),//틸
+            0xFF008B8B.toInt(),//
+            0xFF20B2AA.toInt(),//
+            0xFF66CDAA.toInt(),//
+            0xFF5F9EA0.toInt(),//
+            0xFF4682B4.toInt(),//
+            0xFF7FFFD4.toInt(),//
+            0xFFB0E0E6.toInt(),//
+            0xFFAFEEEE.toInt(),
+            0xFFADD8E6.toInt(),
+            0xFFB0C4DE.toInt(),
+            0xFF87CEEB.toInt(),
+            0xFF87CEFA.toInt(),
+            0xFF48D1CC.toInt(),
+            0xFF40E0D0.toInt(),
+            0xFF00CED1.toInt(),
+            0xFF00FFFF.toInt(),
+            0xFF00BFFF.toInt(),
+            0xFF1E90FF.toInt(),
+            0xFF6495ED.toInt(),
+            0xFF4169E1.toInt(),
+            0xFF0000FF.toInt(),
+            0xFF0000CD.toInt(),
+            0xFF000080.toInt(),
+            0xFF00008B.toInt(),
+            0xFF191970.toInt(),
+            0xFF483D8B.toInt(),
+            0xFF6A5ACD.toInt(),
+            0xFF7B68EE.toInt(),
+            0xFF9370DB.toInt(),
+            0xFF9932CC.toInt(),
+            0xFF9400D3.toInt(),
+            0xFF8A2BE2.toInt(),
+            0xFFBA55D3.toInt(),
+            0xFFDDA0DD.toInt(),
+            0xFFE6E6FA.toInt(),
+            0xFFD8BFD8.toInt(),
+            0xFFDA70D6.toInt(),
+            0xFFEE82EE.toInt(),
+            0xFF4B0082.toInt(),
+            0xFF8B008B.toInt(),
+            0xFF800080.toInt(),
+            0xFFC71585.toInt(),
+            0xFFFF1493.toInt(),
+            0xFFFF00FF.toInt(),
+            0xFFFF00FF.toInt(),
+            0xFFFF69B4.toInt(),
+            0xFFDB7093.toInt(),
+            0xFFFFB6C1.toInt(),
+            0xFFFFC0CB.toInt(),
+            0xFFFFE4E1.toInt(),
+            0xFFFFEBCD.toInt(),
+            0xFFFFFFE0.toInt(),
+            0xFFFFF8DC.toInt(),
+            0xFFFAEBD7.toInt(),
+            0xFFFFEFD5.toInt(),
+            0xFFFFFACD.toInt(),
+            0xFFF5F5DC.toInt(),
+            0xFFFAF0E6.toInt(),
+            0xFFFDF5E6.toInt(),
+            0xFFE0FFFF.toInt(),
+            0xFFF0F8FF.toInt(),
+            0xFFF5F5F5.toInt(),
+            0xFFFFF0F5.toInt(),
+            0xFFFFFAF0.toInt(),
+            0xFFF5FFFA.toInt(),
+            0xFFF8F8FF.toInt(),
+            0xFFF0FFF0.toInt(),
+            0xFFFFF5EE.toInt(),
+            0xFFFFFFF0.toInt(),
+            0xFFF0FFFF.toInt(),
+            0xFFFFFAFA.toInt(),
+            )//[출처] RGB 색상 16진수 코드 표 :: RGB COLOR CODE CHART|작성자 백발마녀
     }
 
     object RetrofitClient {
@@ -63,3 +160,5 @@ class Util {
 
 
 }
+
+
