@@ -46,10 +46,10 @@ class MainViewModel @Inject constructor(
     val selectbackgroundMenu: MutableLiveData<Int> = MutableLiveData(0)
 
 
-    var layerList = LinkedList<ImgLayerData>()
+    //var layerList = LinkedList<ImgLayerData>()
     val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
 
-    var imageViewList = LinkedList<ImageViewData>()
+    //var imageViewList = LinkedList<ImageViewData>()
     val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
 
     val lastTouchedImageId : MutableLiveData<Int> = MutableLiveData(-1)
@@ -109,156 +109,51 @@ class MainViewModel @Inject constructor(
         openMenuEvent.value = false
     }
 
-
-
-
-
-    fun uriToBitmap(context: Context, imageUri: Uri): Bitmap? {
-        context.contentResolver.openInputStream(imageUri).use { inputStream ->
-            return BitmapFactory.decodeStream(inputStream)
-        }
-    }
-
     fun setImgLayerList(data: Intent?){
-        data?.clipData?.let{ clipData ->
-            for (i in 0 until clipData.itemCount) {
-                val imageUri: Uri = clipData.getItemAt(i).uri
-                val bitmap = uriToBitmap(getApplication<Application>().applicationContext,imageUri)
-                val id = imageDataRepository.setID()
-                if(bitmap != null){
-                    val layerData = ImgLayerData(bitmap,false,id)
-                    layerList.add(layerData)
-                    addImageView(id,bitmap)
-                }
-            }
-        } ?: data?.data?.let { uri ->
-            val bitmap = uriToBitmap(getApplication<Application>().applicationContext,uri)
-            val id = imageDataRepository.setID()
-            if(bitmap != null){
-                val layerData = ImgLayerData(bitmap,false,id)
-                layerList.add(layerData)
-                addImageView(id,bitmap)
-            }
-        }
-
-        /* val pairList = layerListRepository.setImgLayerList(layerList,imageViewList,data)
-        layerList = pairList.first
-        imageViewList = pairList.second*/
-        liveLayerList.value = layerList
+        liveLayerList.value = layerListRepository.setImgLayerList(data)
     }
-
-    fun addImageView(addId : Int, bitmap: Bitmap){
-        val imageView = EditableImageView(getApplication<Application>().applicationContext).apply {
-            layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-            )
-            id = addId
-            setImageBitmap(bitmap)
-        }
-        imageViewList.add(ImageViewData(imageView,false))
-    }
-
-
-
-
-
 
     fun updateChecked(position: Int, checked: Boolean){
-        if(layerList.size > position){
-            var layerData: ImgLayerData = layerList[position]
-            layerData.check = checked
-
-            layerList.set(position,layerData)
-
-            liveLayerList.value = layerList
-            if(checked){
-                checkedLayer(position)
-            }else{
-                unCheckedLayer(position)
-            }
+        if(liveLayerList.value!!.size > position){
+            liveLayerList.value = layerListRepository.updateLayerListChecked(position,checked)
+        }
+        if(liveImageViewList.value!!.size > position){
+            liveImageViewList.value = layerListRepository.updateImageViewListChecked(position,checked)
         }
     }
 
+
     fun deleteLayer(position: Int){
-        if(layerList.size > position){
-            layerList.removeAt(position)
-            liveLayerList.value = layerList
-            imageViewList.removeAt(position)
-            liveImageViewList.value = imageViewList
+        if(liveLayerList.value!!.size > position){
+            liveLayerList.value = layerListRepository.deleteLayerList(position)
+        }
+        if(liveImageViewList.value!!.size > position){
+            liveImageViewList.value = layerListRepository.deleteImageViewList(position)
         }
     }
 
     fun addLayer(){
-        val bitmap = createTransparentBitmap(1024,1024)//크기 임시임
-        val id = imageDataRepository.setID()
-        val layerData = ImgLayerData(bitmap,false,id)
-        layerList.add(layerData)
-        liveLayerList.value = layerList
-        addImageView(id,bitmap)
-    }
-
-
-
-
-    fun createTransparentBitmap(width: Int, height: Int): Bitmap {
-        return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).apply {
-            eraseColor(Color.TRANSPARENT)
-        }
+        liveLayerList.value = layerListRepository.addLayer()
     }
 
     fun selectLayer(position: Int){
-        if(layerList.size > position){
-            val selectedItem = layerList.find { it.select }
-
-            selectedItem?.let {
-                it.select = false }
-
-            layerList[position].select = true
+        if(liveLayerList.value!!.size > position){
+            val layerList = layerListRepository.selectLayer(position)
             liveLayerList.value = layerList
             lastTouchedImageId.value = layerList[position].id
         }
     }
 
     fun selectLastImage(id: Int){
-        val selectedItem = layerList.find { it.select }
-
-        selectedItem?.let {
-            it.select = false }
-
-        val findItem = layerList.find { it.id == id }
-        findItem?.let {
-            it.select = true
-        }
-        liveLayerList.value = layerList
+        liveLayerList.value = layerListRepository.selectLastImage(id)
         lastTouchedImageId.value = id
     }
 
-    fun checkedLayer(position: Int){
-        val checkedId = layerList[position].id
-        val targetItem = imageViewList.find{it.img.id == checkedId}
-
-        if(targetItem != null){
-            targetItem.visible = true
-            liveImageViewList.value = imageViewList
-        }
-    }
-
-    fun unCheckedLayer(position: Int){
-        val checkedId = layerList[position].id
-        val targetItem = imageViewList.find{it.img.id == checkedId}
-
-        if(targetItem != null){
-            targetItem.visible = false
-            liveImageViewList.value = imageViewList
-        }
-    }
 
 
 
     fun swapImageView(fromPos: Int, toPos: Int){
-        Collections.swap(imageViewList,fromPos,toPos)
-        liveImageViewList.value = imageViewList
+        liveImageViewList.value = layerListRepository.swapImageView(fromPos,toPos)
     }
 
 

@@ -62,7 +62,7 @@ class LayerAdapter(val layerList: LinkedList<ImgLayerData>, val onLayerItemClick
 
     }
 
-    fun moveItem(fromPosition: Int, toPosition: Int) {
+    fun moveItem(fromPosition: Int, toPosition: Int) {//여기는 괜찮나?
         Collections.swap(layerList, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
 

@@ -5,14 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.widget.FrameLayout
 import androidx.lifecycle.MutableLiveData
 import com.example.img_decorat.dataModels.ImageViewData
 import com.example.img_decorat.dataModels.ImgLayerData
+import com.example.img_decorat.dataModels.ListData
 import com.example.img_decorat.ui.view.EditableImageView
 import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.util.Collections
 import java.util.LinkedList
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,41 +26,44 @@ class LayerListRepository @Inject constructor(
     private val imageDataRepository: ImageDataRepository) {
 
     var layerList = LinkedList<ImgLayerData>()
-    val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
+    //val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
 
     var imageViewList = LinkedList<ImageViewData>()
-    val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
+    //val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
 
     fun uriToBitmap(context: Context, imageUri: Uri): Bitmap? {
         context.contentResolver.openInputStream(imageUri).use { inputStream ->
             return BitmapFactory.decodeStream(inputStream)
         }
     }
-    fun setImgLayerList(data: Intent?){
+    fun setImgLayerList(data: Intent?):LinkedList<ImgLayerData>{
         data?.clipData?.let{ clipData ->
             for (i in 0 until clipData.itemCount) {
                 val imageUri: Uri = clipData.getItemAt(i).uri
                 val bitmap = uriToBitmap(context,imageUri)
                 val id = imageDataRepository.setID()
                 if(bitmap != null){
-                    val layerData = ImgLayerData(bitmap,false,id)
-                    layerList.add(layerData)
-                    addImageView(id,bitmap)
+                    addLayerList(id,bitmap)
+                    addImageViewList(id,bitmap)
                 }
             }
         } ?: data?.data?.let { uri ->
             val bitmap = uriToBitmap(context,uri)
             val id = imageDataRepository.setID()
             if(bitmap != null){
-                val layerData = ImgLayerData(bitmap,false,id)
-                layerList.add(layerData)
-                addImageView(id,bitmap)
+                addLayerList(id,bitmap)
+                addImageViewList(id,bitmap)
             }
         }
-        liveLayerList.value = layerList
+        return layerList
     }
 
-    fun addImageView(addId : Int, bitmap: Bitmap){
+    fun addLayerList(id : Int, bitmap: Bitmap){
+        val layerData = ImgLayerData(bitmap,false,id)
+        layerList.add(layerData)
+    }
+
+    fun addImageViewList(addId : Int, bitmap: Bitmap){
         val imageView = EditableImageView(context).apply {
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -69,48 +75,79 @@ class LayerListRepository @Inject constructor(
         imageViewList.add(ImageViewData(imageView,false))
     }
 
+    fun updateLayerListChecked(position: Int, checked: Boolean): LinkedList<ImgLayerData>{
+        var layerData: ImgLayerData = layerList[position]
+        layerData.check = checked
 
-
-
-
-
-
-
-   /* fun setImgLayerList(layerList:LinkedList<ImgLayerData>,imageList:LinkedList<ImageViewData>, data: Intent?): Pair<LinkedList<ImgLayerData>,LinkedList<ImageViewData>>{
-        val imgLayerList = layerList
-        val imgViewList = imageList
-        data?.clipData?.let{ clipData ->
-            for (i in 0 until clipData.itemCount) {
-                val imageUri: Uri = clipData.getItemAt(i).uri
-                val bitmap = uriToBitmap(context,imageUri)
-                val id = imageDataRepository.setID()
-                if(bitmap != null){
-                    val layerData = ImgLayerData(bitmap,false,id)
-                    imgLayerList.add(layerData)
-                    imgViewList.add(addImageView(id,bitmap))
-                }
-            }
-        } ?: data?.data?.let { uri ->
-            val bitmap = uriToBitmap(context,uri)
-            val id = imageDataRepository.setID()
-            if(bitmap != null){
-                val layerData = ImgLayerData(bitmap,false,id)
-                imgLayerList.add(layerData)
-                imgViewList.add(addImageView(id,bitmap))
-            }
-        }
-        return Pair(imgLayerList, imgViewList)
+        layerList.set(position,layerData)
+        return layerList
     }
 
-    fun addImageView(addId : Int, bitmap: Bitmap): ImageViewData{
-        val imageView = EditableImageView(context).apply {
-            layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-            )
-            id = addId
-            setImageBitmap(bitmap)
+    fun updateImageViewListChecked(position: Int, checked: Boolean): LinkedList<ImageViewData>{
+        val checkedId = layerList[position].id
+        val targetItem = imageViewList.find{it.img.id == checkedId}
+
+        if(targetItem != null){
+            if(checked){
+                targetItem.visible = true
+            }else{
+                targetItem.visible = false
+            }
         }
-        return ImageViewData(imageView,false)
-    }*/
+        return imageViewList
+    }
+
+    fun deleteLayerList(position: Int):LinkedList<ImgLayerData>{
+        layerList.removeAt(position)
+        return layerList
+    }
+
+    fun deleteImageViewList(position: Int):LinkedList<ImageViewData>{
+        imageViewList.removeAt(position)
+        return imageViewList
+    }
+
+    fun createTransparentBitmap(width: Int, height: Int): Bitmap {
+        return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).apply {
+            eraseColor(Color.TRANSPARENT)
+        }
+    }
+
+    fun addLayer():LinkedList<ImgLayerData>{
+        val bitmap = createTransparentBitmap(1024,1024)//크기 임시임
+        val id = imageDataRepository.setID()
+        val layerData = ImgLayerData(bitmap,false,id)
+        layerList.add(layerData)
+        addImageViewList(id,bitmap)
+        return layerList
+    }
+
+    fun selectLayer(position: Int):LinkedList<ImgLayerData>{
+        val selectedItem = layerList.find { it.select }
+
+        selectedItem?.let {
+            it.select = false }
+
+        layerList[position].select = true
+        return layerList
+    }
+
+    fun selectLastImage(id: Int):LinkedList<ImgLayerData>{
+        val selectedItem = layerList.find { it.select }
+
+        selectedItem?.let {
+            it.select = false }
+
+        val findItem = layerList.find { it.id == id }
+        findItem?.let {
+            it.select = true
+        }
+        return layerList
+    }
+
+
+    fun swapImageView(fromPos: Int, toPos: Int):LinkedList<ImageViewData>{
+        Collections.swap(imageViewList,fromPos,toPos)
+        return imageViewList
+    }
 }
