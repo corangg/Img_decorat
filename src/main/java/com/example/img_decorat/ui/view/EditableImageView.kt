@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -19,7 +20,9 @@ class EditableImageView @JvmOverloads constructor(
 
     private val matrix = Matrix()
     private var scaleFactor = 1.0f
+    private var rotationDegrees = 0f
     private val scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
+    private val rotateGestureDetector = RotateGestureDetector(RotateListener())
     private var lastTouchX = 0f
     private var lastTouchY = 0f
     private val selectBorderPaint = Paint().apply {
@@ -44,20 +47,16 @@ class EditableImageView @JvmOverloads constructor(
     }
 
     override fun onTouch(v: View, event: MotionEvent): Boolean {
+        val transPos = getTransformedPoints()
 
-        val pos = getCurrentImagePosition()
-        val viewSize = getCurrentImageSize()
-
-        val touchInsideImage = event.x >= pos.first && event.x <= pos.first + viewSize.first &&
-                event.y >= pos.second && event.y <= pos.second + viewSize.second
-
-        if (!touchInsideImage) {
+        if (!isPointInPolygon(event.x,event.y,transPos)) {
             return false
         }
 
         scaleGestureDetector.onTouchEvent(event)
+        rotateGestureDetector.onTouchEvent(event)
 
-        if (!scaleGestureDetector.isInProgress) {
+        if (!scaleGestureDetector.isInProgress && !rotateGestureDetector.isInProgress) {
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     lastTouchX = event.x
@@ -82,48 +81,57 @@ class EditableImageView @JvmOverloads constructor(
         return true
     }
 
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawBorder(canvas)
         invalidate()
     }
 
+    private fun isPointInPolygon(x: Float, y: Float, polygon: FloatArray): Boolean {
+        var intersectCount = 0
+        for (i in polygon.indices step 2) {
+            val x1 = polygon[i]
+            val y1 = polygon[i + 1]
+            val x2 = polygon[(i + 2) % polygon.size]
+            val y2 = polygon[(i + 3) % polygon.size]
+
+            if (((y1 > y) != (y2 > y)) &&
+                (x < (x2 - x1) * (y - y1) / (y2 - y1) + x1)
+            ) {
+                intersectCount++
+            }
+        }
+        return (intersectCount % 2) == 1
+    }
+
     private fun drawBorder(canvas: Canvas) {
-        val pos = getCurrentImagePosition()
-        val viewSize = getCurrentImageSize()
-        val borderRect = RectF(
-            pos.first,
-            pos.second,
-            pos.first + viewSize.first,
-            pos.second + viewSize.second
-        )
+        val points = getTransformedPoints()
+        val path = Path().apply {
+            moveTo(points[0], points[1])
+            lineTo(points[2], points[3])
+            lineTo(points[4], points[5])
+            lineTo(points[6], points[7])
+            close()
+        }
         if (viewModel?.lastTouchedImageId?.value == this.id) {
-            canvas.drawRect(borderRect, selectBorderPaint)
-        }else{
-            canvas.drawRect(borderRect, unSelectBorderPaint)
+            canvas.drawPath(path, selectBorderPaint)
+        } else {
+            canvas.drawPath(path, unSelectBorderPaint)
         }
     }
 
-    fun getCurrentImageSize(): Pair<Float, Float> {
-        val values = FloatArray(9)
-        matrix.getValues(values)
-        val scaleX = values[Matrix.MSCALE_X]
-        val scaleY = values[Matrix.MSCALE_Y]
-
-        val drawable = drawable ?: return Pair(0f, 0f)
-        val originalWidth = drawable.intrinsicWidth
-        val originalHeight = drawable.intrinsicHeight
-
-        return Pair(originalWidth * scaleX, originalHeight * scaleY)
-    }
-
-    fun getCurrentImagePosition(): Pair<Float, Float> {
-        val values = FloatArray(9)
-        matrix.getValues(values)
-        val transX = values[Matrix.MTRANS_X]
-        val transY = values[Matrix.MTRANS_Y]
-        return Pair(transX, transY)
+    fun getTransformedPoints(): FloatArray {
+        val drawable = drawable ?: return floatArrayOf()
+        val width = drawable.intrinsicWidth.toFloat()
+        val height = drawable.intrinsicHeight.toFloat()
+        val points = floatArrayOf(
+            0f, 0f,
+            width, 0f,
+            width, height,
+            0f, height
+        )
+        matrix.mapPoints(points)
+        return points
     }
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
@@ -133,133 +141,20 @@ class EditableImageView @JvmOverloads constructor(
             scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 10.0f))
 
             matrix.postScale(scale, scale, detector.focusX, detector.focusY)
+            imageMatrix = matrix
+            invalidate()
+            return true
+        }
+    }
+
+    private inner class RotateListener : RotateGestureDetector.OnRotateGestureListener {
+        override fun onRotate(detector: RotateGestureDetector): Boolean {
+            val rotation = detector.rotationDegreesDelta
+            rotationDegrees += rotation
+            matrix.postRotate(rotation, detector.focusX, detector.focusY)
             imageMatrix = matrix
             invalidate()
             return true
         }
     }
 }
-/*
-class ZoomableImageView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
-) : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener {
-
-    private val matrix = Matrix()
-    private var scaleFactor = 1.0f
-    private val scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
-    private var lastTouchX = 0f  // 이전 터치의 X 좌표
-    private var lastTouchY = 0f  // 이전 터치의 Y 좌표
-    private val borderPaint = Paint().apply {
-        color = Color.WHITE
-        style = Paint.Style.STROKE
-        strokeWidth = 4f  // 기본 테두리 두께
-    }
-    //private var isTouched = false
-    //private var viewModel: MainViewModel? = null
-    lateinit var viewModel: MainViewModel
-
-    init {
-        setOnTouchListener(this)
-        scaleType = ScaleType.MATRIX
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        // 여기서 context를 ViewModelStoreOwner로 캐스팅하여 viewModel 초기화
-        if (context is ViewModelStoreOwner) {
-            viewModel = ViewModelProvider(context as ViewModelStoreOwner).get(MainViewModel::class.java)
-        }
-    }
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        pivotX = w / 2f
-        pivotY = h / 2f
-    }
-
-    override fun onTouch(v: View, event: MotionEvent): Boolean {
-        val pos = getCurrentImagePosition()
-        val viewSize = getCurrentImageSize()
-
-        scaleGestureDetector.onTouchEvent(event)
-
-        if (!scaleGestureDetector.isInProgress) {
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    lastTouchX = event.x
-                    lastTouchY = event.y
-                    viewModel.lastTouchImageView.value = this
-                    invalidate()
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val dx = event.x - lastTouchX
-                    val dy = event.y - lastTouchY
-
-                    matrix.postTranslate(dx, dy)
-                    imageMatrix = matrix
-
-                    lastTouchX = event.x
-                    lastTouchY = event.y
-                }
-            }
-        }
-
-        val touch = event.x >= pos.first && event.x <= pos.first + viewSize.first && event.y >= pos.second && event.y <= pos.second + viewSize.second
-        return touch
-    }
-
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-        if (viewModel.lastTouchImageView.value == this) {
-            drawBorder(canvas)
-        }
-    }
-
-    private fun drawBorder(canvas: Canvas) {
-        val pos = getCurrentImagePosition()
-        val viewSize = getCurrentImageSize()
-
-
-        val bolderRect = RectF(
-            pos.first,
-            pos.second,
-            pos.first + viewSize.first,
-            pos.second + viewSize.second
-        )
-
-        canvas.drawRect(bolderRect, borderPaint)
-    }
-
-    fun getCurrentImageSize(): Pair<Float, Float> {//현재 크기
-        val values = FloatArray(9)
-        matrix.getValues(values)
-        val scaleX = values[Matrix.MSCALE_X]
-        val scaleY = values[Matrix.MSCALE_Y]
-
-        val drawable = drawable ?: return Pair(0f, 0f)
-        val originalWidth = drawable.intrinsicWidth
-        val originalHeight = drawable.intrinsicHeight
-
-        return Pair(originalWidth * scaleX, originalHeight * scaleY)
-    }
-
-    fun getCurrentImagePosition(): Pair<Float, Float> {//현재 위치
-        val values = FloatArray(9)
-        matrix.getValues(values)
-        val transX = values[Matrix.MTRANS_X]
-        val transY = values[Matrix.MTRANS_Y]
-        return Pair(transX, transY)
-    }
-
-    private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-        override fun onScale(detector: ScaleGestureDetector): Boolean {
-            val scale = detector.scaleFactor
-            scaleFactor *= scale
-            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 10.0f))
-
-            matrix.postScale(scale, scale, detector.focusX, detector.focusY)
-            imageMatrix = matrix
-            invalidate()
-            return true
-        }
-    }
-}*/

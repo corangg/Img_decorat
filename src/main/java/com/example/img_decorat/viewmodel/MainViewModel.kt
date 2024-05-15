@@ -53,7 +53,7 @@ class MainViewModel @Inject constructor(
     val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
 
     val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
-    val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData()
+    val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData(LinkedList<ImageViewData>())
     val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
     val unsplashList: MutableLiveData<MutableList<UnsplashData>> = MutableLiveData()
 
@@ -121,9 +121,7 @@ class MainViewModel @Inject constructor(
         if(liveLayerList.value!!.size > position){
             liveLayerList.value = layerListRepository.updateLayerListChecked(position,checked)
         }
-        if(liveImageViewList.value!!.size > position){
-            liveImageViewList.value = layerListRepository.updateImageViewListChecked(position,checked)
-        }
+        liveImageViewList.value = layerListRepository.updateImageViewListChecked(position,checked)
     }
 
 
@@ -131,9 +129,7 @@ class MainViewModel @Inject constructor(
         if(liveLayerList.value!!.size > position){
             liveLayerList.value = layerListRepository.deleteLayerList(position)
         }
-        if(liveImageViewList.value!!.size > position){
-            liveImageViewList.value = layerListRepository.deleteImageViewList(position)
-        }
+        liveImageViewList.value = layerListRepository.deleteImageViewList(position)
     }
 
     fun addLayer(){
