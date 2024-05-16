@@ -41,6 +41,12 @@ object Moudle {
         return BackgroundRepository()
     }
 
+    @Provides
+    @Singleton
+    fun provideSplitRepository(context: Context,layerListRepository: LayerListRepository): SplitRepository {
+        return SplitRepository(context, layerListRepository)
+    }
+
 
 
 

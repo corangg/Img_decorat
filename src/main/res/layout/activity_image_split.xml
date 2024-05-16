@@ -41,17 +41,27 @@
                     android:layout_marginRight="16dp"
                     android:background="@drawable/ic_check"
                     android:backgroundTint="@color/white"
-                    android:onClick="@{()->viewmodel.selectToolbarItem(3)}"/>
+                    android:onClick="@{()->viewmodel.selectToolbarItem(4)}"/>
 
+                <ImageButton
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/split_btn"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/check_btn"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/ic_split"
+                    android:backgroundTint="@color/white"
+                    android:onClick="@{()->viewmodel.selectToolbarItem(3)}"/>
                 <ImageButton
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:id="@+id/run_btn"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/check_btn"
+                    android:layout_toLeftOf="@id/split_btn"
                     android:layout_marginRight="16dp"
                     android:background="@drawable/ic_run"
-                    android:backgroundTint="@color/white"
+                    android:backgroundTint="@color/darkGray"
                     android:onClick="@{()->viewmodel.selectToolbarItem(2)}"/>
 
                 <ImageButton
@@ -62,7 +72,7 @@
                     android:layout_toLeftOf="@id/run_btn"
                     android:layout_marginRight="16dp"
                     android:background="@drawable/ic_undo"
-                    android:backgroundTint="@color/white"
+                    android:backgroundTint="@color/darkGray"
                     android:onClick="@{()->viewmodel.selectToolbarItem(1)}"/>
 
             </RelativeLayout>
@@ -73,6 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
+            android:background="#2D2D2D"
             android:layout_below="@id/split_toorbar"
             android:layout_above="@id/split_bottom_navigation"
             android:id="@+id/split_img_view"
@@ -81,8 +92,9 @@
             android:layout_marginHorizontal="10dp"
             >
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:id="@+id/split_img"/>
 
         </FrameLayout>

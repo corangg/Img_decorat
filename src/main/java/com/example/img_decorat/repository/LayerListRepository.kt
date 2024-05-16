@@ -32,7 +32,7 @@ class LayerListRepository @Inject constructor(
     var layerList = LinkedList<ImgLayerData>()
     var imageViewList = LinkedList<ImageViewData>()
 
-    fun uriToBitmap(context: Context, imageUri: Uri): Bitmap? {
+    fun uriToBitmap(imageUri: Uri): Bitmap? {
         context.contentResolver.openInputStream(imageUri).use { inputStream ->
             return BitmapFactory.decodeStream(inputStream)
         }
@@ -56,7 +56,7 @@ class LayerListRepository @Inject constructor(
         data?.clipData?.let{ clipData ->
             for (i in 0 until clipData.itemCount) {
                 val imageUri: Uri = clipData.getItemAt(i).uri
-                val bitmap = uriToBitmap(context,imageUri)
+                val bitmap = uriToBitmap(imageUri)
                 val id = imageDataRepository.setID()
                 if(bitmap != null){
                     addLayerList(id,bitmap)
@@ -64,7 +64,7 @@ class LayerListRepository @Inject constructor(
                 }
             }
         } ?: data?.data?.let { uri ->
-            val bitmap = uriToBitmap(context,uri)
+            val bitmap = uriToBitmap(uri)
             val id = imageDataRepository.setID()
             if(bitmap != null){
                 addLayerList(id,bitmap)

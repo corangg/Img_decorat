@@ -1,7 +1,9 @@
 package com.example.img_decorat.ui.activity
 
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -20,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.example.img_decorat.R
 import com.example.img_decorat.databinding.ActivityImageSplitBinding
+import com.example.img_decorat.repository.LayerListRepository
 import com.example.img_decorat.ui.view.BTNAnimation
 import com.example.img_decorat.ui.view.SplitAreaView
 import com.example.img_decorat.viewmodel.SplitViewModel
@@ -31,8 +34,12 @@ class ImageSplitActivity : AppCompatActivity() {
     lateinit var binding : ActivityImageSplitBinding
     private val viewmodel: SplitViewModel by viewModels()
 
+    private lateinit var splitAreaView: SplitAreaView
+
     @Inject
     lateinit var animation: BTNAnimation
+    @Inject
+    lateinit var layerListRepository: LayerListRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,9 +53,8 @@ class ImageSplitActivity : AppCompatActivity() {
     private fun setIntent(){
         val url = intent.getStringExtra("image")
         if(url != null){
-            Glide.with(binding.root).load(url).into(binding.splitImg)
+            viewmodel.intentToBitmap(url)
         }
-
     }
 
     private fun setObserve(){
@@ -66,6 +72,9 @@ class ImageSplitActivity : AppCompatActivity() {
                     animation.buttionAnimation(binding.runBtn)
                 }
                 3->{
+                    animation.buttionAnimation(binding.splitBtn)
+                }
+                4->{
                     animation.buttionAnimation(binding.checkBtn)
                 }
             }
@@ -73,26 +82,34 @@ class ImageSplitActivity : AppCompatActivity() {
         viewmodel.selectSplitItem.observe(this){
             when(it){
                 0->{
-                    val splitArea = SplitAreaView(this).apply {
-                        layoutParams = FrameLayout.LayoutParams(
-                            FrameLayout.LayoutParams.MATCH_PARENT,
-                            FrameLayout.LayoutParams.MATCH_PARENT
-                        )
-                        setImageBitmap(createTransparentBitmap(512,512))
-                    }
+                    val splitArea = viewmodel.splitSquareView.value //이거 나중에 전역으로 둬야하나?
 
-                    binding.splitImgView.addView(splitArea)
+                    if(splitArea != null){
+                        splitAreaView = splitArea
+                        binding.splitImgView.addView(splitAreaView)
+                    }
                 }
             }
         }
-    }
+        viewmodel.splitImage.observe(this){
+            binding.splitImg.setImageBitmap(it)
+        }
 
-    fun createTransparentBitmap(width: Int, height: Int): Bitmap {
-        return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).apply {
-            eraseColor(Color.TRANSPARENT)
+        viewmodel.undoStackBoolean.observe(this){
+            if(it){
+                binding.undoBtn.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+            }else{
+                binding.undoBtn.backgroundTintList = ColorStateList.valueOf(0xFF494949.toInt())
+            }
+        }
+        viewmodel.runStackBoolean.observe(this){
+            if(it){
+                binding.runBtn.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+            }
+            else{
+                binding.runBtn.backgroundTintList = ColorStateList.valueOf(0xFF494949.toInt())
+            }
         }
     }
-
-
 
 }

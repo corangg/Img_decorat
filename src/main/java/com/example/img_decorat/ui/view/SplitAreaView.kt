@@ -61,6 +61,18 @@ class SplitAreaView @JvmOverloads constructor(
         return floatArrayOf(posX, posY, posRight, posBottom)
     }
 
+    fun getViewBoundsInParent(): RectF {
+
+        val point = areaPoint()
+
+        return RectF(
+            point[0],
+            point[1],
+            point[2],
+            point[3])
+
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         parentWidth = (parent as View).width
