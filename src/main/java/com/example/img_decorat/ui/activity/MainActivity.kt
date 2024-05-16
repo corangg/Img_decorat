@@ -32,6 +32,7 @@ import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
 import com.example.img_decorat.ui.fragment.BackGroundFragment
+import com.example.img_decorat.ui.view.BTNAnimation
 import com.example.img_decorat.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.LinkedList
@@ -44,6 +45,8 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
     lateinit var drawerToggle: ActionBarDrawerToggle
     lateinit var menuAdapter: MenuAdapter
     lateinit var layerAdapter: LayerAdapter
+
+    @Inject lateinit var animation: BTNAnimation
 
     lateinit var backGroundFragment: BackGroundFragment
     var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -161,7 +164,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
     private fun setObserve(){
         viewModel.openGalleryEvent.observe(this){
-            buttionAnimation(binding.menuAdd)
+            animation.buttionAnimation(binding.menuAdd)
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true)
@@ -170,7 +173,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         viewModel.openMenuEvent.observe(this){
 
             if(it){
-                buttionAnimation(binding.menuMore)
+                animation.buttionAnimation(binding.menuMore)
                 binding.menuView.visibility = View.VISIBLE
             }else{
                 binding.menuView.visibility = View.GONE
@@ -201,7 +204,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
                     val image = viewModel.lastTouchedImage
                     val intent = Intent(this, ImageSplitActivity::class.java)
-                    intent.putExtra("image",image)
+                    intent.putExtra("image",image.toString())
                     //startActivity(intent)
                     startForResult.launch(intent)
                 }
@@ -239,10 +242,5 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         }
     }
 
-    private fun buttionAnimation(button: ImageButton) {
-        val button = button
-        val animation = AnimationUtils.loadAnimation(this, com.example.img_decorat.R.anim.anim_clicked)
-        button.startAnimation(animation)
-    }
 
 }

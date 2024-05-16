@@ -1,15 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.activity.ImageSplitActivity">
-    <TextView
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.img_decorat.viewmodel.SplitViewModel" />
+
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Geee"
-        android:textColor="@color/white"/>
+        android:background="#121212">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:id="@+id/split_toorbar"
+            app:title="">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageButton
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:id="@+id/back_btn"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_back"
+                    android:backgroundTint="@color/white"
+                    android:onClick="@{()->viewmodel.selectToolbarItem(0)}"/>
+
+                <ImageButton
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:id="@+id/check_btn"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/ic_check"
+                    android:backgroundTint="@color/white"
+                    android:onClick="@{()->viewmodel.selectToolbarItem(3)}"/>
+
+                <ImageButton
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:id="@+id/run_btn"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/check_btn"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/ic_run"
+                    android:backgroundTint="@color/white"
+                    android:onClick="@{()->viewmodel.selectToolbarItem(2)}"/>
+
+                <ImageButton
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:id="@+id/undo_btn"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/run_btn"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/ic_undo"
+                    android:backgroundTint="@color/white"
+                    android:onClick="@{()->viewmodel.selectToolbarItem(1)}"/>
+
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <!--일단 이미지뷰로 함해보자-->
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/split_toorbar"
+            android:layout_above="@id/split_bottom_navigation"
+            android:id="@+id/split_img_view"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginHorizontal="10dp"
+            >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/split_img"/>
+
+        </FrameLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/split_bottom_navigation"
+            android:layout_width="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginBottom="16dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_detail_navigation"
+            android:layout_alignParentBottom="true"
+            app:labelVisibilityMode="auto"
+            app:menu="@menu/menu_split"
+            app:onNavigationItemSelectedListener="@{(item)->viewmodel.selectSplitItem(item)}"/>
+
+
+
+    </RelativeLayout>
+</layout>

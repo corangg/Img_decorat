@@ -1,6 +1,7 @@
 package com.example.img_decorat.repository
 
 import android.content.Context
+import com.example.img_decorat.ui.view.BTNAnimation
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +16,12 @@ object Moudle {
     @Provides
     @Singleton
     fun provideContext(@ApplicationContext context: Context): Context = context
+
+    @Provides
+    @Singleton
+    fun provideLayerAnimation(context: Context, imageDataRepository: ImageDataRepository): BTNAnimation {
+        return BTNAnimation(context)
+    }
 
     @Singleton
     @Provides
@@ -33,6 +40,9 @@ object Moudle {
     fun provideBackgroundRepository(): BackgroundRepository {
         return BackgroundRepository()
     }
+
+
+
 
 
 

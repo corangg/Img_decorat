@@ -27,8 +27,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:id="@+id/main_toolbar"
-                app:menu="@menu/menu_title">
+                android:id="@+id/main_toolbar">
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

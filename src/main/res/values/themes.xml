@@ -9,20 +9,16 @@
         <item name="colorOnPrimary">@color/white</item>
 
 
-
     </style>
 
-    <style name="OverflowMenuStyle" parent="Widget.AppCompat.PopupMenu.Overflow">
-       <!--// <item name="android:popupBackground">@drawable/menu_background</item>  &lt;!&ndash; 메뉴 배경 &ndash;&gt;-->
+
+    <style name="AppTheme.Actionbar" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:tint">#00ffff</item>
     </style>
 
- <!--   <style name="BottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">\
-        <item name="android:layout_height">60dp</item>
-        <item name="itemIconTint">@color/navigation_ic_color</item>
-        <item name="itemTextColor">@color/navigation_ic_color</item>
-        <item name="android:paddingBottom">0dp</item>
+    <style name="AppTheme.OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">#fff</item>
     </style>
--->
 
 
 </resources>
