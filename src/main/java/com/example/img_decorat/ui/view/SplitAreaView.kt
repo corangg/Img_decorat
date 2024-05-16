@@ -12,9 +12,9 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 
-class SplitAreaView  @JvmOverloads constructor(
+class SplitAreaView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
-) : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener{
+) : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener {
 
     private val matrix = Matrix()
     private var scaleFactor = 1.0f
@@ -33,31 +33,32 @@ class SplitAreaView  @JvmOverloads constructor(
         setOnTouchListener(this)
         scaleType = ScaleType.MATRIX
     }
-    fun areaPoint(): FloatArray{
+
+    fun areaPoint(): FloatArray {
         val pos = getCurrentImagePosition()
         val viewSize = getCurrentImageSize()
-        val posX = if(pos.first > 0){
+        val posX = if (pos.first > 0) {
             pos.first
-        }else{
+        } else {
             0f
         }
-        val posY = if(pos.second > 0){
+        val posY = if (pos.second > 0) {
             pos.second
-        }else{
+        } else {
             0f
         }
-        val posRight = if(pos.first+viewSize.first < parentWidth){
+        val posRight = if (pos.first + viewSize.first < parentWidth) {
             pos.first + viewSize.first
-        }else{
+        } else {
             parentWidth.toFloat()
         }
-        val posBottom = if(pos.second+viewSize.second< parentHeight){
+        val posBottom = if (pos.second + viewSize.second < parentHeight) {
             pos.second + viewSize.second
-        }else{
+        } else {
             parentHeight.toFloat()
         }
 
-        return floatArrayOf(posX,posY,posRight,posBottom)
+        return floatArrayOf(posX, posY, posRight, posBottom)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -87,18 +88,40 @@ class SplitAreaView  @JvmOverloads constructor(
                     invalidate()
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    val dx = event.x - lastTouchX
-                    val dy = event.y - lastTouchY
+                    var dx = event.x - lastTouchX
+                    var dy = event.y - lastTouchY
 
-                    matrix.postTranslate(dx, dy)
-                    imageMatrix = matrix
+                    val newPosX = pos.first + dx
+                    val newPosY = pos.second + dy
+                    val newRight = newPosX + viewSize.first
+                    val newBottom = newPosY + viewSize.second
 
-                    lastTouchX = event.x
-                    lastTouchY = event.y
+                    // 부모 뷰의 경계를 넘지 않도록 처리
+                    if (newPosX >= 0 && newRight <= parentWidth &&
+                        newPosY >= 0 && newBottom <= parentHeight) {
+                        matrix.postTranslate(dx, dy)
+                        imageMatrix = matrix
+
+                        lastTouchX = event.x
+                        lastTouchY = event.y
+                    } else {
+                        if (newPosX < 0 || newRight > parentWidth) {
+                            // X축 경계를 넘어가면 이동하지 않음
+                            dx = 0f
+                        }
+                        if (newPosY < 0 || newBottom > parentHeight) {
+                            // Y축 경계를 넘어가면 이동하지 않음
+                            dy = 0f
+                        }
+                        matrix.postTranslate(dx, dy)
+                        imageMatrix = matrix
+
+                        lastTouchX = event.x
+                        lastTouchY = event.y
+                    }
                 }
             }
         }
-
 
         invalidate()
         return true
@@ -147,7 +170,7 @@ class SplitAreaView  @JvmOverloads constructor(
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             var scale = detector.scaleFactor
             val currentScaleFactor = scaleFactor * scale
-            val maxScale = parentHeight/drawable.intrinsicHeight.toFloat()
+            val maxScale = parentHeight / drawable.intrinsicHeight.toFloat()
             val minScale = 0.1f
 
             if (currentScaleFactor > maxScale) {
