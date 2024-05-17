@@ -12,7 +12,7 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 
-class SplitAreaView @JvmOverloads constructor(
+class SplitSquareVIew @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0,type : Int
 ) : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener {
 
@@ -32,49 +32,6 @@ class SplitAreaView @JvmOverloads constructor(
     init {
         setOnTouchListener(this)
         scaleType = ScaleType.MATRIX
-    }
-
-    fun areaPoint(): FloatArray {
-        val pos = getCurrentImagePosition()
-        val viewSize = getCurrentImageSize()
-        val posX = if (pos.first > 0) {
-            pos.first
-        } else {
-            0f
-        }
-        val posY = if (pos.second > 0) {
-            pos.second
-        } else {
-            0f
-        }
-        val posRight = if (pos.first + viewSize.first < parentWidth) {
-            pos.first + viewSize.first
-        } else {
-            parentWidth.toFloat()
-        }
-        val posBottom = if (pos.second + viewSize.second < parentHeight) {
-            pos.second + viewSize.second
-        } else {
-            parentHeight.toFloat()
-        }
-
-        return floatArrayOf(posX, posY, posRight, posBottom)
-    }
-
-    fun getViewBoundsInParent(): RectF {
-
-        val point = areaPoint()
-
-        return RectF(
-            point[0],
-            point[1],
-            point[2],
-            point[3])
-
-    }
-
-    fun test():Pair<Int,Int>{
-        return Pair(parentWidth,parentHeight)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -149,6 +106,60 @@ class SplitAreaView @JvmOverloads constructor(
         invalidate()
     }
 
+
+
+
+
+
+
+
+
+
+    fun areaPoint(): FloatArray {
+        val pos = getCurrentImagePosition()
+        val viewSize = getCurrentImageSize()
+        val posX = if (pos.first > 0) {
+            pos.first
+        } else {
+            0f
+        }
+        val posY = if (pos.second > 0) {
+            pos.second
+        } else {
+            0f
+        }
+        val posRight = if (pos.first + viewSize.first < parentWidth) {
+            pos.first + viewSize.first
+        } else {
+            parentWidth.toFloat()
+        }
+        val posBottom = if (pos.second + viewSize.second < parentHeight) {
+            pos.second + viewSize.second
+        } else {
+            parentHeight.toFloat()
+        }
+
+        return floatArrayOf(posX, posY, posRight, posBottom)
+    }
+
+    fun getViewBoundsInParent(): RectF {
+        val point = areaPoint()
+        return RectF(
+            point[0],
+            point[1],
+            point[2],
+            point[3])
+
+    }
+
+    fun getParentSize():Pair<Int,Int>{
+        return Pair(parentWidth,parentHeight)
+    }
+
+
+
+
+
     private fun drawBorder(canvas: Canvas) {
         val point = areaPoint()
         val borderRect = RectF(
@@ -186,7 +197,7 @@ class SplitAreaView @JvmOverloads constructor(
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             var scale = detector.scaleFactor
             val currentScaleFactor = scaleFactor * scale
-            val maxScale = parentHeight / drawable.intrinsicHeight.toFloat()
+            val maxScale = Math.min(parentWidth / drawable.intrinsicWidth.toFloat(),parentHeight / drawable.intrinsicHeight.toFloat())
             val minScale = 0.1f
 
             if (currentScaleFactor > maxScale) {

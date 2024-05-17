@@ -1,31 +1,17 @@
 package com.example.img_decorat.ui.activity
 
 import android.content.res.ColorStateList
-import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.animation.AnimationUtils
-import android.widget.FrameLayout
-import android.widget.ImageButton
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModel
-import com.bumptech.glide.Glide
 import com.example.img_decorat.R
 import com.example.img_decorat.databinding.ActivityImageSplitBinding
 import com.example.img_decorat.repository.LayerListRepository
 import com.example.img_decorat.ui.view.BTNAnimation
-import com.example.img_decorat.ui.view.SplitAreaView
+import com.example.img_decorat.ui.view.SplitSquareVIew
 import com.example.img_decorat.viewmodel.SplitViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -35,7 +21,7 @@ class ImageSplitActivity : AppCompatActivity() {
     lateinit var binding : ActivityImageSplitBinding
     private val viewmodel: SplitViewModel by viewModels()
 
-    private lateinit var splitAreaView: SplitAreaView
+    private lateinit var splitAreaView: SplitSquareVIew
 
     @Inject
     lateinit var animation: BTNAnimation

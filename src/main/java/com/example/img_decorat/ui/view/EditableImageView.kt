@@ -42,10 +42,6 @@ class EditableImageView @JvmOverloads constructor(
         scaleType = ScaleType.MATRIX
     }
 
-    fun setViewModel(viewModel: MainViewModel) {
-        this.viewModel = viewModel
-    }
-
     override fun onTouch(v: View, event: MotionEvent): Boolean {
         val transPos = getTransformedPoints()
 
@@ -86,6 +82,21 @@ class EditableImageView @JvmOverloads constructor(
         drawBorder(canvas)
         invalidate()
     }
+
+
+
+
+
+
+
+
+
+
+    fun setViewModel(viewModel: MainViewModel) {
+        this.viewModel = viewModel
+    }
+
+
 
     private fun isPointInPolygon(x: Float, y: Float, polygon: FloatArray): Boolean {
         var intersectCount = 0

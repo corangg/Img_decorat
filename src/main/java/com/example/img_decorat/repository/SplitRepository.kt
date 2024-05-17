@@ -2,17 +2,12 @@ package com.example.img_decorat.repository
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.RectF
-import android.graphics.drawable.BitmapDrawable
 import android.widget.FrameLayout
-import com.example.img_decorat.dataModels.ImageSize
-import com.example.img_decorat.ui.view.SplitAreaView
+import com.example.img_decorat.ui.view.SplitSquareVIew
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Stack
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class SplitRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val layerListRepository: LayerListRepository) {
@@ -31,9 +26,13 @@ class SplitRepository @Inject constructor(
         }
     }
 
+    fun resetUndoStack(){
+        stackUndo.clear()
+    }
     fun resetRunStack(){
         stackRun.clear()
     }
+
 
     fun checkUndo():Boolean{
         return if(stackUndo.size>0){
@@ -58,8 +57,8 @@ class SplitRepository @Inject constructor(
     }
 
 
-    fun squareSplitView():SplitAreaView{
-        val splitArea = SplitAreaView(context, type = 0).apply {
+    fun squareSplitView():SplitSquareVIew{
+        val splitArea = SplitSquareVIew(context, type = 0).apply {
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
@@ -69,10 +68,10 @@ class SplitRepository @Inject constructor(
         return splitArea
     }
 
-    fun cropImage(splitAreaView : SplitAreaView, bitmap: Bitmap) : Bitmap {
+    fun cropImage(splitAreaView : SplitSquareVIew, bitmap: Bitmap) : Bitmap {
 
 
-        val viewSize = splitAreaView.test()
+        val viewSize = splitAreaView.getParentSize()
         bitmap.width
         val scaleX = bitmap.width.toFloat()/viewSize.first.toFloat()
         val scaleY = bitmap.height.toFloat()/viewSize.second.toFloat()
@@ -82,31 +81,23 @@ class SplitRepository @Inject constructor(
         var bottom = 0f
 
         val rect = splitAreaView.getViewBoundsInParent()
-        splitAreaView.test()
-
 
         if(scaleX>scaleY){
-            val voidHeight = (scaleY*viewSize.second- bitmap.height)/2
+            val voidHeight = (scaleX*viewSize.second- bitmap.height)/2
 
-            left = (rect.left*scaleY).coerceIn(0f, bitmap.width.toFloat())
-            top = (rect.top*scaleY).coerceIn(0f, bitmap.height.toFloat()) - voidHeight
-            right = (rect.right*scaleY).coerceIn(0f, bitmap.width.toFloat())
-            bottom = (rect.bottom*scaleY).coerceIn(0f, bitmap.height.toFloat()) - voidHeight
+            left = (rect.left*scaleX).coerceIn(0f, bitmap.width.toFloat())
+            top = (rect.top*scaleX - voidHeight).coerceIn(0f, bitmap.height.toFloat())
+            right = (rect.right*scaleX).coerceIn(0f, bitmap.width.toFloat())
+            bottom = (rect.bottom*scaleX - voidHeight).coerceIn(0f, bitmap.height.toFloat())
 
         }else{
             val voidWith = (scaleY*viewSize.first - bitmap.width)/2
 
-            left = (rect.left*scaleY).coerceIn(0f, bitmap.width.toFloat()) - voidWith
+            left = (rect.left*scaleY- voidWith).coerceIn(0f, bitmap.width.toFloat())
             top = (rect.top*scaleY).coerceIn(0f, bitmap.height.toFloat())
-            right = (rect.right*scaleY).coerceIn(0f, bitmap.width.toFloat()) - voidWith
+            right = (rect.right*scaleY- voidWith).coerceIn(0f, bitmap.width.toFloat())
             bottom = (rect.bottom*scaleY).coerceIn(0f, bitmap.height.toFloat())
         }
-
-
-
-
-
-
         val croppedBitmap = Bitmap.createBitmap(
             bitmap,
             left.toInt(),

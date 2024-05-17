@@ -14,7 +14,7 @@ import com.example.img_decorat.R
 import com.example.img_decorat.dataModels.ImageSize
 import com.example.img_decorat.repository.LayerListRepository
 import com.example.img_decorat.repository.SplitRepository
-import com.example.img_decorat.ui.view.SplitAreaView
+import com.example.img_decorat.ui.view.SplitSquareVIew
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -30,12 +30,12 @@ class SplitViewModel@Inject constructor(
     val undoStackBoolean : MutableLiveData<Boolean> = MutableLiveData(false)
     val runStackBoolean : MutableLiveData<Boolean> = MutableLiveData(false)
 
-    val splitSquareView : MutableLiveData<SplitAreaView> = MutableLiveData()
-
-    var imageSize = ImageSize(0,0)
+    val splitSquareView : MutableLiveData<SplitSquareVIew> = MutableLiveData()
 
     init {
         splitSquareView.value = splitRepository.squareSplitView()
+        splitRepository.resetUndoStack()
+        splitRepository.resetRunStack()
 
     }
 
@@ -82,15 +82,6 @@ class SplitViewModel@Inject constructor(
         return false
     }
 
-
-
-   /* fun getImageView(imageView: ImageView, frameLayout: FrameLayout){
-        imageSize.with = imageView.width
-        imageSize.height = imageView.height
-        frameLayout.width
-        frameLayout.height
-    }
-*/
     fun selectSplitItem(item: MenuItem):Boolean{
         when(item.itemId){
             R.id.split_nav_square->{
