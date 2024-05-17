@@ -26,6 +26,11 @@ class SplitPolygonView @JvmOverloads constructor(
     private var lastTouchY = 0f
     private var parentWidth = 0
     private var parentHeight = 0
+    private val dotRadius = 16f
+
+    private var pointsArray = floatArrayOf()
+    private var movingPointIndex = -1
+
 
     init {
         setOnTouchListener(this)
@@ -37,8 +42,21 @@ class SplitPolygonView @JvmOverloads constructor(
         parentHeight = (parent as View).height
     }
 
-    fun setPolygone(polygone: Int){
+    fun setPolygon(polygone: Int){
         polygonPoints = polygone
+    }
+
+    fun touchPoint(event: MotionEvent){
+        val x = event.x
+        val y = event.y
+
+        for(i in pointsArray.indices step 2 ){
+            if(x in pointsArray[i]-20 .. pointsArray[i]+20&& y in pointsArray[i+1]-20 .. pointsArray[i+1] +20){
+                true
+
+            }
+        }
+
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -68,7 +86,6 @@ class SplitPolygonView @JvmOverloads constructor(
             color = Color.WHITE
             style = Paint.Style.FILL
         }
-        val dotRadius = 16f
 
         for (i in points.indices step 2) {
             canvas.drawCircle(points[i], points[i + 1], dotRadius, dotPaint)
@@ -87,6 +104,7 @@ class SplitPolygonView @JvmOverloads constructor(
         }
 
         matrix.mapPoints(points)
+        pointsArray = points//일단 이렇게 저장
         return points
     }
 
@@ -113,9 +131,13 @@ class SplitPolygonView @JvmOverloads constructor(
 
     override fun onTouch(v: View?, event: MotionEvent): Boolean {
 
+
+        touchPoint(event)
         if(!touchInsideImage(event)){
             return false
         }
+
+
 
         scaleGestureDetector.onTouchEvent(event)
 

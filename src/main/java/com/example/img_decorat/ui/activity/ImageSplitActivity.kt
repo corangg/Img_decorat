@@ -115,7 +115,7 @@ class ImageSplitActivity : AppCompatActivity() {
         }
 
         viewmodel.polygonPoint.observe(this){
-            splitPolygonView.setPolygone(it)
+            splitPolygonView.setPolygon(it)
         }
 
         viewmodel.undoStackBoolean.observe(this){
