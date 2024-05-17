@@ -16,6 +16,11 @@ data class ImageViewData(
     var visible : Boolean = true,
 )
 
+data class ImageSize(
+    var with : Int,
+    var height : Int
+)
+
 
 data class ListData(
     val layerList : LinkedList<ImgLayerData>,

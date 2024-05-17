@@ -13,7 +13,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 
 class SplitAreaView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0,type : Int
 ) : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener {
 
     private val matrix = Matrix()
@@ -71,6 +71,10 @@ class SplitAreaView @JvmOverloads constructor(
             point[2],
             point[3])
 
+    }
+
+    fun test():Pair<Int,Int>{
+        return Pair(parentWidth,parentHeight)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

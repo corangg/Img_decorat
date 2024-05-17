@@ -6,10 +6,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Build.VERSION_CODES.M
 import android.view.MenuItem
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.img_decorat.R
+import com.example.img_decorat.dataModels.ImageSize
 import com.example.img_decorat.repository.LayerListRepository
 import com.example.img_decorat.repository.SplitRepository
 import com.example.img_decorat.ui.view.SplitAreaView
@@ -29,6 +31,8 @@ class SplitViewModel@Inject constructor(
     val runStackBoolean : MutableLiveData<Boolean> = MutableLiveData(false)
 
     val splitSquareView : MutableLiveData<SplitAreaView> = MutableLiveData()
+
+    var imageSize = ImageSize(0,0)
 
     init {
         splitSquareView.value = splitRepository.squareSplitView()
@@ -78,6 +82,15 @@ class SplitViewModel@Inject constructor(
         return false
     }
 
+
+
+   /* fun getImageView(imageView: ImageView, frameLayout: FrameLayout){
+        imageSize.with = imageView.width
+        imageSize.height = imageView.height
+        frameLayout.width
+        frameLayout.height
+    }
+*/
     fun selectSplitItem(item: MenuItem):Boolean{
         when(item.itemId){
             R.id.split_nav_square->{

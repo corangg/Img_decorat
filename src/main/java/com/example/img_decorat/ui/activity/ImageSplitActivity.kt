@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.animation.AnimationUtils
@@ -47,8 +48,8 @@ class ImageSplitActivity : AppCompatActivity() {
         (binding as ViewDataBinding).lifecycleOwner = this
         binding.viewmodel = viewmodel
 
-        setIntent()
         setObserve()
+        setIntent()
     }
     private fun setIntent(){
         val url = intent.getStringExtra("image")
@@ -111,5 +112,6 @@ class ImageSplitActivity : AppCompatActivity() {
             }
         }
     }
+
 
 }
