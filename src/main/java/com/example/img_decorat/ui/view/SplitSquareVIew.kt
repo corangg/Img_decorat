@@ -23,11 +23,7 @@ class SplitSquareVIew @JvmOverloads constructor(
     private var lastTouchY = 0f
     private var parentWidth = 0
     private var parentHeight = 0
-    private val selectBorderPaint = Paint().apply {
-        color = Color.WHITE
-        style = Paint.Style.STROKE
-        strokeWidth = 4f
-    }
+
 
     init {
         setOnTouchListener(this)
@@ -79,11 +75,9 @@ class SplitSquareVIew @JvmOverloads constructor(
                         lastTouchY = event.y
                     } else {
                         if (newPosX < 0 || newRight > parentWidth) {
-                            // X축 경계를 넘어가면 이동하지 않음
                             dx = 0f
                         }
                         if (newPosY < 0 || newBottom > parentHeight) {
-                            // Y축 경계를 넘어가면 이동하지 않음
                             dy = 0f
                         }
                         matrix.postTranslate(dx, dy)
@@ -106,14 +100,12 @@ class SplitSquareVIew @JvmOverloads constructor(
         invalidate()
     }
 
-
-
-
-
-
-
-
-
+    fun strokePaint(strokeColor: Int, thickness : Float):Paint{
+        return Paint().apply {
+            color = strokeColor
+            style = Paint.Style.STROKE
+            strokeWidth = thickness}
+    }
 
     fun areaPoint(): FloatArray {
         val pos = getCurrentImagePosition()
@@ -156,10 +148,6 @@ class SplitSquareVIew @JvmOverloads constructor(
         return Pair(parentWidth,parentHeight)
     }
 
-
-
-
-
     private fun drawBorder(canvas: Canvas) {
         val point = areaPoint()
         val borderRect = RectF(
@@ -168,7 +156,7 @@ class SplitSquareVIew @JvmOverloads constructor(
             point[2],
             point[3]
         )
-        canvas.drawRect(borderRect, selectBorderPaint)
+        canvas.drawRect(borderRect, strokePaint(Color.WHITE,4f))
     }
 
     fun getCurrentImageSize(): Pair<Float, Float> {

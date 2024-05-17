@@ -3,6 +3,7 @@ package com.example.img_decorat.repository
 import android.content.Context
 import android.graphics.Bitmap
 import android.widget.FrameLayout
+import com.example.img_decorat.ui.view.SplitPolygonView
 import com.example.img_decorat.ui.view.SplitSquareVIew
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Stack
@@ -59,6 +60,17 @@ class SplitRepository @Inject constructor(
 
     fun squareSplitView():SplitSquareVIew{
         val splitArea = SplitSquareVIew(context, type = 0).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            setImageBitmap(layerListRepository.createTransparentBitmap(512,512))
+        }
+        return splitArea
+    }
+
+    fun polygoneSplitView():SplitPolygonView{
+        val splitArea = SplitPolygonView(context, type = 0).apply {
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT

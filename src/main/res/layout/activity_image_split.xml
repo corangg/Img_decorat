@@ -85,7 +85,7 @@
             android:layout_centerHorizontal="true"
             android:background="#2D2D2D"
             android:layout_below="@id/split_toorbar"
-            android:layout_above="@id/split_bottom_navigation"
+            android:layout_above="@id/slider_polygon"
             android:id="@+id/split_img_view"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="40dp"
@@ -98,6 +98,36 @@
                 android:id="@+id/split_img"/>
 
         </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/slider_polygon"
+            android:layout_marginHorizontal="40dp"
+            android:orientation="horizontal"
+            android:layout_above="@id/split_bottom_navigation"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_detail_navigation"
+            android:visibility="gone">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/ic_point"
+                android:backgroundTint="@color/white"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"/>
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:min="3"
+                android:max="10"
+                android:layout_marginRight="10dp"
+                android:progressTint="@color/white"
+                android:thumbTint="@color/white"
+                android:layout_gravity="center"
+                android:progress="@={viewmodel.polygonPoint}"/>
+
+        </LinearLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/split_bottom_navigation"

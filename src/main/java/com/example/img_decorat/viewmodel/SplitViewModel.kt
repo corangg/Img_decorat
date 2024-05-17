@@ -10,10 +10,12 @@ import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.bumptech.glide.Glide.init
 import com.example.img_decorat.R
 import com.example.img_decorat.dataModels.ImageSize
 import com.example.img_decorat.repository.LayerListRepository
 import com.example.img_decorat.repository.SplitRepository
+import com.example.img_decorat.ui.view.SplitPolygonView
 import com.example.img_decorat.ui.view.SplitSquareVIew
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -29,15 +31,20 @@ class SplitViewModel@Inject constructor(
     val splitImage : MutableLiveData<Bitmap> = MutableLiveData()
     val undoStackBoolean : MutableLiveData<Boolean> = MutableLiveData(false)
     val runStackBoolean : MutableLiveData<Boolean> = MutableLiveData(false)
+    val polygonPoint : MutableLiveData<Int> = MutableLiveData(3)
 
     val splitSquareView : MutableLiveData<SplitSquareVIew> = MutableLiveData()
+    val splitPolygonView : MutableLiveData<SplitPolygonView> = MutableLiveData()
+
 
     init {
         splitSquareView.value = splitRepository.squareSplitView()
+        splitPolygonView.value = splitRepository.polygoneSplitView()
         splitRepository.resetUndoStack()
         splitRepository.resetRunStack()
-
     }
+
+
 
     fun selectToolbarItem(item : Int):Boolean{
         when(item){
@@ -85,9 +92,11 @@ class SplitViewModel@Inject constructor(
     fun selectSplitItem(item: MenuItem):Boolean{
         when(item.itemId){
             R.id.split_nav_square->{
+                selectSplitItem.value = 0
                 return true
             }
             R.id.split_nav_polygon->{
+                selectSplitItem.value = 1
                 return true
             }
             R.id.split_nav_freestyle->{

@@ -30,11 +30,17 @@ abstract class ZoomableView@JvmOverloads constructor(
         scaleType = ScaleType.MATRIX
     }
 
+    override fun onTouch(v: View?, event: MotionEvent): Boolean {
+       return true
+    }
+
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         parentWidth = (parent as View).width
         parentHeight = (parent as View).height
     }
+
 
 
     fun strokePaint(strokeColor: Int, thickness : Float):Paint{
