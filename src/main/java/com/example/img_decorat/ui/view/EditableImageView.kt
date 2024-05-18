@@ -27,8 +27,8 @@ class EditableImageView @JvmOverloads constructor(
     private val rotateGestureDetector = RotateGestureDetector(RotateListener())
     private var lastTouchX = 0f
     private var lastTouchY = 0f
-    private var saturationValue = 0f
-    private var brightnessValue = 0f
+    private var saturationValue = 1f
+    private var brightnessValue = 1f
     private val selectBorderPaint = Paint().apply {
         color = Color.WHITE
         style = Paint.Style.STROKE
@@ -143,30 +143,31 @@ class EditableImageView @JvmOverloads constructor(
     }
 
     fun setImageSaturation(saturation: Float) {
-        /*val saturationShame = (saturation + 100f)/100f
-
-        val colorMatrix = ColorMatrix()
-        colorMatrix.setSaturation(saturationShame)
-        val filter = ColorMatrixColorFilter(colorMatrix)
-        colorFilter = filter
-
-        invalidate()*/
         saturationValue = (saturation + 100f)/100f
+        applyColorFilter()
     }
 
     fun setImageBrightness(brightness: Float) {
-        //val clampedBrightness = Math.max(-100f, Math.min(brightness, 100f))
-        val scale = (brightness + 100f) / 100f // -100 to 100 -> 0 to 2
-        val translate = -128f * (scale - 1)
+        brightnessValue = 0.008f*brightness +1f//(brightness + 80f) / 100f
+        applyColorFilter()
+    }
 
+    private fun applyColorFilter() {
         val colorMatrix = ColorMatrix()
-        colorMatrix.set(arrayOf(
-            scale, 0f, 0f, 0f, translate,
-            0f, scale, 0f, 0f, translate,
-            0f, 0f, scale, 0f, translate,
-            0f, 0f, 0f, 1f, 0f
-        ).toFloatArray())
 
+        // 채도 설정
+        val saturationMatrix = ColorMatrix()
+        saturationMatrix.setSaturation(saturationValue)
+
+        // 명도 설정
+        val brightnessMatrix = ColorMatrix()
+        brightnessMatrix.setScale(brightnessValue, brightnessValue, brightnessValue, 1f)
+
+        // 두 매트릭스를 결합
+        colorMatrix.postConcat(saturationMatrix)
+        colorMatrix.postConcat(brightnessMatrix)
+
+        // 색상 필터 적용
         val filter = ColorMatrixColorFilter(colorMatrix)
         colorFilter = filter
 
