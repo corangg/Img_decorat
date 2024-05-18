@@ -33,6 +33,7 @@ import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
 import com.example.img_decorat.ui.fragment.BackGroundFragment
+import com.example.img_decorat.ui.fragment.HueFragment
 import com.example.img_decorat.ui.view.BTNAnimation
 import com.example.img_decorat.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,6 +51,8 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
     @Inject lateinit var animation: BTNAnimation
 
     lateinit var backGroundFragment: BackGroundFragment
+    lateinit var hueFragment: HueFragment
+
     var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if(it.resultCode == Activity.RESULT_OK){
             val url =it.data?.getStringExtra("splitBitamp")?.toUri()
@@ -201,15 +204,26 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         viewModel.selectNavigationItem.observe(this){
             when(it){
                 0->{
+                    if(binding.detailNavigaionView.visibility == View.GONE){
+                        binding.detailNavigaionView.visibility = View.VISIBLE
+                    }
                     backGroundFragment = BackGroundFragment()
                     supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,backGroundFragment).commit()
                 }
                 1->{
+                    binding.detailNavigaionView.visibility = View.GONE
 
                     val image = viewModel.lastTouchedImage
                     val intent = Intent(this, ImageSplitActivity::class.java)
                     intent.putExtra("image",image.toString())
                     startForResult.launch(intent)
+                }
+                2->{
+                    if(binding.detailNavigaionView.visibility == View.GONE){
+                        binding.detailNavigaionView.visibility = View.VISIBLE
+                    }
+                    hueFragment = HueFragment()
+                    supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,hueFragment).commit()
                 }
             }
         }
@@ -243,6 +257,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
             binding.imgView.invalidate()
 
         }
+
     }
 
 

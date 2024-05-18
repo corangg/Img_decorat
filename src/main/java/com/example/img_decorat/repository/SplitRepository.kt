@@ -145,10 +145,8 @@ class SplitRepository @Inject constructor(
         val centerY = pos.second
         val radius = circleView.radius
 
-        // 원의 경로 설정
         circlePath.addCircle(centerX, centerY, radius, Path.Direction.CW)
 
-        // 뷰의 크기 얻기
         val viewSize = circleView.getParentSize()
         val scaleX = viewSize.first.toFloat() / bitmap.width.toFloat()
         val scaleY = viewSize.second.toFloat() / bitmap.height.toFloat()
@@ -168,33 +166,25 @@ class SplitRepository @Inject constructor(
         matrix.setScale(scale, scale)
         matrix.postTranslate(offsetX, offsetY)
 
-        // 스케일된 비트맵 생성
         val scaledBitmap = Bitmap.createBitmap(viewSize.first, viewSize.second, Bitmap.Config.ARGB_8888)
 
-        // 캔버스 생성
         val canvas = Canvas(scaledBitmap)
 
-        // 페인트 설정
         val paint = Paint().apply {
             isAntiAlias = true
             isFilterBitmap = true
             isDither = true
         }
 
-        // 원 경로를 캔버스에 그리기
         canvas.drawPath(circlePath, paint)
 
-        // 페인트 모드 설정
         paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
 
-        // 원본 비트맵을 그리기
         val srcRect = Rect(0, 0, bitmap.width, bitmap.height)
         val destRect = Rect(offsetX.toInt(), offsetY.toInt(), (bitmap.width * scale + offsetX).toInt(), (bitmap.height * scale + offsetY).toInt())
         canvas.drawBitmap(bitmap, srcRect, destRect, paint)
 
         return scaledBitmap
-
-
     }
 
     fun cropPolygonImage(splitAreaView: SplitPolygonView, bitmap: Bitmap): Bitmap {

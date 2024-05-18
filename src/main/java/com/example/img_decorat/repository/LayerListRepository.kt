@@ -31,6 +31,7 @@ class LayerListRepository @Inject constructor(
 
     var layerList = LinkedList<ImgLayerData>()
     var imageViewList = LinkedList<ImageViewData>()
+    lateinit var lastSelectViewData : ImageViewData
 
     fun uriToBitmap(imageUri: Uri): Bitmap? {
         context.contentResolver.openInputStream(imageUri).use { inputStream ->
@@ -152,9 +153,12 @@ class LayerListRepository @Inject constructor(
         val selectedItem = layerList.find { it.select }
 
         selectedItem?.let {
-            it.select = false }
+            it.select = false
+            }
 
         layerList[position].select = true
+        setLastSelectView(layerList[position].id)
+
         return layerList
     }
 
@@ -168,7 +172,15 @@ class LayerListRepository @Inject constructor(
         findItem?.let {
             it.select = true
         }
+
         return layerList
+    }
+
+    fun setLastSelectView(id: Int){
+        val selectedItem = imageViewList.find { it.img.id == id }
+        if(selectedItem != null){
+            lastSelectViewData = selectedItem
+        }
     }
 
     fun swapImageView(fromPos: Int, toPos: Int):LinkedList<ImageViewData>{
@@ -184,4 +196,80 @@ class LayerListRepository @Inject constructor(
     fun splitBitmaptoUri(bitmap: Bitmap) :Uri{
         return context.bitmapToUri(bitmap)!!
     }
+
+    fun checkLastSelectImage(id: Int):Boolean{
+        val selectedItem = layerList.find { it.select }
+        if(selectedItem != null){
+            if(selectedItem.id == id){
+                return false
+            }else{
+                return true
+            }
+        }else{
+            selectLastImage(id)
+        }
+        return false
+    }
+
+    fun editImageViewSaturation(saturation : Int){
+        val selectedItem = layerList.find { it.select }
+        if(selectedItem != null){
+            val id = selectedItem.id
+            val selectImageView = imageViewList.find { it.img.id == id }
+            if(selectImageView != null){
+                selectImageView.saturation = saturation
+                selectImageView.img.setImageSaturation(saturation.toFloat())
+            }
+        }
+    }
+
+    fun checkSaturatio(saturatio: Int?):Int{
+        if(lastSelectViewData.saturation != saturatio){
+            return lastSelectViewData.saturation
+        }else{
+            return saturatio
+        }
+    }
+
+    fun editImageViewBrightness(brightness : Int){
+        val selectedItem = layerList.find { it.select }
+        if(selectedItem != null){
+            val id = selectedItem.id
+            val selectImageView = imageViewList.find { it.img.id == id }
+            if(selectImageView != null){
+                selectImageView.brightness = brightness
+                selectImageView.img.setImageBrightness(brightness.toFloat())
+            }
+        }
+    }
+
+    fun checkBrightness(brightness: Int?):Int{
+        if(lastSelectViewData.brightness != brightness){
+            return lastSelectViewData.brightness
+        }else{
+            return brightness
+        }
+    }
+
+    fun editImageViewTransparency(alpha : Int){
+        val selectedItem = layerList.find { it.select }
+        if(selectedItem != null){
+            val id = selectedItem.id
+            val selectImageView = imageViewList.find { it.img.id == id }
+            if(selectImageView != null){
+                selectImageView.transparency = alpha
+                selectImageView.img.setImageTransparency(alpha.toFloat())
+            }
+        }
+    }
+
+    fun checkTransparency(transparency: Int?):Int{
+        if(lastSelectViewData.transparency != transparency){
+            return lastSelectViewData.transparency
+        }else{
+            return transparency
+        }
+    }
+
+
 }

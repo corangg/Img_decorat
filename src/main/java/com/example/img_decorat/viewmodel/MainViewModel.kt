@@ -57,9 +57,23 @@ class MainViewModel @Inject constructor(
     val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
     val unsplashList: MutableLiveData<MutableList<UnsplashData>> = MutableLiveData()
 
+    val imageSaturationValue : MutableLiveData<Int> = MutableLiveData(0)
+    val imageBrightnessValue : MutableLiveData<Int> = MutableLiveData(0)
+    val imageTransparencyValue : MutableLiveData<Int> = MutableLiveData(100)
+
     lateinit var lastTouchedImage : Uri
 
-
+    init {
+        imageSaturationValue.observeForever {
+            layerListRepository.editImageViewSaturation(imageSaturationValue.value!!)
+        }
+        imageBrightnessValue.observeForever {
+            layerListRepository.editImageViewBrightness(imageBrightnessValue.value!!)
+        }
+        imageTransparencyValue.observeForever {
+            layerListRepository.editImageViewTransparency(imageTransparencyValue.value!!)
+        }
+    }
 
     fun bottomNavigationItemSelected(item : MenuItem):Boolean{
         when(item.itemId){
@@ -150,9 +164,20 @@ class MainViewModel @Inject constructor(
         }
     }
 
+
+
     fun selectLastImage(id: Int){
-        liveLayerList.value = layerListRepository.selectLastImage(id)
-        lastTouchedImageId.value = id
+        if(layerListRepository.checkLastSelectImage(id)){
+            liveLayerList.value = layerListRepository.selectLastImage(id)
+            layerListRepository.setLastSelectView(id)
+            liveImageViewList.value =layerListRepository.imageViewList
+            lastTouchedImageId.value = id
+
+            imageSaturationValue.value = layerListRepository.checkSaturatio(imageSaturationValue.value)
+            imageBrightnessValue.value = layerListRepository.checkBrightness(imageBrightnessValue.value)
+            imageTransparencyValue.value = layerListRepository.checkTransparency(imageTransparencyValue.value)
+
+        }
     }
 
     fun swapImageView(fromPos: Int, toPos: Int){

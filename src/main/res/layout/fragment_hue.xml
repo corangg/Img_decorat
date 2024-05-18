@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.img_decorat.viewmodel.MainViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_detail_navigation"
+        android:orientation="vertical"
+        android:id="@+id/hue_edit_view"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="20dp"
+        tools:context=".ui.fragment.HueFragment">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/slider_saturation"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:gravity="center"
+                android:text="채도"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="@{String.valueOf(viewmodel.imageSaturationValue)}"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+            <SeekBar
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:min="-100"
+                android:max="100"
+                android:layout_marginRight="10dp"
+                android:progressTint="@color/white"
+                android:thumbTint="@color/white"
+                android:layout_gravity="center"
+                android:progress="@={viewmodel.imageSaturationValue}"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/slider_brightness"
+            android:layout_marginVertical="12dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:gravity="center"
+                android:text="명도"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="@{String.valueOf(viewmodel.imageBrightnessValue)}"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+            <SeekBar
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:min="-100"
+                android:max="100"
+                android:layout_marginRight="10dp"
+                android:progressTint="@color/white"
+                android:thumbTint="@color/white"
+                android:layout_gravity="center"
+                android:progress="@={viewmodel.imageBrightnessValue}"/>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/slider_transparency"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:gravity="center"
+                android:text="투명도"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="@{String.valueOf(viewmodel.imageTransparencyValue)}"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+            <SeekBar
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:min="0"
+                android:max="100"
+                android:layout_marginRight="10dp"
+                android:progressTint="@color/white"
+                android:thumbTint="@color/white"
+                android:layout_gravity="center"
+                android:progress="@={viewmodel.imageTransparencyValue}"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

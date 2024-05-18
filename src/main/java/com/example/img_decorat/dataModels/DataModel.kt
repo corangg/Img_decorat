@@ -14,6 +14,9 @@ data class ImgLayerData(
 data class ImageViewData(
     val img : EditableImageView,
     var visible : Boolean = true,
+    var saturation : Int = 0,
+    var brightness : Int = 0,
+    var transparency : Int = 100
 )
 
 data class ImageSize(

@@ -3,6 +3,8 @@ package com.example.img_decorat.ui.view
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
@@ -25,6 +27,8 @@ class EditableImageView @JvmOverloads constructor(
     private val rotateGestureDetector = RotateGestureDetector(RotateListener())
     private var lastTouchX = 0f
     private var lastTouchY = 0f
+    private var saturationValue = 0f
+    private var brightnessValue = 0f
     private val selectBorderPaint = Paint().apply {
         color = Color.WHITE
         style = Paint.Style.STROKE
@@ -69,34 +73,21 @@ class EditableImageView @JvmOverloads constructor(
 
                     lastTouchX = event.x
                     lastTouchY = event.y
+                    invalidate()
                 }
             }
         }
-
-        invalidate()
         return true
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawBorder(canvas)
-        invalidate()
     }
-
-
-
-
-
-
-
-
-
 
     fun setViewModel(viewModel: MainViewModel) {
         this.viewModel = viewModel
     }
-
-
 
     private fun isPointInPolygon(x: Float, y: Float, polygon: FloatArray): Boolean {
         var intersectCount = 0
@@ -144,6 +135,44 @@ class EditableImageView @JvmOverloads constructor(
         matrix.mapPoints(points)
         return points
     }
+
+    fun setImageTransparency(alpha: Float) {
+        val clampedAlpha = Math.max(0f, Math.min(alpha, 100f)) / 100f
+        this.alpha = clampedAlpha
+        invalidate()
+    }
+
+    fun setImageSaturation(saturation: Float) {
+        /*val saturationShame = (saturation + 100f)/100f
+
+        val colorMatrix = ColorMatrix()
+        colorMatrix.setSaturation(saturationShame)
+        val filter = ColorMatrixColorFilter(colorMatrix)
+        colorFilter = filter
+
+        invalidate()*/
+        saturationValue = (saturation + 100f)/100f
+    }
+
+    fun setImageBrightness(brightness: Float) {
+        //val clampedBrightness = Math.max(-100f, Math.min(brightness, 100f))
+        val scale = (brightness + 100f) / 100f // -100 to 100 -> 0 to 2
+        val translate = -128f * (scale - 1)
+
+        val colorMatrix = ColorMatrix()
+        colorMatrix.set(arrayOf(
+            scale, 0f, 0f, 0f, translate,
+            0f, scale, 0f, 0f, translate,
+            0f, 0f, scale, 0f, translate,
+            0f, 0f, 0f, 1f, 0f
+        ).toFloatArray())
+
+        val filter = ColorMatrixColorFilter(colorMatrix)
+        colorFilter = filter
+
+        invalidate()
+    }
+
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
