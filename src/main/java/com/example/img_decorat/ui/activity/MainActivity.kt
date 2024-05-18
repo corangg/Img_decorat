@@ -17,6 +17,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -51,7 +52,10 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
     lateinit var backGroundFragment: BackGroundFragment
     var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if(it.resultCode == Activity.RESULT_OK){
-            true
+            val url =it.data?.getStringExtra("splitBitamp")?.toUri()
+            if(url!=null){
+                viewModel.reseultSplitView(url)
+            }
         }
     }
 
@@ -205,7 +209,6 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
                     val image = viewModel.lastTouchedImage
                     val intent = Intent(this, ImageSplitActivity::class.java)
                     intent.putExtra("image",image.toString())
-                    //startActivity(intent)
                     startForResult.launch(intent)
                 }
             }

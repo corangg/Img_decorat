@@ -1,5 +1,6 @@
 package com.example.img_decorat.ui.activity
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -90,6 +91,10 @@ class ImageSplitActivity : AppCompatActivity() {
                 }
                 4->{
                     animation.buttionAnimation(binding.checkBtn)
+                    val resultIntent = Intent()
+                    resultIntent.putExtra("splitBitamp",viewmodel.splitUri.toString())
+                    setResult(RESULT_OK,resultIntent)
+                    finish()
                 }
             }
         }
@@ -123,9 +128,9 @@ class ImageSplitActivity : AppCompatActivity() {
                         splitPolygonView.visibility = View.VISIBLE
                     }
                 }
-                3->{
+                /*3->{
                     binding.sliderPolygon.visibility = View.GONE
-                }
+                }*/
             }
         }
         viewmodel.splitImage.observe(this){

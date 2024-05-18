@@ -2,6 +2,7 @@ package com.example.img_decorat.viewmodel
 
 import android.app.Application
 import android.graphics.Bitmap
+import android.net.Uri
 import android.view.MenuItem
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
@@ -32,6 +33,7 @@ class SplitViewModel@Inject constructor(
     val splitCircleView : MutableLiveData<SplitCircleView> = MutableLiveData()
     val splitPolygonView : MutableLiveData<SplitPolygonView> = MutableLiveData()
 
+    lateinit var splitUri : Uri
 
     init {
         splitSquareView.value = splitRepository.squareSplitView()
@@ -79,6 +81,7 @@ class SplitViewModel@Inject constructor(
                     return true
             }
             4->{
+                splitUri = layerListRepository.splitBitmaptoUri(splitImage.value!!)
                 selectToolbar.value = 4
                 return true
             }
@@ -100,9 +103,10 @@ class SplitViewModel@Inject constructor(
                 selectSplitItem.value = 2
                 return true
             }
-            R.id.split_nav_freestyle->{
+            /*R.id.split_nav_freestyle->{
+                selectSplitItem.value = 3
                 return true
-            }
+            }*/
         }
         return false
     }

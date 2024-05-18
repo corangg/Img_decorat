@@ -74,6 +74,16 @@ class LayerListRepository @Inject constructor(
         return layerList
     }
 
+    fun addSplitImage(uri: Uri):LinkedList<ImgLayerData>{
+        val bitmap = uriToBitmap(uri)
+        val id = imageDataRepository.setID()
+        if(bitmap != null){
+            addLayerList(id,bitmap)
+            addImageViewList(id,bitmap)
+        }
+        return layerList
+    }
+
     fun addLayerList(id : Int, bitmap: Bitmap){
         val layerData = ImgLayerData(bitmap,false,id)
         layerList.add(layerData)
@@ -169,5 +179,9 @@ class LayerListRepository @Inject constructor(
     fun setLastTouchedImage(id: Int): Uri{
         val image = layerList.find { it.id == id }
         return context.bitmapToUri(image!!.bitMap)!!//image!!.bitMap//null가능성 없는거 같긴한데...
+    }
+
+    fun splitBitmaptoUri(bitmap: Bitmap) :Uri{
+        return context.bitmapToUri(bitmap)!!
     }
 }

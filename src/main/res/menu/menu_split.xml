@@ -22,11 +22,11 @@
         android:iconTint="@color/white"
         app:showAsAction="always"
         />
-    <item
+    <!--<item
         android:id="@+id/split_nav_freestyle"
         android:title="자유형"
         android:icon="@drawable/ic_freestyle"
         android:iconTint="@color/white"
         app:showAsAction="always"
-        />
+        />-->
 </menu>

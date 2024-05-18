@@ -186,4 +186,8 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+    fun reseultSplitView(uri:Uri){
+        liveLayerList.value = layerListRepository.addSplitImage(uri)
+    }
 }
