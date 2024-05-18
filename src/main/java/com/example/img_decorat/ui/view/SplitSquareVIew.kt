@@ -13,8 +13,8 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 
 class SplitSquareVIew @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0,type : Int
-) : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener {
+    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
+    : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener {
 
     private val matrix = Matrix()
     private var scaleFactor = 1.0f
@@ -96,7 +96,7 @@ class SplitSquareVIew @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawBorder(canvas)
-        invalidate()
+        //invalidate()
     }
 
     fun strokePaint(strokeColor: Int, thickness : Float):Paint{

@@ -12,6 +12,7 @@ import com.example.img_decorat.R
 import com.example.img_decorat.databinding.ActivityImageSplitBinding
 import com.example.img_decorat.repository.LayerListRepository
 import com.example.img_decorat.ui.view.BTNAnimation
+import com.example.img_decorat.ui.view.SplitCircleView
 import com.example.img_decorat.ui.view.SplitPolygonView
 import com.example.img_decorat.ui.view.SplitSquareVIew
 import com.example.img_decorat.viewmodel.SplitViewModel
@@ -24,6 +25,7 @@ class ImageSplitActivity : AppCompatActivity() {
     private val viewmodel: SplitViewModel by viewModels()
 
     private lateinit var splitSquareView: SplitSquareVIew
+    private lateinit var splitCircleView: SplitCircleView
     private lateinit var splitPolygonView: SplitPolygonView
 
 
@@ -50,7 +52,7 @@ class ImageSplitActivity : AppCompatActivity() {
         }
     }
 
-    private fun setSplitView(){
+    private fun setSplitView(){//생성을 조금 나중에 해야하나?
         if(viewmodel.splitSquareView.value != null){
             splitSquareView = viewmodel.splitSquareView.value!!
             binding.splitImgView.addView(splitSquareView)
@@ -60,6 +62,11 @@ class ImageSplitActivity : AppCompatActivity() {
             splitPolygonView = viewmodel.splitPolygonView.value!!
             binding.splitImgView.addView(splitPolygonView)
             splitPolygonView.visibility = View.GONE
+        }
+        if(viewmodel.splitCircleView.value != null){
+            splitCircleView = viewmodel.splitCircleView.value!!
+            binding.splitImgView.addView(splitCircleView)
+            splitCircleView.visibility = View.GONE
         }
     }
 
@@ -90,6 +97,7 @@ class ImageSplitActivity : AppCompatActivity() {
             when(it){
                 0->{
                     binding.sliderPolygon.visibility = View.GONE
+                    splitCircleView.visibility = View.GONE
                     splitPolygonView.visibility = View.GONE
 
                     if(splitSquareView.visibility == View.GONE){
@@ -101,9 +109,14 @@ class ImageSplitActivity : AppCompatActivity() {
                     splitSquareView.visibility = View.GONE
                     splitPolygonView.visibility = View.GONE
 
+                    if(splitCircleView.visibility == View.GONE){
+                        splitCircleView.visibility = View.VISIBLE
+                    }
+
                 }
                 2->{
                     binding.sliderPolygon.visibility = View.VISIBLE
+                    splitCircleView.visibility = View.GONE
                     splitSquareView.visibility = View.GONE
 
                     if(splitPolygonView.visibility == View.GONE){

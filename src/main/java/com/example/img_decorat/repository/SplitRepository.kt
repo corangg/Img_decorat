@@ -10,6 +10,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.widget.FrameLayout
+import com.example.img_decorat.ui.view.SplitCircleView
 import com.example.img_decorat.ui.view.SplitPolygonView
 import com.example.img_decorat.ui.view.SplitSquareVIew
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -66,7 +67,18 @@ class SplitRepository @Inject constructor(
 
 
     fun squareSplitView():SplitSquareVIew{
-        val splitArea = SplitSquareVIew(context, type = 0).apply {
+        val splitArea = SplitSquareVIew(context).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            setImageBitmap(layerListRepository.createTransparentBitmap(512,512))
+        }
+        return splitArea
+    }
+
+    fun circleSplitView():SplitCircleView{
+        val splitArea = SplitCircleView(context).apply {
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
@@ -124,6 +136,65 @@ class SplitRepository @Inject constructor(
         )
 
         return croppedBitmap
+    }
+
+    fun cropCircleImage(circleView: SplitCircleView,bitmap: Bitmap):Bitmap{
+        val circlePath = Path()
+        val pos = circleView.getCurrentImagePosition()
+        val centerX = pos.first
+        val centerY = pos.second
+        val radius = circleView.radius
+
+        // 원의 경로 설정
+        circlePath.addCircle(centerX, centerY, radius, Path.Direction.CW)
+
+        // 뷰의 크기 얻기
+        val viewSize = circleView.getParentSize()
+        val scaleX = viewSize.first.toFloat() / bitmap.width.toFloat()
+        val scaleY = viewSize.second.toFloat() / bitmap.height.toFloat()
+        var scale = 0f
+        var offsetX = 0f
+        var offsetY = 0f
+
+        if (scaleX < scaleY) {
+            offsetY = (viewSize.second - scaleX * bitmap.height) / 2
+            scale = scaleX
+        } else {
+            offsetX = (viewSize.first - scaleY * bitmap.width) / 2
+            scale = scaleY
+        }
+
+        val matrix = Matrix()
+        matrix.setScale(scale, scale)
+        matrix.postTranslate(offsetX, offsetY)
+
+        // 스케일된 비트맵 생성
+        val scaledBitmap = Bitmap.createBitmap(viewSize.first, viewSize.second, Bitmap.Config.ARGB_8888)
+
+        // 캔버스 생성
+        val canvas = Canvas(scaledBitmap)
+
+        // 페인트 설정
+        val paint = Paint().apply {
+            isAntiAlias = true
+            isFilterBitmap = true
+            isDither = true
+        }
+
+        // 원 경로를 캔버스에 그리기
+        canvas.drawPath(circlePath, paint)
+
+        // 페인트 모드 설정
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+
+        // 원본 비트맵을 그리기
+        val srcRect = Rect(0, 0, bitmap.width, bitmap.height)
+        val destRect = Rect(offsetX.toInt(), offsetY.toInt(), (bitmap.width * scale + offsetX).toInt(), (bitmap.height * scale + offsetY).toInt())
+        canvas.drawBitmap(bitmap, srcRect, destRect, paint)
+
+        return scaledBitmap
+
+
     }
 
     fun cropPolygonImage(splitAreaView: SplitPolygonView, bitmap: Bitmap): Bitmap {

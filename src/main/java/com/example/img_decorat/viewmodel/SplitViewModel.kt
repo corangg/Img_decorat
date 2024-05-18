@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.img_decorat.R
 import com.example.img_decorat.repository.LayerListRepository
 import com.example.img_decorat.repository.SplitRepository
+import com.example.img_decorat.ui.view.SplitCircleView
 import com.example.img_decorat.ui.view.SplitPolygonView
 import com.example.img_decorat.ui.view.SplitSquareVIew
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,11 +29,13 @@ class SplitViewModel@Inject constructor(
     val polygonPoint : MutableLiveData<Int> = MutableLiveData(3)
 
     val splitSquareView : MutableLiveData<SplitSquareVIew> = MutableLiveData()
+    val splitCircleView : MutableLiveData<SplitCircleView> = MutableLiveData()
     val splitPolygonView : MutableLiveData<SplitPolygonView> = MutableLiveData()
 
 
     init {
         splitSquareView.value = splitRepository.squareSplitView()
+        splitCircleView.value = splitRepository.circleSplitView()
         splitPolygonView.value = splitRepository.polygoneSplitView()
         splitRepository.resetUndoStack()
         splitRepository.resetRunStack()
@@ -113,12 +116,12 @@ class SplitViewModel@Inject constructor(
             0->{
                 splitImage.value = splitRepository.cropSquareImage(splitSquareView.value!!,splitImage.value!!)
             }
+            1->{
+                splitImage.value = splitRepository.cropCircleImage(splitCircleView.value!!,splitImage.value!!)
+            }
             2->{
                 splitImage.value = splitRepository.cropPolygonImage(splitPolygonView.value!!,splitImage.value!!)
             }
         }
-
     }
-
-
 }

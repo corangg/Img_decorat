@@ -129,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:min="3"
-                android:max="10"
+                android:max="16"
                 android:layout_marginRight="10dp"
                 android:progressTint="@color/white"
                 android:thumbTint="@color/white"
