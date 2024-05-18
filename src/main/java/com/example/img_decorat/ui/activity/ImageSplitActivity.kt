@@ -97,15 +97,20 @@ class ImageSplitActivity : AppCompatActivity() {
                     }
                 }
                 1->{
+                    binding.sliderPolygon.visibility = View.GONE
+                    splitSquareView.visibility = View.GONE
+                    splitPolygonView.visibility = View.GONE
+
+                }
+                2->{
                     binding.sliderPolygon.visibility = View.VISIBLE
                     splitSquareView.visibility = View.GONE
 
                     if(splitPolygonView.visibility == View.GONE){
                         splitPolygonView.visibility = View.VISIBLE
                     }
-
                 }
-                2->{
+                3->{
                     binding.sliderPolygon.visibility = View.GONE
                 }
             }

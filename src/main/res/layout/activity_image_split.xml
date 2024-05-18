@@ -116,6 +116,15 @@
                 android:backgroundTint="@color/white"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/polygon_text"
+                android:layout_gravity="center"
+                android:text="@{String.valueOf(viewmodel.polygonPoint)}"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
             <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

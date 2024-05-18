@@ -89,8 +89,12 @@ class SplitViewModel@Inject constructor(
                 selectSplitItem.value = 0
                 return true
             }
-            R.id.split_nav_polygon->{
+            R.id.split_nav_circle->{
                 selectSplitItem.value = 1
+                return true
+            }
+            R.id.split_nav_polygon->{
+                selectSplitItem.value = 2
                 return true
             }
             R.id.split_nav_freestyle->{
@@ -109,7 +113,7 @@ class SplitViewModel@Inject constructor(
             0->{
                 splitImage.value = splitRepository.cropSquareImage(splitSquareView.value!!,splitImage.value!!)
             }
-            1->{
+            2->{
                 splitImage.value = splitRepository.cropPolygonImage(splitPolygonView.value!!,splitImage.value!!)
             }
         }

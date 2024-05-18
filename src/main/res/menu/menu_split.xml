@@ -9,6 +9,13 @@
         app:showAsAction="always"
         />
     <item
+        android:id="@+id/split_nav_circle"
+        android:title="원"
+        android:icon="@drawable/ic_circle"
+        android:iconTint="@color/white"
+        app:showAsAction="always"
+        />
+    <item
         android:id="@+id/split_nav_polygon"
         android:title="다각형"
         android:icon="@drawable/ic_polygon"
