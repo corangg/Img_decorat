@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.Region
 import android.util.AttributeSet
@@ -13,15 +14,14 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
+import com.bumptech.glide.Glide.init
 
 class SplitPolygonView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0, type : Int
+    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0, type: Int
 ) : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener {
 
     private val matrix = Matrix()
-    var polygonPoints : Int = 3
-    private var scaleFactor = 1.0f
-    private val scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
+    var polygonPoints: Int = 3
     private var lastTouchX = 0f
     private var lastTouchY = 0f
     private var parentWidth = 0
@@ -31,48 +31,47 @@ class SplitPolygonView @JvmOverloads constructor(
     private var pointsArray = floatArrayOf()
     private var movingPointIndex = -1
 
-
     init {
         setOnTouchListener(this)
         scaleType = ScaleType.MATRIX
     }
+
+    fun getParentSize():Pair<Int,Int>{
+        return Pair(parentWidth,parentHeight)
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         parentWidth = (parent as View).width
         parentHeight = (parent as View).height
+        updatePolygonPoints()
     }
 
-    fun setPolygon(polygone: Int){
-        polygonPoints = polygone
+    fun setPolygon(polygon: Int) {
+        polygonPoints = polygon
+        updatePolygonPoints()
     }
 
-    fun touchPoint(event: MotionEvent){
-        val x = event.x
-        val y = event.y
-
-        for(i in pointsArray.indices step 2 ){
-            if(x in pointsArray[i]-20 .. pointsArray[i]+20&& y in pointsArray[i+1]-20 .. pointsArray[i+1] +20){
-                true
-
-            }
-        }
-
+    private fun updatePolygonPoints() {
+        pointsArray = getPolygonPoints()
+        invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawBorder(canvas)
-        invalidate()
     }
-    fun strokePaint(strokeColor: Int, thickness : Float):Paint{
+
+    fun strokePaint(strokeColor: Int, thickness: Float): Paint {
         return Paint().apply {
             color = strokeColor
             style = Paint.Style.STROKE
-            strokeWidth = thickness}
+            strokeWidth = thickness
+        }
     }
 
     private fun drawBorder(canvas: Canvas) {
-        val points = getPolygonPoints()
+        val points = pointsArray
         val path = Path().apply {
             moveTo(points[0], points[1])
             for (i in 2 until points.size step 2) {
@@ -80,7 +79,7 @@ class SplitPolygonView @JvmOverloads constructor(
             }
             close()
         }
-        canvas.drawPath(path, strokePaint(Color.WHITE,4f))
+        canvas.drawPath(path, strokePaint(Color.WHITE, 4f))
 
         val dotPaint = Paint().apply {
             color = Color.WHITE
@@ -104,18 +103,70 @@ class SplitPolygonView @JvmOverloads constructor(
         }
 
         matrix.mapPoints(points)
-        pointsArray = points//일단 이렇게 저장
         return points
+    }
+
+    private fun touchPoint(event: MotionEvent) {
+        val x = event.x
+        val y = event.y
+
+        for (i in pointsArray.indices step 2) {
+            if (x in pointsArray[i] - 50..pointsArray[i] + 50 && y in pointsArray[i + 1] - 50..pointsArray[i + 1] + 50) {
+                movingPointIndex = i
+                return
+            }
+        }
+        movingPointIndex = -1
+    }
+
+    private fun updatePointPosition(event: MotionEvent) {
+        if (movingPointIndex != -1) {
+            pointsArray[movingPointIndex] = event.x
+            pointsArray[movingPointIndex + 1] = event.y
+            invalidate()
+        }
+    }
+
+    override fun onTouch(v: View?, event: MotionEvent): Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                lastTouchX = event.x
+                lastTouchY = event.y
+                touchPoint(event)
+                invalidate()
+            }
+            MotionEvent.ACTION_MOVE -> {
+                if (movingPointIndex != -1) {
+                    updatePointPosition(event)
+                } else if (touchInsideImage(event)) {
+                    val dx = event.x - lastTouchX
+                    val dy = event.y - lastTouchY
+
+                    for (i in pointsArray.indices step 2) {
+                        pointsArray[i] += dx
+                        pointsArray[i + 1] += dy
+                    }
+
+                    lastTouchX = event.x
+                    lastTouchY = event.y
+                    invalidate()
+                }
+            }
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                movingPointIndex = -1
+            }
+        }
+
+        return true
     }
 
     fun touchInsideImage(event: MotionEvent): Boolean {
         val x = event.x
         val y = event.y
-        val points = getPolygonPoints()
         val path = Path().apply {
-            moveTo(points[0], points[1])
-            for (i in 2 until points.size step 2) {
-                lineTo(points[i], points[i + 1])
+            moveTo(pointsArray[0], pointsArray[1])
+            for (i in 2 until pointsArray.size step 2) {
+                lineTo(pointsArray[i], pointsArray[i + 1])
             }
             close()
         }
@@ -123,67 +174,19 @@ class SplitPolygonView @JvmOverloads constructor(
         val region = Region()
         val rectF = RectF()
         path.computeBounds(rectF, true)
+
         region.setPath(path, Region(rectF.left.toInt(), rectF.top.toInt(), rectF.right.toInt(), rectF.bottom.toInt()))
 
         return region.contains(x.toInt(), y.toInt())
     }
 
-
-    override fun onTouch(v: View?, event: MotionEvent): Boolean {
-
-
-        touchPoint(event)
-        if(!touchInsideImage(event)){
-            return false
-        }
-
-
-
-        scaleGestureDetector.onTouchEvent(event)
-
-        if (!scaleGestureDetector.isInProgress) {
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    lastTouchX = event.x
-                    lastTouchY = event.y
-                    invalidate()
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    var dx = event.x - lastTouchX
-                    var dy = event.y - lastTouchY
-
-                    matrix.postTranslate(dx, dy)
-                    imageMatrix = matrix
-
-                    lastTouchX = event.x
-                    lastTouchY = event.y
-                }
+    fun getPolygonPath(): Path {
+        return Path().apply {
+            moveTo(pointsArray[0], pointsArray[1])
+            for (i in 2 until pointsArray.size step 2) {
+                lineTo(pointsArray[i], pointsArray[i + 1])
             }
-        }
-
-        invalidate()
-        return true
-    }
-
-    private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-
-        override fun onScale(detector: ScaleGestureDetector): Boolean {
-            var scale = detector.scaleFactor
-            val currentScaleFactor = scaleFactor * scale
-            val maxScale = Math.min(parentWidth / drawable.intrinsicWidth.toFloat(),parentHeight / drawable.intrinsicHeight.toFloat())
-            val minScale = 0.1f
-
-            if (currentScaleFactor > maxScale) {
-                scale = maxScale / scaleFactor
-            } else if (currentScaleFactor < minScale) {
-                scale = minScale / scaleFactor
-            }
-
-            scaleFactor *= scale
-            matrix.postScale(scale, scale, detector.focusX, detector.focusY)
-            imageMatrix = matrix
-            invalidate()
-            return true
+            close()
         }
     }
 }

@@ -2,6 +2,13 @@ package com.example.img_decorat.repository
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
 import android.widget.FrameLayout
 import com.example.img_decorat.ui.view.SplitPolygonView
 import com.example.img_decorat.ui.view.SplitSquareVIew
@@ -80,9 +87,7 @@ class SplitRepository @Inject constructor(
         return splitArea
     }
 
-    fun cropImage(splitAreaView : SplitSquareVIew, bitmap: Bitmap) : Bitmap {
-
-
+    fun cropSquareImage(splitAreaView : SplitSquareVIew, bitmap: Bitmap) : Bitmap {
         val viewSize = splitAreaView.getParentSize()
         bitmap.width
         val scaleX = bitmap.width.toFloat()/viewSize.first.toFloat()
@@ -119,6 +124,52 @@ class SplitRepository @Inject constructor(
         )
 
         return croppedBitmap
+    }
+
+    fun cropPolygonImage(splitAreaView: SplitPolygonView, bitmap: Bitmap): Bitmap {
+        val polygonPath = splitAreaView.getPolygonPath()
+        val viewSize = splitAreaView.getParentSize()
+        val scaleX = viewSize.first.toFloat()/bitmap.width.toFloat()
+        val scaleY = viewSize.second.toFloat()/bitmap.height.toFloat()
+        var scale = 0f
+        var offsetX = 0f
+        var offsetY = 0f
+
+        if(scaleX<scaleY){
+            offsetY = (viewSize.second- scaleX*bitmap.height)/2
+            scale = scaleX
+
+        }else{
+            offsetX = (viewSize.first - scaleY*bitmap.width)/2
+            scale = scaleY
+        }
+
+        val matrix = Matrix()
+        matrix.setScale(scale, scale)
+        matrix.postTranslate(offsetX, offsetY)
+        val scaledPath = Path()
+        polygonPath.transform(matrix, scaledPath)
+
+        val scaledBitmap = Bitmap.createBitmap(viewSize.first, viewSize.second, Bitmap.Config.ARGB_8888)
+
+        val canvas = Canvas(scaledBitmap)
+
+        val paint = Paint().apply {
+            isAntiAlias = true
+            isFilterBitmap = true
+            isDither = true
+        }
+
+        canvas.drawPath(polygonPath, paint)
+
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+
+        val srcRect = Rect(0, 0, bitmap.width, bitmap.height)
+
+        val destRect = Rect(offsetX.toInt(), offsetY.toInt(), (bitmap.width * scale + offsetX).toInt(), (bitmap.height * scale + offsetY).toInt())
+        canvas.drawBitmap(bitmap, srcRect, destRect, paint)
+
+        return scaledBitmap
     }
 
 }

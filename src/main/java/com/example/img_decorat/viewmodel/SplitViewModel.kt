@@ -2,17 +2,11 @@ package com.example.img_decorat.viewmodel
 
 import android.app.Application
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.os.Build.VERSION_CODES.M
 import android.view.MenuItem
-import android.widget.FrameLayout
-import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.bumptech.glide.Glide.init
 import com.example.img_decorat.R
-import com.example.img_decorat.dataModels.ImageSize
 import com.example.img_decorat.repository.LayerListRepository
 import com.example.img_decorat.repository.SplitRepository
 import com.example.img_decorat.ui.view.SplitPolygonView
@@ -75,7 +69,7 @@ class SplitViewModel@Inject constructor(
             3->{
                 selectToolbar.value = 3
                 splitRepository.addUndoStack(splitImage.value)
-                splitImage.value = splitRepository.cropImage(splitSquareView.value!!,splitImage.value!!)
+                splitItem()
                 splitRepository.resetRunStack()
                 undoStackBoolean.value = splitRepository.checkUndo()
                 runStackBoolean.value = splitRepository.checkRun()
@@ -108,6 +102,18 @@ class SplitViewModel@Inject constructor(
 
     fun intentToBitmap(uri : String){
         splitImage.value = layerListRepository.uriToBitmap(uri.toUri())
+    }
+
+    fun splitItem(){
+        when(selectSplitItem.value){
+            0->{
+                splitImage.value = splitRepository.cropSquareImage(splitSquareView.value!!,splitImage.value!!)
+            }
+            1->{
+                splitImage.value = splitRepository.cropPolygonImage(splitPolygonView.value!!,splitImage.value!!)
+            }
+        }
+
     }
 
 

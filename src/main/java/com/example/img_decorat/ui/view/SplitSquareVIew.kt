@@ -90,7 +90,6 @@ class SplitSquareVIew @JvmOverloads constructor(
             }
         }
 
-        invalidate()
         return true
     }
 
