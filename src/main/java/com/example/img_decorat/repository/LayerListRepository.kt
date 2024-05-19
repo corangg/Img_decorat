@@ -77,14 +77,30 @@ class LayerListRepository @Inject constructor(
 
     fun addSplitImage(uri: Uri):LinkedList<ImgLayerData>{
         val bitmap = uriToBitmap(uri)
-        val id = imageDataRepository.setID()
-        bitmap?.let {
-            addLayerList(id,bitmap)
-            addImageViewList(id,bitmap)
+        val selectItem = layerList.find { it.select}
+        selectItem?.let {
+            bitmap?.let {
+                selectItem.bitMap = bitmap
+                changeImageViewList(selectItem.id,bitmap)
+            }
         }
         return layerList
     }
 
+    fun changeImageViewList(changeId : Int, bitmap: Bitmap){
+        val selectItem = imageViewList.find { it.img.id == changeId }
+        selectItem?.let {
+            val imageView = EditableImageView(context).apply {
+                layoutParams = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.WRAP_CONTENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+                )
+                id = changeId
+                setImageBitmap(bitmap)
+            }
+            selectItem.img=imageView
+        }
+    }
 
     fun addLayerList(id : Int, bitmap: Bitmap){
         val layerData = ImgLayerData(bitmap,false,id)

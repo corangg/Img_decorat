@@ -5,14 +5,14 @@ import com.example.img_decorat.ui.view.EditableImageView
 import java.util.LinkedList
 
 data class ImgLayerData(
-    val bitMap : Bitmap,
+    var bitMap : Bitmap,
     var check : Boolean = false,
     val id : Int,
     var select : Boolean = false
 )
 
 data class ImageViewData(
-    val img : EditableImageView,
+    var img : EditableImageView,
     var visible : Boolean = true,
     var saturation : Int = 0,
     var brightness : Int = 0,
