@@ -15,9 +15,7 @@ class LayerViewHolder(val binding: ItemLayerBinding): RecyclerView.ViewHolder(bi
         val num = position + 1
         binding.layerNum.text = num.toString()
 
-        if(layerData.bitMap != null){
-            Glide.with(binding.root).load(layerData.bitMap).into(binding.layerImg)
-        }
+        Glide.with(binding.root).load(layerData.bitMap).into(binding.layerImg)
 
         binding.check.isChecked = layerData.check//체크되면 체크된 값 리턴해야할듯
     }

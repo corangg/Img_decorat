@@ -239,7 +239,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         }
 
         viewModel.selectBackGroundImage.observe(this){
-            if(it != null){
+            it?.let {
                 Glide.with(binding.root).load(it).into(object : CustomTarget<Drawable>() {
                     override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                         binding.imgView.background = resource
@@ -249,7 +249,6 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
                     }
                 })
-
             }
         }
 

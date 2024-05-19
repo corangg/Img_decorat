@@ -48,23 +48,23 @@ class ImageSplitActivity : AppCompatActivity() {
     }
     private fun setIntent(){
         val url = intent.getStringExtra("image")
-        if(url != null){
+        url?.let {
             viewmodel.intentToBitmap(url)
         }
     }
 
     private fun setSplitView(){//생성을 조금 나중에 해야하나?
-        if(viewmodel.splitSquareView.value != null){
+        viewmodel.splitSquareView.value?.let {
             splitSquareView = viewmodel.splitSquareView.value!!
             binding.splitImgView.addView(splitSquareView)
             splitSquareView.visibility = View.GONE
         }
-        if(viewmodel.splitPolygonView.value != null){
+        viewmodel.splitPolygonView.value?.let {
             splitPolygonView = viewmodel.splitPolygonView.value!!
             binding.splitImgView.addView(splitPolygonView)
             splitPolygonView.visibility = View.GONE
         }
-        if(viewmodel.splitCircleView.value != null){
+        viewmodel.splitCircleView.value?.let {
             splitCircleView = viewmodel.splitCircleView.value!!
             binding.splitImgView.addView(splitCircleView)
             splitCircleView.visibility = View.GONE

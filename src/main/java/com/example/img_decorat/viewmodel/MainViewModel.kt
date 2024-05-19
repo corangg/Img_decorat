@@ -205,7 +205,7 @@ class MainViewModel @Inject constructor(
 
     fun selectImage(position: Int){
         val list = unsplashList.value
-        if(list != null){
+        list?.let {
             if(list.size >=position){
                 selectBackGroundImage.value = list[position].urls.full
             }
@@ -213,6 +213,10 @@ class MainViewModel @Inject constructor(
     }
 
     fun reseultSplitView(uri:Uri){
+        liveLayerList.value = layerListRepository.addSplitImage(uri)
+    }
+
+    fun test(uri:Uri){
         liveLayerList.value = layerListRepository.addSplitImage(uri)
     }
 }

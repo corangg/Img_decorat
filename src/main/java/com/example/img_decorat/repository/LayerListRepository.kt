@@ -59,7 +59,7 @@ class LayerListRepository @Inject constructor(
                 val imageUri: Uri = clipData.getItemAt(i).uri
                 val bitmap = uriToBitmap(imageUri)
                 val id = imageDataRepository.setID()
-                if(bitmap != null){
+                bitmap?.let {
                     addLayerList(id,bitmap)
                     addImageViewList(id,bitmap)
                 }
@@ -67,7 +67,7 @@ class LayerListRepository @Inject constructor(
         } ?: data?.data?.let { uri ->
             val bitmap = uriToBitmap(uri)
             val id = imageDataRepository.setID()
-            if(bitmap != null){
+            bitmap?.let {
                 addLayerList(id,bitmap)
                 addImageViewList(id,bitmap)
             }
@@ -78,12 +78,13 @@ class LayerListRepository @Inject constructor(
     fun addSplitImage(uri: Uri):LinkedList<ImgLayerData>{
         val bitmap = uriToBitmap(uri)
         val id = imageDataRepository.setID()
-        if(bitmap != null){
+        bitmap?.let {
             addLayerList(id,bitmap)
             addImageViewList(id,bitmap)
         }
         return layerList
     }
+
 
     fun addLayerList(id : Int, bitmap: Bitmap){
         val layerData = ImgLayerData(bitmap,false,id)
@@ -114,13 +115,14 @@ class LayerListRepository @Inject constructor(
         val checkedId = layerList[position].id
         val targetItem = imageViewList.find{it.img.id == checkedId}
 
-        if(targetItem != null){
+        targetItem?.let {
             if(checked){
                 targetItem.visible = true
             }else{
                 targetItem.visible = false
             }
         }
+
         return imageViewList
     }
 
@@ -166,7 +168,8 @@ class LayerListRepository @Inject constructor(
         val selectedItem = layerList.find { it.select }
 
         selectedItem?.let {
-            it.select = false }
+            it.select = false
+        }
 
         val findItem = layerList.find { it.id == id }
         findItem?.let {
@@ -178,8 +181,8 @@ class LayerListRepository @Inject constructor(
 
     fun setLastSelectView(id: Int){
         val selectedItem = imageViewList.find { it.img.id == id }
-        if(selectedItem != null){
-            lastSelectViewData = selectedItem
+        selectedItem?.let {
+            lastSelectViewData = it
         }
     }
 
@@ -199,24 +202,24 @@ class LayerListRepository @Inject constructor(
 
     fun checkLastSelectImage(id: Int):Boolean{
         val selectedItem = layerList.find { it.select }
-        if(selectedItem != null){
+        selectedItem?.let {
             if(selectedItem.id == id){
                 return false
             }else{
                 return true
             }
-        }else{
+        } ?: run{
             selectLastImage(id)
+            return true
         }
-        return false
     }
 
     fun editImageViewSaturation(saturation : Int){
         val selectedItem = layerList.find { it.select }
-        if(selectedItem != null){
+        selectedItem?.let {
             val id = selectedItem.id
             val selectImageView = imageViewList.find { it.img.id == id }
-            if(selectImageView != null){
+            selectImageView?.let {
                 selectImageView.saturation = saturation
                 selectImageView.img.setImageSaturation(saturation.toFloat())
             }
@@ -233,10 +236,10 @@ class LayerListRepository @Inject constructor(
 
     fun editImageViewBrightness(brightness : Int){
         val selectedItem = layerList.find { it.select }
-        if(selectedItem != null){
+        selectedItem?.let {
             val id = selectedItem.id
             val selectImageView = imageViewList.find { it.img.id == id }
-            if(selectImageView != null){
+            selectImageView?.let {
                 selectImageView.brightness = brightness
                 selectImageView.img.setImageBrightness(brightness.toFloat())
             }
@@ -253,10 +256,10 @@ class LayerListRepository @Inject constructor(
 
     fun editImageViewTransparency(alpha : Int){
         val selectedItem = layerList.find { it.select }
-        if(selectedItem != null){
+        selectedItem?.let {
             val id = selectedItem.id
             val selectImageView = imageViewList.find { it.img.id == id }
-            if(selectImageView != null){
+            selectImageView?.let {
                 selectImageView.transparency = alpha
                 selectImageView.img.setImageTransparency(alpha.toFloat())
             }

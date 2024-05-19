@@ -26,15 +26,10 @@ class ImageAdapter(val imageList: MutableList<UnsplashData>, val onItemClickList
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as ImageViewHolder).binding
 
-        if(imageList[position].urls != null){
-            Glide.with(binding.root).load(imageList[position].urls.small).into(binding.imageItem)
-        }
+        Glide.with(binding.root).load(imageList[position].urls.small).into(binding.imageItem)
 
         binding.imageItem.setOnClickListener {
             onItemClickListener.onImageItemClick(position)
         }
-
-
     }
-
 }
