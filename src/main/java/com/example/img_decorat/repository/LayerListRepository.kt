@@ -53,23 +53,25 @@ class LayerListRepository @Inject constructor(
         }
     }
 
-    fun setImgLayerList(data: Intent?):LinkedList<ImgLayerData>{
+    fun setImgLayerList(data: Intent?,viewSize: Int):LinkedList<ImgLayerData>{
         data?.clipData?.let{ clipData ->
             for (i in 0 until clipData.itemCount) {
                 val imageUri: Uri = clipData.getItemAt(i).uri
                 val bitmap = uriToBitmap(imageUri)
                 val id = imageDataRepository.setID()
                 bitmap?.let {
-                    addLayerList(id,bitmap)
-                    addImageViewList(id,bitmap,false)
+                    val resizeBitmap = resizeBitmap(bitmap,viewSize)
+                    addLayerList(id,resizeBitmap.first)
+                    addImageViewList(id,resizeBitmap.first,false, scale = 1/resizeBitmap.second)
                 }
             }
         } ?: data?.data?.let { uri ->
             val bitmap = uriToBitmap(uri)
             val id = imageDataRepository.setID()
             bitmap?.let {
-                addLayerList(id,bitmap)
-                addImageViewList(id,bitmap,false)
+                val resizeBitmap = resizeBitmap(bitmap,viewSize)
+                addLayerList(id,resizeBitmap.first)
+                addImageViewList(id,resizeBitmap.first,false, scale = 1/resizeBitmap.second)
             }
         }
         return layerList
@@ -107,7 +109,7 @@ class LayerListRepository @Inject constructor(
         layerList.add(layerData)
     }
 
-    fun addImageViewList(addId : Int, bitmap: Bitmap,visibility: Boolean){
+    fun addImageViewList(addId : Int, bitmap: Bitmap, visibility: Boolean, scale : Float = 1.0f){
         val imageView = EditableImageView(context).apply {
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -116,6 +118,7 @@ class LayerListRepository @Inject constructor(
             id = addId
             setImageBitmap(bitmap)
         }
+        imageView.setImageScale(scale)
         imageViewList.add(ImageViewData(imageView,visibility))
     }
 
@@ -290,12 +293,25 @@ class LayerListRepository @Inject constructor(
         }
     }
 
+    fun resizeBitmap(bitmap: Bitmap,size: Int): Pair<Bitmap,Float>{
+        if(bitmap.height > bitmap.width){
+            val scale = bitmap.height.toFloat()/bitmap.width.toFloat()
+            val height = scale*size
+            return Pair(Bitmap.createScaledBitmap(bitmap,size,height.toInt(),true),scale)
+
+        }else{
+            val scale = bitmap.width.toFloat()/bitmap.height.toFloat()
+            val width = scale*size
+        return Pair(Bitmap.createScaledBitmap(bitmap,width.toInt(),size,true),scale)
+        }
+    }
+
     fun addEmojiLayer(bitmap: Bitmap,size:Int):LinkedList<ImgLayerData>{
-        val resizeBitmap = Bitmap.createScaledBitmap(bitmap,size,size,true)
+        val resizeBitmap = resizeBitmap(bitmap,size).first
         val id = imageDataRepository.setID()
         val layerData = ImgLayerData(resizeBitmap,true,id)
         layerList.add(layerData)
-        addImageViewList(id,resizeBitmap,true)
+        addImageViewList(id,resizeBitmap,true,0.4f)
         return layerList
     }
 }

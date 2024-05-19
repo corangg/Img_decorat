@@ -135,7 +135,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun setImgLayerList(data: Intent?){
-        liveLayerList.value = layerListRepository.setImgLayerList(data)
+        liveLayerList.value = layerListRepository.setImgLayerList(data,screenWith)
     }
 
     fun updateChecked(position: Int, checked: Boolean){

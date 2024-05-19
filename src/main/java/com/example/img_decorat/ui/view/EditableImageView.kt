@@ -152,6 +152,14 @@ class EditableImageView @JvmOverloads constructor(
         applyColorFilter()
     }
 
+    fun setImageScale(scale: Float) {
+        // 새로운 스케일 값을 설정하고 매트릭스에 적용
+        scaleFactor = scale
+        matrix.setScale(scaleFactor, scaleFactor)
+        imageMatrix = matrix
+        invalidate()
+    }
+
     private fun applyColorFilter() {
         val colorMatrix = ColorMatrix()
 
