@@ -13,7 +13,7 @@ object BindingAdapter {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                viewModel.setPageIndex(position)
+                viewModel.emojiTab.value = position
             }
         })
     }
@@ -23,7 +23,7 @@ object BindingAdapter {
     fun bindTabLayoutPageChange(tabLayout: TabLayout, viewModel: MainViewModel) {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                viewModel.setPageIndex(tab.position)
+                viewModel.emojiTab.value = tab.position
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}

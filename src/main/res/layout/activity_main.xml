@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#121212">
-
             <View
                 android:id="@+id/outside_touch_view"
                 android:layout_width="match_parent"
@@ -87,11 +86,22 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp">
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/img_view"
                     android:background="#2D2D2D" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:text="안녕하세요 테스트"
+                    android:id="@+id/textWriteView"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    />
             </FrameLayout>
 
             <FrameLayout
@@ -108,6 +118,9 @@
                 app:labelVisibilityMode="auto"
                 app:menu="@menu/bottom_navigation_menu"
                 app:onNavigationItemSelectedListener="@{(item)->viewmodel.bottomNavigationItemSelected(item)}"/>
+
+
+
         </RelativeLayout>
         
         <RelativeLayout

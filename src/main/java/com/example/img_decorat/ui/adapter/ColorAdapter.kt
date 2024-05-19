@@ -9,10 +9,10 @@ import com.example.img_decorat.databinding.ItemMenuBinding
 
 class ColorViewHolder(val binding: ItemColorBinding): RecyclerView.ViewHolder(binding.root)
 
-class ColorAdapter(val colorList: MutableList<Int>, val onItemClickListener: OnColorItemClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class ColorAdapter(val colorList: MutableList<Int>, val onItemClickListener: OnColorItemClickListener, val case: Int):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
    interface OnColorItemClickListener{
-       fun onColorItemClick(position: Int)
+       fun onColorItemClick(position: Int,case: Int)
    }
 
     override fun getItemCount(): Int {
@@ -27,7 +27,7 @@ class ColorAdapter(val colorList: MutableList<Int>, val onItemClickListener: OnC
         binding.colorItem.setBackgroundColor(colorList[position])
 
         binding.colorItem.setOnClickListener {
-            onItemClickListener.onColorItemClick(position)
+            onItemClickListener.onColorItemClick(position,case)
         }
     }
 }

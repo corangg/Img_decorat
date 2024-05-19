@@ -17,7 +17,7 @@
         android:id="@+id/hue_edit_view"
         android:paddingVertical="10dp"
         android:paddingHorizontal="20dp"
-        tools:context=".ui.fragment.HueFragment">
+        tools:context=".ui.fragment.hueFragment.HueFragment">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

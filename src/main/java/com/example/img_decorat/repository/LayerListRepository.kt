@@ -6,19 +6,24 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
 import android.widget.FrameLayout
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
+import com.example.img_decorat.dataModels.Font
 import com.example.img_decorat.dataModels.ImageViewData
 import com.example.img_decorat.dataModels.ImgLayerData
 import com.example.img_decorat.dataModels.ListData
 import com.example.img_decorat.ui.view.EditableImageView
 import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
 import java.util.Collections
 import java.util.LinkedList
 import javax.inject.Inject
@@ -314,4 +319,5 @@ class LayerListRepository @Inject constructor(
         addImageViewList(id,resizeBitmap,true,0.4f)
         return layerList
     }
+
 }

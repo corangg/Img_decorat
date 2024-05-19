@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/text_font"
+        android:icon="@drawable/ic_font"
+        android:enabled="true"
+        android:title="폰트" />
+
+    <item
+        android:id="@+id/text_paint"
+        android:icon="@drawable/ic_paint"
+        android:enabled="true"
+        android:title="컬러" />
+
+    <item
+        android:id="@+id/text_pen"
+        android:icon="@drawable/ic_pen"
+        android:enabled="true"
+        android:title="쓰기" />
+</menu>

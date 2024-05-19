@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:id="@+id/color_view"
         android:orientation="horizontal"
-        tools:context=".ui.fragment.BackGroundColorFragment"
+        tools:context=".ui.fragment.background.BackGroundColorFragment"
         android:padding="10dp"
         android:layout_marginLeft="20dp">
         <androidx.recyclerview.widget.RecyclerView

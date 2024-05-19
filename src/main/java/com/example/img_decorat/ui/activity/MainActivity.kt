@@ -8,10 +8,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
-import android.widget.ImageButton
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -33,10 +30,10 @@ import com.example.img_decorat.utils.RequestCode
 import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
-import com.example.img_decorat.ui.fragment.BackGroundFragment
-import com.example.img_decorat.ui.fragment.EmojiFragment
-import com.example.img_decorat.ui.fragment.EmojiGroupFragment
-import com.example.img_decorat.ui.fragment.HueFragment
+import com.example.img_decorat.ui.fragment.background.BackGroundFragment
+import com.example.img_decorat.ui.fragment.emoji.EmojiGroupFragment
+import com.example.img_decorat.ui.fragment.hueFragment.HueFragment
+import com.example.img_decorat.ui.fragment.text.TextFragment
 import com.example.img_decorat.ui.view.BTNAnimation
 import com.example.img_decorat.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,6 +53,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
     lateinit var backGroundFragment: BackGroundFragment
     lateinit var hueFragment: HueFragment
     lateinit var emojiGroupFragment: EmojiGroupFragment
+    lateinit var textFragment: TextFragment
 
     var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if(it.resultCode == Activity.RESULT_OK){
@@ -239,10 +237,14 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
                         binding.detailNavigaionView.visibility = View.VISIBLE
                     }
                     emojiGroupFragment = EmojiGroupFragment()
-                    //emojiFragment = EmojiFragment()
-                    //supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,emojiFragment).commit()
                     supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,emojiGroupFragment).commit()
-
+                }
+                4->{
+                    if(binding.detailNavigaionView.visibility == View.GONE){
+                        binding.detailNavigaionView.visibility = View.VISIBLE
+                    }
+                    textFragment = TextFragment()
+                    supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,textFragment).commit()
                 }
             }
         }
