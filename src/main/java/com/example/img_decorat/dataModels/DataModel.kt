@@ -19,6 +19,11 @@ data class ImageViewData(
     var transparency : Int = 100
 )
 
+data class EmojiList(
+    var groupName : String,
+    var groupList : MutableList<Bitmap>
+)
+
 data class ImageSize(
     var with : Int,
     var height : Int

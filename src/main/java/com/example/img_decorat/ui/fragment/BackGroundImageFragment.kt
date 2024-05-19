@@ -24,7 +24,8 @@ class BackGroundImageFragment : Fragment(),ImageAdapter.OnColorItemClickListener
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? { binding = DataBindingUtil.inflate(inflater, R.layout.fragment_back_ground_image,container,false)
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_back_ground_image,container,false)
         (binding as ViewDataBinding).lifecycleOwner = this
         binding.viewmodel = viewModel
 

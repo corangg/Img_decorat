@@ -33,6 +33,8 @@ import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
 import com.example.img_decorat.ui.fragment.BackGroundFragment
+import com.example.img_decorat.ui.fragment.EmojiFragment
+import com.example.img_decorat.ui.fragment.EmojiGroupFragment
 import com.example.img_decorat.ui.fragment.HueFragment
 import com.example.img_decorat.ui.view.BTNAnimation
 import com.example.img_decorat.viewmodel.MainViewModel
@@ -52,6 +54,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
 
     lateinit var backGroundFragment: BackGroundFragment
     lateinit var hueFragment: HueFragment
+    lateinit var emojiGroupFragment: EmojiGroupFragment
 
     var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if(it.resultCode == Activity.RESULT_OK){
@@ -224,6 +227,16 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
                     }
                     hueFragment = HueFragment()
                     supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,hueFragment).commit()
+                }
+                3->{
+                    if(binding.detailNavigaionView.visibility == View.GONE){
+                        binding.detailNavigaionView.visibility = View.VISIBLE
+                    }
+                    emojiGroupFragment = EmojiGroupFragment()
+                    //emojiFragment = EmojiFragment()
+                    //supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,emojiFragment).commit()
+                    supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,emojiGroupFragment).commit()
+
                 }
             }
         }

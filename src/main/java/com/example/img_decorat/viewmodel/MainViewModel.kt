@@ -1,34 +1,31 @@
 package com.example.img_decorat.viewmodel
 
 import android.app.Application
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.net.Uri
-import android.os.Build
+import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.FrameLayout
-import androidx.core.view.ViewCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.img_decorat.dataModels.ImageViewData
 import com.example.img_decorat.dataModels.ImgLayerData
 import com.example.img_decorat.R
+import com.example.img_decorat.dataModels.EmojiData
+import com.example.img_decorat.dataModels.EmojiList
 import com.example.img_decorat.repository.RetrofitApi
-import com.example.img_decorat.utils.Util
-import com.example.img_decorat.ui.view.EditableImageView
 import com.example.img_decorat.dataModels.UnsplashData
 import com.example.img_decorat.repository.BackgroundRepository
-import com.example.img_decorat.repository.ImageDataRepository
+import com.example.img_decorat.repository.EmojiRetrofitApi
 import com.example.img_decorat.repository.LayerListRepository
 import com.example.img_decorat.utils.ColorList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.util.Collections
 import java.util.LinkedList
 import javax.inject.Inject
 
@@ -57,6 +54,9 @@ class MainViewModel @Inject constructor(
     val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
     val unsplashList: MutableLiveData<MutableList<UnsplashData>> = MutableLiveData()
 
+    val emojiList: MutableLiveData<MutableList<EmojiList>> = MutableLiveData()
+    //val emojiList: MutableLiveData<MutableList<EmojiData>> = MutableLiveData()
+
     val imageSaturationValue : MutableLiveData<Int> = MutableLiveData(0)
     val imageBrightnessValue : MutableLiveData<Int> = MutableLiveData(0)
     val imageTransparencyValue : MutableLiveData<Int> = MutableLiveData(100)
@@ -64,6 +64,7 @@ class MainViewModel @Inject constructor(
     lateinit var lastTouchedImage : Uri
 
     init {
+        getEmoji()
         imageSaturationValue.observeForever {
             layerListRepository.editImageViewSaturation(imageSaturationValue.value!!)
         }
@@ -215,5 +216,71 @@ class MainViewModel @Inject constructor(
     fun reseultSplitView(uri:Uri){
         liveLayerList.value = layerListRepository.addSplitImage(uri)
         liveImageViewList.value = layerListRepository.imageViewList
+    }
+
+    fun getEmoji(){
+        val getEmojiList = mutableListOf<EmojiData>()
+        viewModelScope.launch {
+            val response = EmojiRetrofitApi.api.getEmojis("e2b836bfc5c395fe3cc8822c482374dc0a5da19e")
+            if (response.isSuccessful) {
+                val emojis = response.body()
+                emojis?.let {
+                    for (emoji in it) {
+                        getEmojiList.add(emoji)
+                    }
+                }
+            } else {
+                Log.e("Emoji API", "Error: ${response.message()}")
+            }
+            emojiList.value = emojiListClassification(getEmojiList)
+        }
+    }
+    val emojiTab : MutableLiveData<Int> = MutableLiveData(0)
+    fun setPageIndex(index: Int) {
+        emojiTab.value = index
+    }
+
+    fun emojiListClassification(list : MutableList<EmojiData>): MutableList<EmojiList>{
+        val classification = mutableListOf<EmojiList>()
+        var groupName = list[0].group
+        var emojiBitmapList = mutableListOf<Bitmap>()
+
+        for(i in list){
+            if(i.group != groupName){
+                val emojiGroup  = EmojiList(groupName = groupName, groupList = emojiBitmapList)
+                classification.add(emojiGroup)
+                groupName = i.group
+                emojiBitmapList = mutableListOf()
+                emojiBitmapList.add(createBitmapFromEmoji(i.character))
+            }else{
+                emojiBitmapList.add(createBitmapFromEmoji(i.character))
+            }
+        }
+        val emojiGroup  = EmojiList(groupName = groupName, groupList = emojiBitmapList)
+        classification.add(emojiGroup)
+        return classification
+    }
+
+    fun createBitmapFromEmoji(emoji: String): Bitmap {
+        val paint = Paint()
+        paint.textSize = 200f
+        paint.isAntiAlias = true
+        paint.color = Color.BLACK
+        paint.textAlign = Paint.Align.CENTER
+
+        val baseline = -paint.ascent() // ascent() is negative
+        val width = (paint.measureText(emoji) + 0.5f).toInt() // round
+        val height = (baseline + paint.descent() + 0.5f).toInt()
+
+        val image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(image)
+        canvas.drawText(emoji, (width / 2).toFloat(), baseline, paint)
+
+        return image
+    }
+
+    fun addEmogeLayer(emojiPosition:Int){
+
+
     }
 }

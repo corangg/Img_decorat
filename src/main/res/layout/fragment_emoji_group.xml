@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.img_decorat.viewmodel.MainViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_detail_navigation"
+        android:orientation="vertical"
+        tools:context=".ui.fragment.EmojiGroupFragment">
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_detail_navigation"
+            android:id="@+id/tabs"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_collapseMode="pin"
+            android:layout_gravity="bottom"
+            app:tabMode="scrollable"
+            app:tabLayoutPageChange="@{viewmodel}"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/viewpager"
+            app:viewPagerPageChange="@{viewmodel}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </androidx.viewpager2.widget.ViewPager2>
+
+    </LinearLayout>
+</layout>
