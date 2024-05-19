@@ -35,5 +35,8 @@ class EmojiAdapter(val emojiList: MutableList<Bitmap>, val onItemClickListener: 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as EmojiViewHolder).binding
         holder.emojiSet(emojiList[position])
+        binding.emojiItem.setOnClickListener {
+            onItemClickListener.onEmojiItemClick(position)
+        }
     }
 }

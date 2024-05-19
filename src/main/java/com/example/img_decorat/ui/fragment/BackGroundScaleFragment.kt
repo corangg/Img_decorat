@@ -25,7 +25,6 @@ class BackGroundScaleFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_back_ground_scale,container,false)
         (binding as ViewDataBinding).lifecycleOwner = this
         binding.viewmodel = viewModel

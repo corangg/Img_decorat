@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -105,8 +106,13 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
     private fun getScreenWith(){
         val displayMetrics = resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
+        setInitBackground(screenWidth)
         viewModel.screenWith = screenWidth
     }
+    private fun setInitBackground(screenWith:Int){
+        binding.imgView.layoutParams = FrameLayout.LayoutParams(screenWith, screenWith)
+    }
+
 
     private fun menuAdapterSet(){
         val menuList : MutableList<String> = mutableListOf("열기", "저장", "출력")
@@ -271,6 +277,4 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         }
 
     }
-
-
 }

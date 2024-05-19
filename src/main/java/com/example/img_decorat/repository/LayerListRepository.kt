@@ -61,7 +61,7 @@ class LayerListRepository @Inject constructor(
                 val id = imageDataRepository.setID()
                 bitmap?.let {
                     addLayerList(id,bitmap)
-                    addImageViewList(id,bitmap)
+                    addImageViewList(id,bitmap,false)
                 }
             }
         } ?: data?.data?.let { uri ->
@@ -69,7 +69,7 @@ class LayerListRepository @Inject constructor(
             val id = imageDataRepository.setID()
             bitmap?.let {
                 addLayerList(id,bitmap)
-                addImageViewList(id,bitmap)
+                addImageViewList(id,bitmap,false)
             }
         }
         return layerList
@@ -107,7 +107,7 @@ class LayerListRepository @Inject constructor(
         layerList.add(layerData)
     }
 
-    fun addImageViewList(addId : Int, bitmap: Bitmap){
+    fun addImageViewList(addId : Int, bitmap: Bitmap,visibility: Boolean){
         val imageView = EditableImageView(context).apply {
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -116,7 +116,7 @@ class LayerListRepository @Inject constructor(
             id = addId
             setImageBitmap(bitmap)
         }
-        imageViewList.add(ImageViewData(imageView,false))
+        imageViewList.add(ImageViewData(imageView,visibility))
     }
 
     fun updateLayerListChecked(position: Int, checked: Boolean): LinkedList<ImgLayerData>{
@@ -163,7 +163,7 @@ class LayerListRepository @Inject constructor(
         val id = imageDataRepository.setID()
         val layerData = ImgLayerData(bitmap,false,id)
         layerList.add(layerData)
-        addImageViewList(id,bitmap)
+        addImageViewList(id,bitmap,false)
         return layerList
     }
 
@@ -290,5 +290,12 @@ class LayerListRepository @Inject constructor(
         }
     }
 
-
+    fun addEmojiLayer(bitmap: Bitmap,size:Int):LinkedList<ImgLayerData>{
+        val resizeBitmap = Bitmap.createScaledBitmap(bitmap,size,size,true)
+        val id = imageDataRepository.setID()
+        val layerData = ImgLayerData(resizeBitmap,true,id)
+        layerList.add(layerData)
+        addImageViewList(id,resizeBitmap,true)
+        return layerList
+    }
 }

@@ -43,7 +43,7 @@ class MainViewModel @Inject constructor(
     val selectNavigationItem : MutableLiveData<Int> = MutableLiveData(0)
     val selectbackgroundMenu: MutableLiveData<Int> = MutableLiveData(0)
     val lastTouchedImageId : MutableLiveData<Int> = MutableLiveData(-1)
-    val selectBackgroundItem : MutableLiveData<Int> = MutableLiveData(-1)
+    val selectBackgroundItem : MutableLiveData<Int> = MutableLiveData(0)
     val backGroundColor : MutableLiveData<Int> = MutableLiveData()
 
     val openGalleryEvent : MutableLiveData<Unit> = MutableLiveData()
@@ -280,7 +280,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun addEmogeLayer(emojiPosition:Int){
-
-
+        liveLayerList.value = layerListRepository.addEmojiLayer(emojiList.value!![emojiTab.value!!].groupList[emojiPosition],screenWith)
+        liveImageViewList.value = layerListRepository.imageViewList
     }
 }
