@@ -13,8 +13,8 @@
         android:title="컬러" />
 
     <item
-        android:id="@+id/text_pen"
-        android:icon="@drawable/ic_pen"
+        android:id="@+id/text_size"
+        android:icon="@drawable/ic_font_size"
         android:enabled="true"
-        android:title="쓰기" />
+        android:title="크기" />
 </menu>

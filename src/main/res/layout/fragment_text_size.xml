@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.img_decorat.viewmodel.MainViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="20dp"
+        android:gravity="center"
+        tools:context=".ui.fragment.text.TextSizeFragment">
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/size_edit"
+            android:inputType="number"
+            android:textSize="16dp"
+            android:background="@null"
+            android:textColor="@color/white"
+            android:text="@{String.valueOf(viewmodel.textSize)}"/>
+
+
+        <SeekBar
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:min="2"
+            android:max="102"
+            android:layout_marginRight="10dp"
+            android:progressTint="@color/white"
+            android:thumbTint="@color/white"
+            android:layout_gravity="center"
+            android:progress="@={viewmodel.textSize}"/>
+
+    </LinearLayout>
+</layout>

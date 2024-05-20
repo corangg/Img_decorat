@@ -285,21 +285,6 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
             binding.imgView.invalidate()
 
         }
-
     }
 
-    fun testX(){
-        val displayMetrics = resources.displayMetrics
-        val screenWidth = displayMetrics.widthPixels
-        val textView = TextImageView(this).apply {
-            layoutParams = FrameLayout.LayoutParams(
-                screenWidth,
-                screenWidth
-            )
-        }
-        textView.setViewModel(viewModel)
-
-        binding.imgView.addView(textView)
-
-    }
 }

@@ -41,19 +41,6 @@ data class ViewListData(
     var text: TextImageView = TextImageView(context)
 }
 
-data class AEditText(
-    val context: Context){
-    var textImageView : TextImageView = TextImageView(context)
-}
-
-data class EditTextViewData(
-    var edit : TextImageView,
-    var visible : Boolean = true,
-    var saturation : Int = 0,
-    var brightness : Int = 0,
-    var transparency : Int = 100
-)
-
 data class EmojiList(
     var groupName : String,
     var groupList : MutableList<Bitmap>

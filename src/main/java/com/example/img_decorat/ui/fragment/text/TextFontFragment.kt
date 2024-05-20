@@ -38,7 +38,7 @@ class TextFontFragment : Fragment(),FontsAdapter.OnFontItemClickListener {
     }
 
     override fun onFontItemClick(position: Int) {
-        viewModel.textColorSet(position)
+        viewModel.textFontSet(position)
     }
 
     private fun adapterSet(){

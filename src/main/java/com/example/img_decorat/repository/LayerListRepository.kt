@@ -1,6 +1,5 @@
 package com.example.img_decorat.repository
 
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -8,25 +7,19 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build.VERSION_CODES.P
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.FileProvider
-import androidx.lifecycle.MutableLiveData
-import com.example.img_decorat.dataModels.AEditText
 
 import com.example.img_decorat.dataModels.ImgLayerData
-import com.example.img_decorat.dataModels.ListData
 import com.example.img_decorat.dataModels.ViewListData
 import com.example.img_decorat.ui.view.EditableImageView
 import com.example.img_decorat.ui.view.TextImageView
-import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.qualifiers.ApplicationContext
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.io.InputStream
 import java.util.Collections
 import java.util.LinkedList
 import javax.inject.Inject
@@ -143,6 +136,7 @@ class LayerListRepository @Inject constructor(
                 viewSize
             )
             id = addId
+            setTextSize(24f)
         }
         var viewData = ViewListData(context,editView.id, visible = visibility, type = 1)
         viewData.text = editView
@@ -190,10 +184,6 @@ class LayerListRepository @Inject constructor(
         }
     }
 
-    fun createTextView(width: Int, height: Int){
-        //return TextView(context)
-    }
-
     fun addLayer():LinkedList<ImgLayerData>{
         val bitmap = createTransparentBitmap(1024,1024)//크기 임시임
         val id = imageDataRepository.setID()
@@ -205,7 +195,7 @@ class LayerListRepository @Inject constructor(
 
     fun addTextLayer(viewSize: Int):LinkedList<ImgLayerData>{
         val textId = imageDataRepository.setID()
-        var layerData = ImgLayerData(context = context, check = false, id = textId, type = 1)
+        var layerData = ImgLayerData(context = context, check = true, id = textId, type = 1)
         layerData.text = TextView(context).apply {
             id = textId
             setBackgroundColor(Color.TRANSPARENT)
@@ -289,7 +279,14 @@ class LayerListRepository @Inject constructor(
             val selectImageView = viewList.find { it.id == id }
             selectImageView?.let {
                 selectImageView.saturation = saturation
-                selectImageView.img.setImageSaturation(saturation.toFloat())
+                when(selectImageView.type){
+                    0->{
+                        selectImageView.img.setImageSaturation(saturation.toFloat())
+                    }
+                    1->{
+                        selectImageView.text.setSaturation(saturation.toFloat())
+                    }
+                }
             }
         }
     }
@@ -309,7 +306,15 @@ class LayerListRepository @Inject constructor(
             val selectImageView = viewList.find { it.id == id }
             selectImageView?.let {
                 selectImageView.brightness = brightness
-                selectImageView.img.setImageBrightness(brightness.toFloat())
+                when(selectImageView.type){
+                    0->{
+                        selectImageView.img.setImageBrightness(brightness.toFloat())
+                    }
+                    1->{
+                        selectImageView.text.setBrightness(brightness.toFloat())
+                    }
+                }
+
             }
         }
     }
@@ -322,14 +327,21 @@ class LayerListRepository @Inject constructor(
         }
     }
 
-    fun editImageViewTransparency(alpha : Int){
+    fun viewTransparency(alpha : Int){
         val selectedItem = layerList.find { it.select }
         selectedItem?.let {
             val id = selectedItem.id
             val selectImageView = viewList.find { it.id == id }
             selectImageView?.let {
                 selectImageView.transparency = alpha
-                selectImageView.img.setImageTransparency(alpha.toFloat())
+                when(selectImageView.type){
+                    0->{
+                        selectImageView.img.setImageTransparency(alpha.toFloat())
+                    }
+                    1->{
+                        selectImageView.text.setTransparency(alpha.toFloat())
+                    }
+                }
             }
         }
     }
@@ -364,21 +376,68 @@ class LayerListRepository @Inject constructor(
         return layerList
     }
 
-
-    /*fun addImageViewList(addId : Int, bitmap: Bitmap, visibility: Boolean, scale : Float = 1.0f){
-        val imageView = EditableImageView(context).apply {
-            layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-            )
-            id = addId
-            setImageBitmap(bitmap)
+    fun divisionViewType(id: Int?):Int{
+        val selectItem = layerList.find { it.id == id }
+        var type = -1
+        selectItem?.let {
+            type = it.type
         }
-        imageView.setImageScale(scale)
-        //imageViewList.add(ImageViewData(imageView,visibility))
-        var viewData = ViewListData(context,imageView.id, visible = visibility)
-        viewData.img = imageView
-        viewList.add(viewData)
-    }*/
+        return type
+    }
 
+    fun setEditTextViewTextColor(color: Int):LinkedList<ImgLayerData>{
+        if(lastSelectView.type ==1){
+            val selectItem = layerList.find { it.select }
+            selectItem?.let {
+                it.text.apply {
+                    setTextColor(color)
+                }
+            }
+            lastSelectView.text.apply {
+                setTextColor(color)
+            }
+        }
+        return layerList
+    }
+
+    fun setEditTextViewBackgroundColor(color: Int):LinkedList<ImgLayerData>{
+        if(lastSelectView.type ==1){
+            val selectItem = layerList.find { it.select }
+            selectItem?.let {
+                it.text.apply {
+                    setBackgroundColor(color)
+                }
+            }
+            lastSelectView.text.setBackgroundClolor(color)
+        }
+        return layerList
+    }
+
+    fun setEditTextVIewTextSize(size: Int){
+        if(lastSelectView.type ==1){
+            lastSelectView.text.apply {
+                setTextSize(size.toFloat())
+            }
+        }
+    }
+
+    fun setEditTextViewTextFont(font: Typeface){
+        if(lastSelectView.type ==1){
+            lastSelectView.text.apply {
+                typeface = font
+            }
+        }
+    }
+
+    fun updateLayerViewText(textData: String):LinkedList<ImgLayerData>{
+        if(lastSelectView.type ==1){
+            val selectItem = layerList.find { it.select }
+            selectItem?.let {
+                it.text.apply {
+                    text = textData
+                }
+            }
+        }
+        return layerList
+    }
 }

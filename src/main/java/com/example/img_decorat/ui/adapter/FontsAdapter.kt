@@ -15,6 +15,7 @@ import com.example.img_decorat.databinding.ItemFontBinding
 class FontsViewHolder(val binding: ItemFontBinding): RecyclerView.ViewHolder(binding.root){
     fun applyFont(font: Typeface){
         binding.fontItem.typeface = font
+        //binding.fontItem.
     }
 }
 class FontsAdapter(val fontsList : List<Typeface>,val onItemClickListener: OnFontItemClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {

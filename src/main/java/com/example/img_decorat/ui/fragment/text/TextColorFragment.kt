@@ -53,14 +53,14 @@ class TextColorFragment : Fragment(),ColorAdapter.OnColorItemClickListener {
     private fun textColorAdapterSet(){
         binding.recycleTextColor.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL,false)
-        textColorAdapter = ColorAdapter(ColorList.colorsList, this,1)
+        textColorAdapter = ColorAdapter(ColorList.colorsList, this,0)
         binding.recycleTextColor.adapter = textColorAdapter
     }
 
     private fun backGroundColorAdapterSet(){
         binding.recycleTextBackgroundColor.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL,false)
-        backGroundColorAdapter = ColorAdapter(ColorList.colorsList, this,2)
+        backGroundColorAdapter = ColorAdapter(ColorList.colorsList, this,1)
         binding.recycleTextBackgroundColor.adapter = backGroundColorAdapter
     }
 

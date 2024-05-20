@@ -3,11 +3,14 @@ package com.example.img_decorat.ui.view
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Rect
 import android.graphics.RectF
+import android.net.Uri
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
@@ -38,15 +41,24 @@ class TextImageView @JvmOverloads constructor(
     private var lastTouchY = 0f
     private var isEditable = false
 
-    private val selectBorderPaint = Paint().apply {
+    private var saturationValue = 1f
+    private var brightnessValue = 1f
+
+    private var selectBorderPaint = Paint().apply {
         color = Color.WHITE
         style = Paint.Style.STROKE
         strokeWidth = 4f
     }
-    private val unSelectBorderPaint = Paint().apply {
+    private var unSelectBorderPaint = Paint().apply {
         color = Color.TRANSPARENT
         style = Paint.Style.STROKE
         strokeWidth = 0f
+    }
+
+    private var fillBackgroundPaint = Paint().apply {
+        color =Color.TRANSPARENT
+        style =Paint.Style.FILL
+
     }
 
     init {
@@ -62,6 +74,7 @@ class TextImageView @JvmOverloads constructor(
             isEditable = false
             clearFocus()
             hideKeyboard()
+            viewModel?.setViewText(this.text.toString())
             return false
         }
 
@@ -74,6 +87,7 @@ class TextImageView @JvmOverloads constructor(
                     lastTouchX = event.x
                     lastTouchY = event.y
                     isEditable = true
+                    viewModel?.selectLastImage(this.id)
 
                     invalidate()
                 }
@@ -102,13 +116,14 @@ class TextImageView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
+        drawBorder(canvas)
         canvas.save()
         canvas.concat(matrix)
 
         super.onDraw(canvas)
         canvas.restore()
 
-        drawBorder(canvas)
+
     }
 
 
@@ -122,7 +137,18 @@ class TextImageView @JvmOverloads constructor(
             close()
         }
 
-        canvas.drawPath(path, selectBorderPaint)
+        if(viewModel?.lastTouchedImageId?.value == this.id){
+            canvas.drawPath(path, selectBorderPaint)
+            canvas.drawPath(path, fillBackgroundPaint)
+        }else{
+            canvas.drawPath(path, unSelectBorderPaint)
+            canvas.drawPath(path, fillBackgroundPaint)
+        }
+    }
+
+    fun setBackgroundClolor(color: Int){
+        fillBackgroundPaint.color = color
+        invalidate()
     }
 
     fun setViewModel(viewModel: MainViewModel) {
@@ -141,6 +167,7 @@ class TextImageView @JvmOverloads constructor(
         matrix.mapPoints(points)
         return points
     }
+
 
     private fun isPointInPolygon(x: Float, y: Float, polygon: FloatArray): Boolean {
         var intersectCount = 0
@@ -170,6 +197,45 @@ class TextImageView @JvmOverloads constructor(
     private fun hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    fun setTransparency(alpha: Float) {
+        val clampedAlpha = Math.max(0f, Math.min(alpha, 100f)) / 100f
+        this.alpha = clampedAlpha
+        invalidate()
+    }
+
+    fun setSaturation(saturation: Float) {
+        saturationValue = (saturation + 100f)/100f
+        applyColorFilter()
+    }
+
+    fun setBrightness(brightness: Float) {
+        brightnessValue = 0.008f*brightness +1f//(brightness + 80f) / 100f
+        applyColorFilter()
+    }
+
+    private fun applyColorFilter() {
+        val colorMatrix = ColorMatrix()
+
+        // 채도 설정
+        val saturationMatrix = ColorMatrix()
+        saturationMatrix.setSaturation(saturationValue)
+
+        // 명도 설정
+        val brightnessMatrix = ColorMatrix()
+        brightnessMatrix.setScale(brightnessValue, brightnessValue, brightnessValue, 1f)
+
+        // 두 매트릭스를 결합
+        colorMatrix.postConcat(saturationMatrix)
+        colorMatrix.postConcat(brightnessMatrix)
+
+        // 색상 필터 적용
+        val filter = ColorMatrixColorFilter(colorMatrix)
+
+        paint.colorFilter = filter
+
+        invalidate()
     }
 
 

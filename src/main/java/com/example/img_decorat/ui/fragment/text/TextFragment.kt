@@ -9,9 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
 import com.example.img_decorat.R
-import com.example.img_decorat.databinding.FragmentBackGroundBinding
 import com.example.img_decorat.databinding.FragmentTextBinding
-import com.example.img_decorat.ui.fragment.background.BackGroundScaleFragment
 import com.example.img_decorat.viewmodel.MainViewModel
 
 class TextFragment : Fragment() {
@@ -45,7 +43,7 @@ class TextFragment : Fragment() {
                 }
                 2->{
                     parentFragmentManager.beginTransaction().replace(binding.textItemView.id,
-                        TextWriteFragment()
+                        TextSizeFragment()
                     ).commit()
                 }
             }

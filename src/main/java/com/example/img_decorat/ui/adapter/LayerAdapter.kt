@@ -20,8 +20,11 @@ class LayerViewHolder(val binding: ItemLayerBinding): RecyclerView.ViewHolder(bi
             binding.layerImg.visibility = View.VISIBLE
             Glide.with(binding.root).load(layerData.bitMap).into(binding.layerImg)
         }else if(layerData.type == 1){
-            binding.layerText.visibility = View.GONE
+            binding.layerText.visibility = View.VISIBLE
+
+            binding.layerText.background = layerData.text.background
             binding.layerText.text = layerData.text.text
+            binding.layerText.setTextColor(layerData.text.textColors)
         }
 
 
