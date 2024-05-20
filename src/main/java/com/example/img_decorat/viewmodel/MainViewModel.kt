@@ -84,11 +84,11 @@ class MainViewModel @Inject constructor(
 
     fun bottomNavigationItemSelected(item : MenuItem):Boolean{
         when(item.itemId){
-            R.id.navigation_background->{
+            R.id.menu_navi_background->{
                 selectNavigationItem.value = 0
                 return true
             }
-            R.id.navigation_split->{
+            R.id.menu_navi_split->{
                 val lastTouchedId = lastTouchedImageId.value
                 if(lastTouchedId != -1 && lastTouchedId != null&& layerListRepository.divisionViewType(lastTouchedId)==0){
                     lastTouchedImage = layerListRepository.setLastTouchedImage(lastTouchedId)
@@ -96,42 +96,42 @@ class MainViewModel @Inject constructor(
                 }
                 return true
             }
-            R.id.navigation_hue->{
+            R.id.menu_navi_hue->{
                 selectNavigationItem.value = 2
                 return true
             }
-            R.id.navigation_sticker->{
+            R.id.menu_navi_sticker->{
                 selectNavigationItem.value = 3
                 return true
             }
-            R.id.navigation_text->{
+            R.id.munu_navi_text->{
                 selectNavigationItem.value = 4
                 liveLayerList.value = layerListRepository.addTextLayer(screenWith)
                 liveViewList.value = layerListRepository.viewList
                 selectLayer(liveLayerList.value!!.size-1)
                 return true
             }
-            R.id.scale_item->{
+            R.id.menu_background_scale->{
                 selectbackgroundMenu.value = 0
                 return true
             }
-            R.id.paint_item->{
+            R.id.menu_background_paint->{
                 selectbackgroundMenu.value = 1
                 return true
             }
-            R.id.image_item->{
+            R.id.menu_background_image->{
                 selectbackgroundMenu.value = 2
                 return true
             }
-            R.id.text_font->{
+            R.id.menu_text_font->{
                 selectTextMenu.value = 0
                 return true
             }
-            R.id.text_paint->{
+            R.id.menu_text_paint->{
                 selectTextMenu.value = 1
                 return true
             }
-            R.id.text_size->{
+            R.id.menu_text_size->{
                 selectTextMenu.value = 2
                 textSize.observeForever{
                     layerListRepository.setEditTextVIewTextSize(it)

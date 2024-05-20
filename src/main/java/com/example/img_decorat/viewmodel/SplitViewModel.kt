@@ -91,15 +91,15 @@ class SplitViewModel@Inject constructor(
 
     fun selectSplitItem(item: MenuItem):Boolean{
         when(item.itemId){
-            R.id.split_nav_square->{
+            R.id.menu_split_square->{
                 selectSplitItem.value = 0
                 return true
             }
-            R.id.split_nav_circle->{
+            R.id.menu_split_circle->{
                 selectSplitItem.value = 1
                 return true
             }
-            R.id.split_nav_polygon->{
+            R.id.menu_split_polygon->{
                 selectSplitItem.value = 2
                 return true
             }

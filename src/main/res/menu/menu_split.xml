@@ -2,31 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/split_nav_square"
+        android:id="@+id/menu_split_square"
         android:title="사각형"
         android:icon="@drawable/ic_square"
         android:iconTint="@color/white"
         app:showAsAction="always"
         />
     <item
-        android:id="@+id/split_nav_circle"
+        android:id="@+id/menu_split_circle"
         android:title="원"
         android:icon="@drawable/ic_circle"
         android:iconTint="@color/white"
         app:showAsAction="always"
         />
     <item
-        android:id="@+id/split_nav_polygon"
+        android:id="@+id/menu_split_polygon"
         android:title="다각형"
         android:icon="@drawable/ic_polygon"
         android:iconTint="@color/white"
         app:showAsAction="always"
         />
-    <!--<item
-        android:id="@+id/split_nav_freestyle"
-        android:title="자유형"
-        android:icon="@drawable/ic_freestyle"
-        android:iconTint="@color/white"
-        app:showAsAction="always"
-        />-->
 </menu>
