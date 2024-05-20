@@ -6,18 +6,21 @@ import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.Rect
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
 import com.example.img_decorat.viewmodel.MainViewModel
 
 class TextImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
-) : AppCompatTextView(context, attrs, defStyle), View.OnTouchListener {
+) : AppCompatEditText(context, attrs, defStyle), View.OnTouchListener {
 
     private var viewModel: MainViewModel? = null
 
@@ -43,12 +46,13 @@ class TextImageView @JvmOverloads constructor(
     init {
         setOnTouchListener(this)
         ViewCompat.setTranslationZ(this, 1f)
+        gravity = Gravity.CENTER
     }
 
     override fun onTouch(v: View?, event: MotionEvent): Boolean {
         val transPos = getTransformedPoints()
 
-        if (!isPointInPolygon(event.x,event.y,transPos)) {
+        if (!isPointInPolygon(event.x, event.y, transPos)) {
             return false
         }
 
@@ -67,8 +71,6 @@ class TextImageView @JvmOverloads constructor(
                     val dy = event.y - lastTouchY
 
                     matrix.postTranslate(dx, dy)
-                    //imageMatrix = matrix
-
                     lastTouchX = event.x
                     lastTouchY = event.y
                     invalidate()
@@ -79,7 +81,11 @@ class TextImageView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
+        canvas.save()
+        canvas.concat(matrix)
+
         super.onDraw(canvas)
+        canvas.restore()
         drawBorder(canvas)
     }
 

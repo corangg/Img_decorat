@@ -1,6 +1,7 @@
 package com.example.img_decorat.ui.view
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.ColorMatrix
@@ -13,7 +14,11 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.ViewCompat
 import com.example.img_decorat.viewmodel.MainViewModel
 
 class EditableImageView @JvmOverloads constructor(
@@ -194,6 +199,7 @@ class EditableImageView @JvmOverloads constructor(
             return true
         }
     }
+
 
     private inner class RotateListener : RotateGestureDetector.OnRotateGestureListener {
         override fun onRotate(detector: RotateGestureDetector): Boolean {

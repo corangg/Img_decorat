@@ -283,12 +283,13 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
     }
 
     fun testX(){
+        val displayMetrics = resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
         val textView = TextImageView(this).apply {
             layoutParams = FrameLayout.LayoutParams(
-                1024,
-                1024
+                screenWidth,
+                screenWidth
             )
-            text = "간나다라"
         }
         textView.setViewModel(viewModel)
 
