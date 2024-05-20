@@ -39,10 +39,15 @@ class TextColorFragment : Fragment(),ColorAdapter.OnColorItemClickListener {
 
 
     override fun onColorItemClick(position: Int, case: Int) {
+        when(case){
+            0->{
+                viewModel.textColorSet(position)
+            }
+            1->{
+                viewModel.textBackgroundColorSet(position)
+            }
+        }
 
-        position
-        case
-        true
     }
 
     private fun textColorAdapterSet(){

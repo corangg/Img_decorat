@@ -11,7 +11,6 @@ import android.net.Uri
 import android.widget.FrameLayout
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
-import com.example.img_decorat.dataModels.Font
 import com.example.img_decorat.dataModels.ImageViewData
 import com.example.img_decorat.dataModels.ImgLayerData
 import com.example.img_decorat.dataModels.ListData

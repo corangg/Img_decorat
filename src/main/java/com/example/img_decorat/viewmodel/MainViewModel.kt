@@ -6,6 +6,8 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Typeface
+import android.graphics.fonts.Font
 import android.net.Uri
 import android.util.Log
 import android.view.MenuItem
@@ -18,24 +20,17 @@ import com.example.img_decorat.dataModels.ImgLayerData
 import com.example.img_decorat.R
 import com.example.img_decorat.dataModels.EmojiData
 import com.example.img_decorat.dataModels.EmojiList
-import com.example.img_decorat.dataModels.Font
-import com.example.img_decorat.dataModels.FontsResponse
 import com.example.img_decorat.repository.RetrofitApi
 import com.example.img_decorat.dataModels.UnsplashData
 import com.example.img_decorat.repository.BackgroundRepository
 import com.example.img_decorat.repository.EmojiRetrofitApi
-import com.example.img_decorat.repository.GoogleFontsRetrofitApi
 import com.example.img_decorat.repository.LayerListRepository
-import com.example.img_decorat.utils.APIKey
 import com.example.img_decorat.utils.ColorList
 import com.example.img_decorat.utils.FontsList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.LinkedList
 import javax.inject.Inject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -64,7 +59,6 @@ class MainViewModel @Inject constructor(
     val unsplashList: MutableLiveData<MutableList<UnsplashData>> = MutableLiveData()
 
     val emojiList: MutableLiveData<MutableList<EmojiList>> = MutableLiveData()
-    //val emojiList: MutableLiveData<MutableList<EmojiData>> = MutableLiveData()
 
     val imageSaturationValue : MutableLiveData<Int> = MutableLiveData(0)
     val imageBrightnessValue : MutableLiveData<Int> = MutableLiveData(0)
@@ -83,7 +77,6 @@ class MainViewModel @Inject constructor(
         imageTransparencyValue.observeForever {
             layerListRepository.editImageViewTransparency(imageTransparencyValue.value!!)
         }
-        fetchFonts()
     }
 
     fun bottomNavigationItemSelected(item : MenuItem):Boolean{
@@ -126,7 +119,6 @@ class MainViewModel @Inject constructor(
             }
             R.id.text_font->{
                 selectTextMenu.value = 0
-                fontsList.value
                 return true
             }
             R.id.text_paint->{
@@ -260,24 +252,6 @@ class MainViewModel @Inject constructor(
     }
     val emojiTab : MutableLiveData<Int> = MutableLiveData(0)
 
-    val fontsList : MutableLiveData<List<Font>> = MutableLiveData()
-
-    fun fetchFonts() {
-        GoogleFontsRetrofitApi.googleFontsApi.getFonts(APIKey.fontsApiKey).enqueue(object : Callback<FontsResponse> {
-            override fun onResponse(call: Call<FontsResponse>, response: Response<FontsResponse>) {
-                if (response.isSuccessful) {
-                    fontsList.value = response.body()?.items?.filter { font ->
-                        font.family in FontsList.fontsList
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<FontsResponse>, t: Throwable) {
-                true
-                // 에러 처리
-            }
-        })
-    }
 
 
     fun emojiListClassification(list : MutableList<EmojiData>): MutableList<EmojiList>{
@@ -323,6 +297,23 @@ class MainViewModel @Inject constructor(
         liveLayerList.value = layerListRepository.addEmojiLayer(emojiList.value!![emojiTab.value!!].groupList[emojiPosition],screenWith)
         liveImageViewList.value = layerListRepository.imageViewList
     }
+    val textColor : MutableLiveData<Int> = MutableLiveData(Color.WHITE)
+    val textBackgroundColor : MutableLiveData<Int> = MutableLiveData(Color.TRANSPARENT)
+    val textFont : MutableLiveData<Typeface> = MutableLiveData(FontsList.typefaces[0])
+    val textImageValue : MutableLiveData<String> = MutableLiveData("")
+    fun textColorSet(position: Int){
+        textColor.value = ColorList.colorsList[position]
+    }
+
+    fun textBackgroundColorSet(position: Int){
+        textBackgroundColor.value = ColorList.colorsList[position]
+    }
+
+    fun textFontSet(position: Int){
+        textFont.value = FontsList.typefaces[position]
+
+    }
+
 
 
 }

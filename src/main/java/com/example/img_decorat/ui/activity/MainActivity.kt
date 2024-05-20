@@ -35,6 +35,7 @@ import com.example.img_decorat.ui.fragment.emoji.EmojiGroupFragment
 import com.example.img_decorat.ui.fragment.hueFragment.HueFragment
 import com.example.img_decorat.ui.fragment.text.TextFragment
 import com.example.img_decorat.ui.view.BTNAnimation
+import com.example.img_decorat.ui.view.TextImageView
 import com.example.img_decorat.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.LinkedList
@@ -245,6 +246,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
                     }
                     textFragment = TextFragment()
                     supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,textFragment).commit()
+                    testX()
                 }
             }
         }
@@ -277,6 +279,20 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
             binding.imgView.invalidate()
 
         }
+
+    }
+
+    fun testX(){
+        val textView = TextImageView(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                1024,
+                1024
+            )
+            text = "간나다라"
+        }
+        textView.setViewModel(viewModel)
+
+        binding.imgView.addView(textView)
 
     }
 }

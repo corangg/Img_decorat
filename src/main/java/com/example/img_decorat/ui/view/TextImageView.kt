@@ -3,22 +3,23 @@ package com.example.img_decorat.ui.view
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
-import androidx.appcompat.widget.AppCompatImageView
+import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.ViewCompat
 import com.example.img_decorat.viewmodel.MainViewModel
 
-class EditableImageView @JvmOverloads constructor(
+class TextImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
-) : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener {
+) : AppCompatTextView(context, attrs, defStyle), View.OnTouchListener {
+
+    private var viewModel: MainViewModel? = null
 
     private val matrix = Matrix()
     private var scaleFactor = 1.0f
@@ -27,8 +28,7 @@ class EditableImageView @JvmOverloads constructor(
     private val rotateGestureDetector = RotateGestureDetector(RotateListener())
     private var lastTouchX = 0f
     private var lastTouchY = 0f
-    private var saturationValue = 1f
-    private var brightnessValue = 1f
+
     private val selectBorderPaint = Paint().apply {
         color = Color.WHITE
         style = Paint.Style.STROKE
@@ -39,14 +39,13 @@ class EditableImageView @JvmOverloads constructor(
         style = Paint.Style.STROKE
         strokeWidth = 0f
     }
-    private var viewModel: MainViewModel? = null
 
     init {
         setOnTouchListener(this)
-        scaleType = ScaleType.MATRIX
+        ViewCompat.setTranslationZ(this, 1f)
     }
 
-    override fun onTouch(v: View, event: MotionEvent): Boolean {
+    override fun onTouch(v: View?, event: MotionEvent): Boolean {
         val transPos = getTransformedPoints()
 
         if (!isPointInPolygon(event.x,event.y,transPos)) {
@@ -61,7 +60,6 @@ class EditableImageView @JvmOverloads constructor(
                 MotionEvent.ACTION_DOWN -> {
                     lastTouchX = event.x
                     lastTouchY = event.y
-                    viewModel?.selectLastImage(this.id)
                     invalidate()
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -69,7 +67,7 @@ class EditableImageView @JvmOverloads constructor(
                     val dy = event.y - lastTouchY
 
                     matrix.postTranslate(dx, dy)
-                    imageMatrix = matrix
+                    //imageMatrix = matrix
 
                     lastTouchX = event.x
                     lastTouchY = event.y
@@ -85,8 +83,34 @@ class EditableImageView @JvmOverloads constructor(
         drawBorder(canvas)
     }
 
+    private fun drawBorder(canvas: Canvas) {
+        val points = getTransformedPoints()
+        val path = Path().apply {
+            moveTo(points[0], points[1])
+            lineTo(points[2], points[3])
+            lineTo(points[4], points[5])
+            lineTo(points[6], points[7])
+            close()
+        }
+
+        canvas.drawPath(path, selectBorderPaint)
+    }
+
     fun setViewModel(viewModel: MainViewModel) {
         this.viewModel = viewModel
+    }
+
+    fun getTransformedPoints(): FloatArray {
+        val width = this.width.toFloat()
+        val height = this.height.toFloat()
+        val points = floatArrayOf(
+            0f, 0f,
+            width, 0f,
+            width, height,
+            0f, height
+        )
+        matrix.mapPoints(points)
+        return points
     }
 
     private fun isPointInPolygon(x: Float, y: Float, polygon: FloatArray): Boolean {
@@ -106,81 +130,6 @@ class EditableImageView @JvmOverloads constructor(
         return (intersectCount % 2) == 1
     }
 
-    private fun drawBorder(canvas: Canvas) {
-        val points = getTransformedPoints()
-        val path = Path().apply {
-            moveTo(points[0], points[1])
-            lineTo(points[2], points[3])
-            lineTo(points[4], points[5])
-            lineTo(points[6], points[7])
-            close()
-        }
-        if (viewModel?.lastTouchedImageId?.value == this.id) {
-            canvas.drawPath(path, selectBorderPaint)
-        } else {
-            canvas.drawPath(path, unSelectBorderPaint)
-        }
-    }
-
-    fun getTransformedPoints(): FloatArray {
-        val drawable = drawable ?: return floatArrayOf()
-        val width = drawable.intrinsicWidth.toFloat()
-        val height = drawable.intrinsicHeight.toFloat()
-        val points = floatArrayOf(
-            0f, 0f,
-            width, 0f,
-            width, height,
-            0f, height
-        )
-        matrix.mapPoints(points)
-        return points
-    }
-
-    fun setImageTransparency(alpha: Float) {
-        val clampedAlpha = Math.max(0f, Math.min(alpha, 100f)) / 100f
-        this.alpha = clampedAlpha
-        invalidate()
-    }
-
-    fun setImageSaturation(saturation: Float) {
-        saturationValue = (saturation + 100f)/100f
-        applyColorFilter()
-    }
-
-    fun setImageBrightness(brightness: Float) {
-        brightnessValue = 0.008f*brightness +1f//(brightness + 80f) / 100f
-        applyColorFilter()
-    }
-
-    fun setImageScale(scale: Float) {
-        scaleFactor = scale
-        matrix.setScale(scaleFactor, scaleFactor)
-        imageMatrix = matrix
-        invalidate()
-    }
-
-    private fun applyColorFilter() {
-        val colorMatrix = ColorMatrix()
-
-        // 채도 설정
-        val saturationMatrix = ColorMatrix()
-        saturationMatrix.setSaturation(saturationValue)
-
-        // 명도 설정
-        val brightnessMatrix = ColorMatrix()
-        brightnessMatrix.setScale(brightnessValue, brightnessValue, brightnessValue, 1f)
-
-        // 두 매트릭스를 결합
-        colorMatrix.postConcat(saturationMatrix)
-        colorMatrix.postConcat(brightnessMatrix)
-
-        // 색상 필터 적용
-        val filter = ColorMatrixColorFilter(colorMatrix)
-        colorFilter = filter
-
-        invalidate()
-    }
-
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
@@ -189,7 +138,6 @@ class EditableImageView @JvmOverloads constructor(
             scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 10.0f))
 
             matrix.postScale(scale, scale, detector.focusX, detector.focusY)
-            imageMatrix = matrix
             invalidate()
             return true
         }
@@ -200,7 +148,6 @@ class EditableImageView @JvmOverloads constructor(
             val rotation = detector.rotationDegreesDelta
             rotationDegrees += rotation
             matrix.postRotate(rotation, detector.focusX, detector.focusY)
-            imageMatrix = matrix
             invalidate()
             return true
         }

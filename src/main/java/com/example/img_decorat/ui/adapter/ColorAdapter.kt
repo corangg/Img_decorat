@@ -1,5 +1,6 @@
 package com.example.img_decorat.ui.adapter
 
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,8 +12,11 @@ class ColorViewHolder(val binding: ItemColorBinding): RecyclerView.ViewHolder(bi
 
 class ColorAdapter(val colorList: MutableList<Int>, val onItemClickListener: OnColorItemClickListener, val case: Int):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
+    private var selectedPosition = -1
    interface OnColorItemClickListener{
-       fun onColorItemClick(position: Int,case: Int)
+       fun onColorItemClick(position: Int,case: Int){
+           true
+       }
    }
 
     override fun getItemCount(): Int {
@@ -28,6 +32,15 @@ class ColorAdapter(val colorList: MutableList<Int>, val onItemClickListener: OnC
 
         binding.colorItem.setOnClickListener {
             onItemClickListener.onColorItemClick(position,case)
+            val positionSet =position
+            val existingPosition = selectedPosition
+            val border = GradientDrawable()
+            border.setColor(colorList[position])
+            border.setStroke(4, android.graphics.Color.WHITE)
+
+            selectedPosition = positionSet
+            binding.colorItem.background = border
+            notifyItemChanged(existingPosition)
         }
     }
 }

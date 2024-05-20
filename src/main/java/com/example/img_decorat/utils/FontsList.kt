@@ -1,10 +1,21 @@
 package com.example.img_decorat.utils
 
+import android.content.Context
+import android.graphics.Typeface
+import androidx.core.content.res.ResourcesCompat
+import com.example.img_decorat.R
+
 object FontsList {
-    val fontsList = listOf(
-        "Roboto", "Open Sans", "Lato", "Montserrat", "Oswald",
-        "Raleway", "PT Sans", "Merriweather", "Nunito", "Roboto Slab",
-        "Source Sans Pro", "Ubuntu", "Playfair Display", "Mukta", "Rubik",
-        "Poppins", "Bebas Neue", "Cabin", "Josefin Sans", "Quicksand"
-    )
+    lateinit var typefaces: List<Typeface>
+
+    fun initialize(context: Context) {
+        typefaces = listOf(
+
+            ResourcesCompat.getFont(context, R.font.font_hsyeoleum),
+            ResourcesCompat.getFont(context, R.font.font_movesans),
+            ResourcesCompat.getFont(context, R.font.font_freesentation),
+            ResourcesCompat.getFont(context, R.font.font_onruyruy),
+            ResourcesCompat.getFont(context, R.font.font_sweetreview)
+        ).filterNotNull()
+    }
 }
