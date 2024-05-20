@@ -15,13 +15,13 @@ import android.widget.FrameLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.img_decorat.dataModels.ImageViewData
 import com.example.img_decorat.dataModels.ImgLayerData
 import com.example.img_decorat.R
 import com.example.img_decorat.dataModels.EmojiData
 import com.example.img_decorat.dataModels.EmojiList
 import com.example.img_decorat.repository.RetrofitApi
 import com.example.img_decorat.dataModels.UnsplashData
+import com.example.img_decorat.dataModels.ViewListData
 import com.example.img_decorat.repository.BackgroundRepository
 import com.example.img_decorat.repository.EmojiRetrofitApi
 import com.example.img_decorat.repository.LayerListRepository
@@ -54,7 +54,8 @@ class MainViewModel @Inject constructor(
     val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
 
     val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
-    val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData(LinkedList<ImageViewData>())
+    //val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData(LinkedList<ImageViewData>())
+    val liveViewList : MutableLiveData<LinkedList<ViewListData>> = MutableLiveData(LinkedList<ViewListData>())
     val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
     val unsplashList: MutableLiveData<MutableList<UnsplashData>> = MutableLiveData()
 
@@ -157,7 +158,8 @@ class MainViewModel @Inject constructor(
         if(liveLayerList.value!!.size > position){
             liveLayerList.value = layerListRepository.updateLayerListChecked(position,checked)
         }
-        liveImageViewList.value = layerListRepository.updateImageViewListChecked(position,checked)
+        //liveImageViewList.value = layerListRepository.updateImageViewListChecked(position,checked)
+        liveViewList.value = layerListRepository.updateImageViewListChecked(position,checked)
     }
 
 
@@ -165,7 +167,7 @@ class MainViewModel @Inject constructor(
         if(liveLayerList.value!!.size > position){
             liveLayerList.value = layerListRepository.deleteLayerList(position)
         }
-        liveImageViewList.value = layerListRepository.deleteImageViewList(position)
+        liveViewList.value = layerListRepository.deleteImageViewList(position)
     }
 
     fun addLayer(){
@@ -186,7 +188,7 @@ class MainViewModel @Inject constructor(
         if(layerListRepository.checkLastSelectImage(id)){
             liveLayerList.value = layerListRepository.selectLastImage(id)
             layerListRepository.setLastSelectView(id)
-            liveImageViewList.value =layerListRepository.imageViewList
+            liveViewList.value =layerListRepository.viewList
             lastTouchedImageId.value = id
 
             imageSaturationValue.value = layerListRepository.checkSaturatio(imageSaturationValue.value)
@@ -197,7 +199,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun swapImageView(fromPos: Int, toPos: Int){
-        liveImageViewList.value = layerListRepository.swapImageView(fromPos,toPos)
+        liveViewList.value = layerListRepository.swapImageView(fromPos,toPos)
     }
 
     fun selectBackgroundColor(position: Int){
@@ -230,7 +232,7 @@ class MainViewModel @Inject constructor(
 
     fun reseultSplitView(uri:Uri){
         liveLayerList.value = layerListRepository.addSplitImage(uri)
-        liveImageViewList.value = layerListRepository.imageViewList
+        liveViewList.value = layerListRepository.viewList
     }
 
     fun getEmoji(){
@@ -295,7 +297,7 @@ class MainViewModel @Inject constructor(
 
     fun addEmogeLayer(emojiPosition:Int){
         liveLayerList.value = layerListRepository.addEmojiLayer(emojiList.value!![emojiTab.value!!].groupList[emojiPosition],screenWith)
-        liveImageViewList.value = layerListRepository.imageViewList
+        liveViewList.value = layerListRepository.viewList
     }
     val textColor : MutableLiveData<Int> = MutableLiveData(Color.WHITE)
     val textBackgroundColor : MutableLiveData<Int> = MutableLiveData(Color.TRANSPARENT)

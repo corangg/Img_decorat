@@ -199,12 +199,24 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
             layerAdapterSet(it)
         }
 
-        viewModel.liveImageViewList.observe(this){
+       /* viewModel.liveImageViewList.observe(this){
             binding.imgView.removeAllViews()//잠깐 쓰는거//새로 생성하면 비효율 적일거 같음
             for(i in it){
                 if(i.visible == true){
                     i.img.setViewModel(viewModel)
                     binding.imgView.addView(i.img)
+                }
+            }
+        }*/
+
+        viewModel.liveViewList.observe(this){
+            binding.imgView.removeAllViews()//잠깐 쓰는거//새로 생성하면 비효율 적일거 같음
+            for(i in it){
+                if(i.visible == true){
+                    if(i.type == 0){
+                        i.img.setViewModel(viewModel)
+                        binding.imgView.addView(i.img)
+                    }
                 }
             }
         }

@@ -13,25 +13,26 @@ data class ImgLayerData(
     val id : Int,
     var select : Boolean = false
 )
-data class ImageViewData(
+/*data class ImageViewData(
     var img : EditableImageView,
     var visible : Boolean = true,
     var saturation : Int = 0,
     var brightness : Int = 0,
     var transparency : Int = 100
-)
+)*/
 
-/*
-data class ImageViewData(
+data class ViewListData(
     val context: Context,
+    val id : Int,
     var visible : Boolean = true,
+    var type : Int = 0,
     var saturation : Int = 0,
     var brightness : Int = 0,
     var transparency : Int = 100
 ){
-    var img : EditableImageView = EditableImageView(context)
+    var img: EditableImageView = EditableImageView(context)
+    var text: TextImageView = TextImageView(context)
 }
-*/
 
 data class AEditText(
     val context: Context){
