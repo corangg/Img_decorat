@@ -104,6 +104,8 @@ class MainViewModel @Inject constructor(
             }
             R.id.navigation_text->{
                 selectNavigationItem.value = 4
+                liveLayerList.value = layerListRepository.addTextLayer(screenWith)
+                liveViewList.value = layerListRepository.viewList
                 return true
             }
             R.id.scale_item->{

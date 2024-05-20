@@ -2,6 +2,7 @@ package com.example.img_decorat.ui.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,7 +16,14 @@ class LayerViewHolder(val binding: ItemLayerBinding): RecyclerView.ViewHolder(bi
         val num = position + 1
         binding.layerNum.text = num.toString()
 
-        Glide.with(binding.root).load(layerData.bitMap).into(binding.layerImg)
+        if(layerData.type == 0){
+            binding.layerImg.visibility = View.VISIBLE
+            Glide.with(binding.root).load(layerData.bitMap).into(binding.layerImg)
+        }else if(layerData.type == 1){
+            binding.layerText.visibility = View.GONE
+            binding.layerText.text = layerData.text.text
+        }
+
 
         binding.check.isChecked = layerData.check//체크되면 체크된 값 리턴해야할듯
     }

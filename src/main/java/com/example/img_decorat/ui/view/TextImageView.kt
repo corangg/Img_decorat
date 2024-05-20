@@ -55,7 +55,7 @@ class TextImageView @JvmOverloads constructor(
         gravity = Gravity.CENTER
     }
 
-    override fun onTouch(v: View?, event: MotionEvent): Boolean {
+    override fun onTouch(v: View, event: MotionEvent): Boolean {
         val transPos = getTransformedPoints()
 
         if (!isPointInPolygon(event.x, event.y, transPos)) {
@@ -109,18 +109,8 @@ class TextImageView @JvmOverloads constructor(
         canvas.restore()
 
         drawBorder(canvas)
-        backgroundDraw(canvas)
     }
 
-    fun backgroundDraw(canvas: Canvas){
-        val borderRect = RectF(
-            0f,
-            0f,
-            width.toFloat(),
-            height.toFloat()
-        )
-        canvas.drawRect(borderRect,unSelectBorderPaint)
-    }
 
     private fun drawBorder(canvas: Canvas) {
         val points = getTransformedPoints()

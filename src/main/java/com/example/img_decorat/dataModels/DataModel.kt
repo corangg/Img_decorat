@@ -2,17 +2,24 @@ package com.example.img_decorat.dataModels
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.util.AttributeSet
+import android.widget.TextView
 import com.example.img_decorat.ui.view.EditableImageView
 import com.example.img_decorat.ui.view.TextImageView
 import java.util.LinkedList
 
 data class ImgLayerData(
-    var bitMap : Bitmap,
+    var bitMap : Bitmap
+    = Bitmap.createBitmap(1024, 1024, Bitmap.Config.ARGB_8888).apply { (Color.TRANSPARENT) },
+    val context: Context,
     var check : Boolean = false,
     val id : Int,
-    var select : Boolean = false
-)
+    var select : Boolean = false,
+    var type: Int = 0
+){
+    var text: TextView = TextView(context)
+}
 /*data class ImageViewData(
     var img : EditableImageView,
     var visible : Boolean = true,

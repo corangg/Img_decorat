@@ -53,6 +53,7 @@ class EditableImageView @JvmOverloads constructor(
 
     override fun onTouch(v: View, event: MotionEvent): Boolean {
         val transPos = getTransformedPoints()
+        this.id
 
         if (!isPointInPolygon(event.x,event.y,transPos)) {
             return false

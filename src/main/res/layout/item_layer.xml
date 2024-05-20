@@ -42,17 +42,31 @@
                 android:layout_marginBottom="2dp" />
         </LinearLayout>
 
+
         <androidx.cardview.widget.CardView
             android:layout_width="112dp"
             android:layout_height="63dp"
             android:layout_gravity="bottom"
             app:cardCornerRadius="12dp">
-
-            <ImageView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/layer_img"
-                android:scaleType="centerCrop" />
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/layer_img"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/layer_text"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    />
+            </RelativeLayout>
+
         </androidx.cardview.widget.CardView>
 
         <ImageButton

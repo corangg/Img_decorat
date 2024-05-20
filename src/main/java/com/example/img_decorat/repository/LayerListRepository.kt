@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
 import com.example.img_decorat.dataModels.AEditText
@@ -115,7 +116,7 @@ class LayerListRepository @Inject constructor(
     }
 
     fun addLayerList(id : Int, bitmap: Bitmap){
-        val layerData = ImgLayerData(bitmap,false,id)
+        val layerData = ImgLayerData(bitmap,context,false,id)
         layerList.add(layerData)
     }
 
@@ -134,6 +135,21 @@ class LayerListRepository @Inject constructor(
         viewData.img = imageView
         viewList.add(viewData)
     }
+
+    fun addTextViewList(addId : Int,viewSize: Int, visibility: Boolean, scale : Float = 1.0f){
+        val editView = TextImageView(context).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                viewSize,
+                viewSize
+            )
+            id = addId
+        }
+        var viewData = ViewListData(context,editView.id, visible = visibility, type = 1)
+        viewData.text = editView
+        viewList.add(viewData)
+    }
+
+
 
     fun updateLayerListChecked(position: Int, checked: Boolean): LinkedList<ImgLayerData>{
         var layerData: ImgLayerData = layerList[position]
@@ -174,12 +190,32 @@ class LayerListRepository @Inject constructor(
         }
     }
 
+    fun createTextView(width: Int, height: Int){
+        //return TextView(context)
+    }
+
     fun addLayer():LinkedList<ImgLayerData>{
         val bitmap = createTransparentBitmap(1024,1024)//크기 임시임
         val id = imageDataRepository.setID()
-        val layerData = ImgLayerData(bitmap,false,id)
+        val layerData = ImgLayerData(bitmap,context,false,id)
         layerList.add(layerData)
         addImageViewList(id,bitmap,false)
+        return layerList
+    }
+
+    fun addTextLayer(viewSize: Int):LinkedList<ImgLayerData>{
+        val textId = imageDataRepository.setID()
+        var layerData = ImgLayerData(context = context, check = false, id = textId, type = 1)
+        layerData.text = TextView(context).apply {
+            id = textId
+            setBackgroundColor(Color.TRANSPARENT)
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+        layerList.add(layerData)
+        addTextViewList(textId,viewSize,true)
         return layerList
     }
 
@@ -322,21 +358,27 @@ class LayerListRepository @Inject constructor(
     fun addEmojiLayer(bitmap: Bitmap,size:Int):LinkedList<ImgLayerData>{
         val resizeBitmap = resizeBitmap(bitmap,size).first
         val id = imageDataRepository.setID()
-        val layerData = ImgLayerData(resizeBitmap,true,id)
+        val layerData = ImgLayerData(resizeBitmap,context,true,id)
         layerList.add(layerData)
         addImageViewList(id,resizeBitmap,true,0.4f)
         return layerList
     }
 
-    fun createEditLayer(viewSize: Int){
-        val textView = TextImageView(context).apply {
+
+    /*fun addImageViewList(addId : Int, bitmap: Bitmap, visibility: Boolean, scale : Float = 1.0f){
+        val imageView = EditableImageView(context).apply {
             layoutParams = FrameLayout.LayoutParams(
-                viewSize,
-                viewSize
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
             )
+            id = addId
+            setImageBitmap(bitmap)
         }
-
-
-    }
+        imageView.setImageScale(scale)
+        //imageViewList.add(ImageViewData(imageView,visibility))
+        var viewData = ViewListData(context,imageView.id, visible = visibility)
+        viewData.img = imageView
+        viewList.add(viewData)
+    }*/
 
 }

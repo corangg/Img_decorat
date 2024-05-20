@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
@@ -85,7 +86,6 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         itemTouchHelper()
         setObserve()
     }
-
 
     private fun checkPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -199,15 +199,6 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
             layerAdapterSet(it)
         }
 
-       /* viewModel.liveImageViewList.observe(this){
-            binding.imgView.removeAllViews()//잠깐 쓰는거//새로 생성하면 비효율 적일거 같음
-            for(i in it){
-                if(i.visible == true){
-                    i.img.setViewModel(viewModel)
-                    binding.imgView.addView(i.img)
-                }
-            }
-        }*/
 
         viewModel.liveViewList.observe(this){
             binding.imgView.removeAllViews()//잠깐 쓰는거//새로 생성하면 비효율 적일거 같음
@@ -216,6 +207,9 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
                     if(i.type == 0){
                         i.img.setViewModel(viewModel)
                         binding.imgView.addView(i.img)
+                    }else if(i.type ==1){
+                        i.text.setViewModel(viewModel)
+                        binding.imgView.addView(i.text)
                     }
                 }
             }
@@ -258,7 +252,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
                     }
                     textFragment = TextFragment()
                     supportFragmentManager.beginTransaction().replace(binding.detailNavigaionView.id,textFragment).commit()
-                    testX()
+                    //testX()
                 }
             }
         }
