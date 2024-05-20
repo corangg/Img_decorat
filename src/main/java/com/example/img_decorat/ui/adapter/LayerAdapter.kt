@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.img_decorat.dataModels.LayerItemData
+import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.databinding.ItemLayerBinding
 import java.util.Collections
 import java.util.LinkedList

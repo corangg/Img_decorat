@@ -1,4 +1,4 @@
-package com.example.img_decorat.dataModels
+package com.example.img_decorat.data.model.dataModels
 
 data class EmojiData(
     val character: String,

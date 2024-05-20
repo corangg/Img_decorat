@@ -1,4 +1,4 @@
-package com.example.img_decorat.dataModels.unsplashimagedata
+package com.example.img_decorat.data.model.dataModels.unsplashimagedata
 
 data class Urls(
     val full: String,

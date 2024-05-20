@@ -14,16 +14,17 @@ import android.widget.FrameLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.img_decorat.dataModels.LayerItemData
+import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.R
-import com.example.img_decorat.dataModels.EmojiData
-import com.example.img_decorat.dataModels.EmojiList
+import com.example.img_decorat.data.model.dataModels.EmojiData
+import com.example.img_decorat.data.model.dataModels.EmojiList
 import com.example.img_decorat.repository.RetrofitApi
-import com.example.img_decorat.dataModels.unsplashimagedata.UnsplashData
-import com.example.img_decorat.dataModels.ViewItemData
+import com.example.img_decorat.data.model.dataModels.unsplashimagedata.UnsplashData
+import com.example.img_decorat.data.model.dataModels.ViewItemData
 import com.example.img_decorat.repository.BackgroundRepository
 import com.example.img_decorat.repository.EmojiRetrofitApi
 import com.example.img_decorat.repository.LayerListRepository
+import com.example.img_decorat.utils.APIKey
 import com.example.img_decorat.utils.ColorList
 import com.example.img_decorat.utils.FontsList
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -245,7 +246,7 @@ class MainViewModel @Inject constructor(
     fun getEmoji(){
         val getEmojiList = mutableListOf<EmojiData>()
         viewModelScope.launch {
-            val response = EmojiRetrofitApi.api.getEmojis("e2b836bfc5c395fe3cc8822c482374dc0a5da19e")
+            val response = EmojiRetrofitApi.api.getEmojis(APIKey.EmojiApiKey)
             if (response.isSuccessful) {
                 val emojis = response.body()
                 emojis?.let {

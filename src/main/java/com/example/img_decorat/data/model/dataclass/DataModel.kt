@@ -1,4 +1,4 @@
-package com.example.img_decorat.dataModels
+package com.example.img_decorat.data.model.dataModels
 
 import android.content.Context
 import android.graphics.Bitmap

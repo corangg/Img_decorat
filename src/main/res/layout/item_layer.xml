@@ -6,7 +6,7 @@
     <data>
         <variable
             name="imglayerdata"
-            type="com.example.img_decorat.dataModels.LayerItemData" />
+            type="com.example.img_decorat.data.model.dataModels.LayerItemData" />
     </data>
 
     <LinearLayout

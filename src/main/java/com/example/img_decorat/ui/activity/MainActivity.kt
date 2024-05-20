@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.example.img_decorat.dataModels.LayerItemData
+import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.utils.RequestCode
 import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter

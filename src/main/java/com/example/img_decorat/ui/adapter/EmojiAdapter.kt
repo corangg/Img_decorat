@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.img_decorat.dataModels.EmojiData
+import com.example.img_decorat.data.model.dataModels.EmojiData
 import com.example.img_decorat.databinding.ItemColorBinding
 import com.example.img_decorat.databinding.ItemEmojiBinding
 

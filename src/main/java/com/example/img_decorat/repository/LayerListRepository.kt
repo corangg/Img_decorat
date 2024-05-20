@@ -11,8 +11,8 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.FileProvider
 
-import com.example.img_decorat.dataModels.LayerItemData
-import com.example.img_decorat.dataModels.ViewItemData
+import com.example.img_decorat.data.model.dataModels.LayerItemData
+import com.example.img_decorat.data.model.dataModels.ViewItemData
 import com.example.img_decorat.ui.view.EditableImageView
 import com.example.img_decorat.ui.view.TextImageView
 import dagger.hilt.android.qualifiers.ApplicationContext
