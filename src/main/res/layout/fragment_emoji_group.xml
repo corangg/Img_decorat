@@ -13,13 +13,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_detail_navigation"
+        android:background="@drawable/bg_basic"
         android:orientation="vertical"
         tools:context=".ui.fragment.emoji.EmojiGroupFragment">
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_detail_navigation"
+            android:background="@drawable/bg_basic"
             android:id="@+id/tabs"
             app:layout_scrollFlags="scroll|enterAlways"
             app:layout_collapseMode="pin"
