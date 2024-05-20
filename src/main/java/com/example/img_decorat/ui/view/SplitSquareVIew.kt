@@ -96,7 +96,6 @@ class SplitSquareVIew @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawBorder(canvas)
-        //invalidate()
     }
 
     fun strokePaint(strokeColor: Int, thickness : Float):Paint{

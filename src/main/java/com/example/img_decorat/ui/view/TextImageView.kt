@@ -7,16 +7,21 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Rect
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
 import com.example.img_decorat.viewmodel.MainViewModel
+import com.google.android.material.internal.ViewUtils.hideKeyboard
+import com.google.android.material.internal.ViewUtils.showKeyboard
+import kotlin.math.abs
 
 class TextImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
@@ -31,6 +36,7 @@ class TextImageView @JvmOverloads constructor(
     private val rotateGestureDetector = RotateGestureDetector(RotateListener())
     private var lastTouchX = 0f
     private var lastTouchY = 0f
+    private var isEditable = false
 
     private val selectBorderPaint = Paint().apply {
         color = Color.WHITE
@@ -53,6 +59,9 @@ class TextImageView @JvmOverloads constructor(
         val transPos = getTransformedPoints()
 
         if (!isPointInPolygon(event.x, event.y, transPos)) {
+            isEditable = false
+            clearFocus()
+            hideKeyboard()
             return false
         }
 
@@ -64,16 +73,28 @@ class TextImageView @JvmOverloads constructor(
                 MotionEvent.ACTION_DOWN -> {
                     lastTouchX = event.x
                     lastTouchY = event.y
+                    isEditable = true
+
                     invalidate()
                 }
                 MotionEvent.ACTION_MOVE -> {
                     val dx = event.x - lastTouchX
                     val dy = event.y - lastTouchY
 
+                    if(abs(dx)>1|| abs(dy)>1){
+                        isEditable = false
+                    }
+
                     matrix.postTranslate(dx, dy)
                     lastTouchX = event.x
                     lastTouchY = event.y
                     invalidate()
+                }
+                MotionEvent.ACTION_UP->{
+                    if(isEditable){
+                        showKeyboard()
+                        invalidate()
+                    }
                 }
             }
         }
@@ -86,7 +107,19 @@ class TextImageView @JvmOverloads constructor(
 
         super.onDraw(canvas)
         canvas.restore()
+
         drawBorder(canvas)
+        backgroundDraw(canvas)
+    }
+
+    fun backgroundDraw(canvas: Canvas){
+        val borderRect = RectF(
+            0f,
+            0f,
+            width.toFloat(),
+            height.toFloat()
+        )
+        canvas.drawRect(borderRect,unSelectBorderPaint)
     }
 
     private fun drawBorder(canvas: Canvas) {
@@ -136,6 +169,19 @@ class TextImageView @JvmOverloads constructor(
         return (intersectCount % 2) == 1
     }
 
+    private fun showKeyboard() {
+        setFocusableInTouchMode(true)
+        requestFocus()
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+        setFocusableInTouchMode(false)
+    }
+
+    private fun hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
@@ -145,6 +191,7 @@ class TextImageView @JvmOverloads constructor(
 
             matrix.postScale(scale, scale, detector.focusX, detector.focusY)
             invalidate()
+            isEditable = false
             return true
         }
     }
@@ -155,6 +202,7 @@ class TextImageView @JvmOverloads constructor(
             rotationDegrees += rotation
             matrix.postRotate(rotation, detector.focusX, detector.focusY)
             invalidate()
+            isEditable = false
             return true
         }
     }

@@ -11,10 +11,12 @@ import android.net.Uri
 import android.widget.FrameLayout
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
+import com.example.img_decorat.dataModels.AEditText
 import com.example.img_decorat.dataModels.ImageViewData
 import com.example.img_decorat.dataModels.ImgLayerData
 import com.example.img_decorat.dataModels.ListData
 import com.example.img_decorat.ui.view.EditableImageView
+import com.example.img_decorat.ui.view.TextImageView
 import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
@@ -317,6 +319,17 @@ class LayerListRepository @Inject constructor(
         layerList.add(layerData)
         addImageViewList(id,resizeBitmap,true,0.4f)
         return layerList
+    }
+
+    fun createEditLayer(viewSize: Int){
+        val textView = TextImageView(context).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                viewSize,
+                viewSize
+            )
+        }
+
+
     }
 
 }
