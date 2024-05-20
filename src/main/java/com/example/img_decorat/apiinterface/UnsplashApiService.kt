@@ -1,6 +1,6 @@
 package com.example.img_decorat.apiinterface
 
-import com.example.img_decorat.dataModels.UnsplashData
+import com.example.img_decorat.dataModels.unsplashimagedata.UnsplashData
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

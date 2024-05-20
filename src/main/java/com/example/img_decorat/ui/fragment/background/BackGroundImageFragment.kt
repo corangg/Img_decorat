@@ -12,7 +12,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.img_decorat.R
-import com.example.img_decorat.dataModels.UnsplashData
+import com.example.img_decorat.dataModels.unsplashimagedata.UnsplashData
 import com.example.img_decorat.databinding.FragmentBackGroundImageBinding
 import com.example.img_decorat.ui.adapter.ImageAdapter
 import com.example.img_decorat.viewmodel.MainViewModel

@@ -14,13 +14,13 @@ import android.widget.FrameLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.img_decorat.dataModels.ImgLayerData
+import com.example.img_decorat.dataModels.LayerItemData
 import com.example.img_decorat.R
 import com.example.img_decorat.dataModels.EmojiData
 import com.example.img_decorat.dataModels.EmojiList
 import com.example.img_decorat.repository.RetrofitApi
-import com.example.img_decorat.dataModels.UnsplashData
-import com.example.img_decorat.dataModels.ViewListData
+import com.example.img_decorat.dataModels.unsplashimagedata.UnsplashData
+import com.example.img_decorat.dataModels.ViewItemData
 import com.example.img_decorat.repository.BackgroundRepository
 import com.example.img_decorat.repository.EmojiRetrofitApi
 import com.example.img_decorat.repository.LayerListRepository
@@ -52,9 +52,9 @@ class MainViewModel @Inject constructor(
     val openGalleryEvent : MutableLiveData<Unit> = MutableLiveData()
     val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
 
-    val liveLayerList : MutableLiveData<LinkedList<ImgLayerData>> = MutableLiveData(LinkedList<ImgLayerData>())
+    val liveLayerList : MutableLiveData<LinkedList<LayerItemData>> = MutableLiveData(LinkedList<LayerItemData>())
     //val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData(LinkedList<ImageViewData>())
-    val liveViewList : MutableLiveData<LinkedList<ViewListData>> = MutableLiveData(LinkedList<ViewListData>())
+    val liveViewList : MutableLiveData<LinkedList<ViewItemData>> = MutableLiveData(LinkedList<ViewItemData>())
     val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
     val unsplashList: MutableLiveData<MutableList<UnsplashData>> = MutableLiveData()
 
@@ -324,7 +324,7 @@ class MainViewModel @Inject constructor(
     fun textFontSet(position: Int){
         val font = FontsList.typefaces[position]
         textFont.value = font
-        layerListRepository.setEditTextViewTextFont(font)
+        liveLayerList.value = layerListRepository.setEditTextViewTextFont(font)
     }
 
     fun setViewText(text: String){

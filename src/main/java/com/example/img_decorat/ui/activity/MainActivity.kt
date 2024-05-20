@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.example.img_decorat.dataModels.ImgLayerData
+import com.example.img_decorat.dataModels.LayerItemData
 import com.example.img_decorat.utils.RequestCode
 import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
@@ -36,7 +35,6 @@ import com.example.img_decorat.ui.fragment.emoji.EmojiGroupFragment
 import com.example.img_decorat.ui.fragment.hueFragment.HueFragment
 import com.example.img_decorat.ui.fragment.text.TextFragment
 import com.example.img_decorat.ui.view.BTNAnimation
-import com.example.img_decorat.ui.view.TextImageView
 import com.example.img_decorat.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.LinkedList
@@ -123,7 +121,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         )
     }
 
-    private fun layerAdapterSet(list : LinkedList<ImgLayerData>){//필요한것만 리셋해야할까?
+    private fun layerAdapterSet(list : LinkedList<LayerItemData>){//필요한것만 리셋해야할까?
         binding.recycleLayer.layoutManager = LinearLayoutManager(this)
         layerAdapter = LayerAdapter(list,this)
         binding.recycleLayer.adapter = layerAdapter

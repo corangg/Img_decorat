@@ -7,13 +7,12 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
-import android.os.Build.VERSION_CODES.P
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.FileProvider
 
-import com.example.img_decorat.dataModels.ImgLayerData
-import com.example.img_decorat.dataModels.ViewListData
+import com.example.img_decorat.dataModels.LayerItemData
+import com.example.img_decorat.dataModels.ViewItemData
 import com.example.img_decorat.ui.view.EditableImageView
 import com.example.img_decorat.ui.view.TextImageView
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -30,11 +29,9 @@ class LayerListRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val imageDataRepository: ImageDataRepository) {
 
-    var layerList = LinkedList<ImgLayerData>()
-    //var imageViewList = LinkedList<ImageViewData>()
-    val viewList = LinkedList<ViewListData>()
-    //lateinit var lastSelectViewData : ImageViewData
-    lateinit var lastSelectView : ViewListData
+    var layerList = LinkedList<LayerItemData>()
+    val viewList = LinkedList<ViewItemData>()
+    lateinit var lastSelectView : ViewItemData
 
     fun uriToBitmap(imageUri: Uri): Bitmap? {
         context.contentResolver.openInputStream(imageUri).use { inputStream ->
@@ -56,7 +53,7 @@ class LayerListRepository @Inject constructor(
         }
     }
 
-    fun setImgLayerList(data: Intent?,viewSize: Int):LinkedList<ImgLayerData>{
+    fun setImgLayerList(data: Intent?,viewSize: Int):LinkedList<LayerItemData>{
         data?.clipData?.let{ clipData ->
             for (i in 0 until clipData.itemCount) {
                 val imageUri: Uri = clipData.getItemAt(i).uri
@@ -80,7 +77,7 @@ class LayerListRepository @Inject constructor(
         return layerList
     }
 
-    fun addSplitImage(uri: Uri):LinkedList<ImgLayerData>{
+    fun addSplitImage(uri: Uri):LinkedList<LayerItemData>{
         val bitmap = uriToBitmap(uri)
         val selectItem = layerList.find { it.select}
         selectItem?.let {
@@ -109,8 +106,8 @@ class LayerListRepository @Inject constructor(
     }
 
     fun addLayerList(id : Int, bitmap: Bitmap){
-        val layerData = ImgLayerData(bitmap,context,false,id)
-        layerList.add(layerData)
+        val layerItemData = LayerItemData(context = context, check = false, id = id, bitMap = bitmap)
+        layerList.add(layerItemData)
     }
 
     fun addImageViewList(addId : Int, bitmap: Bitmap, visibility: Boolean, scale : Float = 1.0f){
@@ -123,8 +120,7 @@ class LayerListRepository @Inject constructor(
             setImageBitmap(bitmap)
         }
         imageView.setImageScale(scale)
-        //imageViewList.add(ImageViewData(imageView,visibility))
-        var viewData = ViewListData(context,imageView.id, visible = visibility)
+        var viewData = ViewItemData(context = context, id = imageView.id, visible = visibility)
         viewData.img = imageView
         viewList.add(viewData)
     }
@@ -138,22 +134,22 @@ class LayerListRepository @Inject constructor(
             id = addId
             setTextSize(24f)
         }
-        var viewData = ViewListData(context,editView.id, visible = visibility, type = 1)
+        var viewData = ViewItemData(context = context, id = editView.id, visible = visibility, type = 1)
         viewData.text = editView
         viewList.add(viewData)
     }
 
 
 
-    fun updateLayerListChecked(position: Int, checked: Boolean): LinkedList<ImgLayerData>{
-        var layerData: ImgLayerData = layerList[position]
-        layerData.check = checked
+    fun updateLayerListChecked(position: Int, checked: Boolean): LinkedList<LayerItemData>{
+        var layerItemData: LayerItemData = layerList[position]
+        layerItemData.check = checked
 
-        layerList.set(position,layerData)
+        layerList.set(position,layerItemData)
         return layerList
     }
 
-    fun updateImageViewListChecked(position: Int, checked: Boolean): LinkedList<ViewListData>{
+    fun updateImageViewListChecked(position: Int, checked: Boolean): LinkedList<ViewItemData>{
         val checkedId = layerList[position].id
         val targetItem = viewList.find{it.id == checkedId}
 
@@ -168,12 +164,12 @@ class LayerListRepository @Inject constructor(
         return viewList
     }
 
-    fun deleteLayerList(position: Int):LinkedList<ImgLayerData>{
+    fun deleteLayerList(position: Int):LinkedList<LayerItemData>{
         layerList.removeAt(position)
         return layerList
     }
 
-    fun deleteImageViewList(position: Int):LinkedList<ViewListData>{
+    fun deleteImageViewList(position: Int):LinkedList<ViewItemData>{
         viewList.removeAt(position)
         return viewList
     }
@@ -184,19 +180,19 @@ class LayerListRepository @Inject constructor(
         }
     }
 
-    fun addLayer():LinkedList<ImgLayerData>{
+    fun addLayer():LinkedList<LayerItemData>{//이 기능 굳이 필요한가 싶음
         val bitmap = createTransparentBitmap(1024,1024)//크기 임시임
         val id = imageDataRepository.setID()
-        val layerData = ImgLayerData(bitmap,context,false,id)
-        layerList.add(layerData)
+        val layerItemData = LayerItemData(context = context, check = false, id = id, bitMap = bitmap)
+        layerList.add(layerItemData)
         addImageViewList(id,bitmap,false)
         return layerList
     }
 
-    fun addTextLayer(viewSize: Int):LinkedList<ImgLayerData>{
+    fun addTextLayer(viewSize: Int):LinkedList<LayerItemData>{
         val textId = imageDataRepository.setID()
-        var layerData = ImgLayerData(context = context, check = true, id = textId, type = 1)
-        layerData.text = TextView(context).apply {
+        var layerItemData = LayerItemData(context = context, check = true, id = textId, type = 1)
+        layerItemData.text = TextView(context).apply {
             id = textId
             setBackgroundColor(Color.TRANSPARENT)
             layoutParams = FrameLayout.LayoutParams(
@@ -204,12 +200,12 @@ class LayerListRepository @Inject constructor(
                 FrameLayout.LayoutParams.WRAP_CONTENT
             )
         }
-        layerList.add(layerData)
+        layerList.add(layerItemData)
         addTextViewList(textId,viewSize,true)
         return layerList
     }
 
-    fun selectLayer(position: Int):LinkedList<ImgLayerData>{
+    fun selectLayer(position: Int):LinkedList<LayerItemData>{
         val selectedItem = layerList.find { it.select }
 
         selectedItem?.let {
@@ -222,7 +218,7 @@ class LayerListRepository @Inject constructor(
         return layerList
     }
 
-    fun selectLastImage(id: Int):LinkedList<ImgLayerData>{
+    fun selectLastImage(id: Int):LinkedList<LayerItemData>{
         val selectedItem = layerList.find { it.select }
 
         selectedItem?.let {
@@ -244,7 +240,7 @@ class LayerListRepository @Inject constructor(
         }
     }
 
-    fun swapImageView(fromPos: Int, toPos: Int):LinkedList<ViewListData>{
+    fun swapImageView(fromPos: Int, toPos: Int):LinkedList<ViewItemData>{
         Collections.swap(viewList,fromPos,toPos)
         return viewList
     }
@@ -367,11 +363,11 @@ class LayerListRepository @Inject constructor(
         }
     }
 
-    fun addEmojiLayer(bitmap: Bitmap,size:Int):LinkedList<ImgLayerData>{
+    fun addEmojiLayer(bitmap: Bitmap,size:Int):LinkedList<LayerItemData>{
         val resizeBitmap = resizeBitmap(bitmap,size).first
         val id = imageDataRepository.setID()
-        val layerData = ImgLayerData(resizeBitmap,context,true,id)
-        layerList.add(layerData)
+        val layerItemData = LayerItemData(context = context, check = true, id = id)
+        layerList.add(layerItemData)
         addImageViewList(id,resizeBitmap,true,0.4f)
         return layerList
     }
@@ -385,7 +381,7 @@ class LayerListRepository @Inject constructor(
         return type
     }
 
-    fun setEditTextViewTextColor(color: Int):LinkedList<ImgLayerData>{
+    fun setEditTextViewTextColor(color: Int):LinkedList<LayerItemData>{
         if(lastSelectView.type ==1){
             val selectItem = layerList.find { it.select }
             selectItem?.let {
@@ -400,7 +396,7 @@ class LayerListRepository @Inject constructor(
         return layerList
     }
 
-    fun setEditTextViewBackgroundColor(color: Int):LinkedList<ImgLayerData>{
+    fun setEditTextViewBackgroundColor(color: Int):LinkedList<LayerItemData>{
         if(lastSelectView.type ==1){
             val selectItem = layerList.find { it.select }
             selectItem?.let {
@@ -421,15 +417,22 @@ class LayerListRepository @Inject constructor(
         }
     }
 
-    fun setEditTextViewTextFont(font: Typeface){
+    fun setEditTextViewTextFont(font: Typeface):LinkedList<LayerItemData>{
         if(lastSelectView.type ==1){
+            val selectItem = layerList.find { it.select }
+            selectItem?.let {
+                it.text.apply {
+                    typeface = font
+                }
+            }
             lastSelectView.text.apply {
                 typeface = font
             }
         }
+        return layerList
     }
 
-    fun updateLayerViewText(textData: String):LinkedList<ImgLayerData>{
+    fun updateLayerViewText(textData: String):LinkedList<LayerItemData>{
         if(lastSelectView.type ==1){
             val selectItem = layerList.find { it.select }
             selectItem?.let {
