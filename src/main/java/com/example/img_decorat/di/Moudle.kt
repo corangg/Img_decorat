@@ -1,6 +1,12 @@
-package com.example.img_decorat.repository
+package com.example.img_decorat.di
 
 import android.content.Context
+import com.example.img_decorat.data.repository.BackgroundRepository
+import com.example.img_decorat.data.repository.ConversionImageRepository
+import com.example.img_decorat.data.repository.ImageDataRepository
+import com.example.img_decorat.data.repository.LayerListRepository
+import com.example.img_decorat.data.repository.SplitRepository
+import com.example.img_decorat.data.repository.SplitStackRepository
 import com.example.img_decorat.ui.view.BTNAnimation
 import dagger.Module
 import dagger.Provides
@@ -23,6 +29,12 @@ object Moudle {
         return BTNAnimation(context)
     }
 
+    @Provides
+    @Singleton
+    fun provideConversionImageRepository(context: Context): ConversionImageRepository {
+        return ConversionImageRepository(context)
+    }
+
     @Singleton
     @Provides
     fun provideImageDataRepository(): ImageDataRepository {
@@ -43,13 +55,13 @@ object Moudle {
 
     @Provides
     @Singleton
-    fun provideSplitRepository(context: Context,layerListRepository: LayerListRepository): SplitRepository {
-        return SplitRepository(context, layerListRepository)
+    fun provideSplitStackRepository(): SplitStackRepository {
+        return SplitStackRepository()
     }
 
-
-
-
-
-
+    @Provides
+    @Singleton
+    fun provideSplitRepository(context: Context): SplitRepository {
+        return SplitRepository(context)
+    }
 }

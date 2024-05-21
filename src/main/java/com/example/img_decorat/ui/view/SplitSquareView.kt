@@ -12,7 +12,7 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 
-class SplitSquareVIew @JvmOverloads constructor(
+class SplitSquareView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener {
 

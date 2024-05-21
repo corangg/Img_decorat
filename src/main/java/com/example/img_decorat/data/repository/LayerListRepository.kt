@@ -1,4 +1,4 @@
-package com.example.img_decorat.repository
+package com.example.img_decorat.data.repository
 
 import android.content.Context
 import android.content.Intent
@@ -15,6 +15,7 @@ import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.data.model.dataModels.ViewItemData
 import com.example.img_decorat.ui.view.EditableImageView
 import com.example.img_decorat.ui.view.TextImageView
+import com.example.img_decorat.utils.Util
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileOutputStream
@@ -27,7 +28,8 @@ import javax.inject.Singleton
 @Singleton
 class LayerListRepository @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val imageDataRepository: ImageDataRepository) {
+    private val imageDataRepository: ImageDataRepository
+) {
 
     var layerList = LinkedList<LayerItemData>()
     val viewList = LinkedList<ViewItemData>()
@@ -248,10 +250,6 @@ class LayerListRepository @Inject constructor(
     fun setLastTouchedImage(id: Int): Uri{
         val image = layerList.find { it.id == id }
         return context.bitmapToUri(image!!.bitMap)!!//image!!.bitMap//null가능성 없는거 같긴한데...
-    }
-
-    fun splitBitmaptoUri(bitmap: Bitmap) :Uri{
-        return context.bitmapToUri(bitmap)!!
     }
 
     fun checkLastSelectImage(id: Int):Boolean{

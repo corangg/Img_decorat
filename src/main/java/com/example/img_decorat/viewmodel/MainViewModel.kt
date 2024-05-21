@@ -18,12 +18,12 @@ import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.R
 import com.example.img_decorat.data.model.dataModels.EmojiData
 import com.example.img_decorat.data.model.dataModels.EmojiList
-import com.example.img_decorat.repository.RetrofitApi
+import com.example.img_decorat.data.source.remote.retrofit.UnsplashRetrofit
 import com.example.img_decorat.data.model.dataModels.unsplashimagedata.UnsplashData
 import com.example.img_decorat.data.model.dataModels.ViewItemData
-import com.example.img_decorat.repository.BackgroundRepository
-import com.example.img_decorat.repository.EmojiRetrofitApi
-import com.example.img_decorat.repository.LayerListRepository
+import com.example.img_decorat.data.repository.BackgroundRepository
+import com.example.img_decorat.data.source.remote.retrofit.EmojiRetrofit
+import com.example.img_decorat.data.repository.LayerListRepository
 import com.example.img_decorat.utils.APIKey
 import com.example.img_decorat.utils.ColorList
 import com.example.img_decorat.utils.FontsList
@@ -36,7 +36,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     application: Application,
     private val layerListRepository: LayerListRepository,
-    private val backgroundRepository: BackgroundRepository) : AndroidViewModel(application){
+    private val backgroundRepository: BackgroundRepository
+) : AndroidViewModel(application){
     var screenWith : Int = 0
 
     val imgTitle : MutableLiveData<String> = MutableLiveData("New_Image")
@@ -223,7 +224,7 @@ class MainViewModel @Inject constructor(
     fun clickedImageSearch(){
         viewModelScope.launch {
             val keword = imgSearch.value
-            RetrofitApi.getRandomPhotos(keword)?.let {
+            UnsplashRetrofit.getRandomPhotos(keword)?.let {
                 unsplashList.value = it.toMutableList()
             }
         }
@@ -246,7 +247,7 @@ class MainViewModel @Inject constructor(
     fun getEmoji(){
         val getEmojiList = mutableListOf<EmojiData>()
         viewModelScope.launch {
-            val response = EmojiRetrofitApi.api.getEmojis(APIKey.EmojiApiKey)
+            val response = EmojiRetrofit.api.getEmojis(APIKey.EmojiApiKey)
             if (response.isSuccessful) {
                 val emojis = response.body()
                 emojis?.let {

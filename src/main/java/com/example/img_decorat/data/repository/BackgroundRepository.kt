@@ -1,4 +1,4 @@
-package com.example.img_decorat.repository
+package com.example.img_decorat.data.repository
 
 import android.widget.FrameLayout
 

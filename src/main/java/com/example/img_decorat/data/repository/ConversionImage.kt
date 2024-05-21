@@ -1,19 +1,20 @@
-package com.example.img_decorat.utils
+package com.example.img_decorat.data.repository
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.net.Uri
 import androidx.core.content.FileProvider
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.img_decorat.utils.Util
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import javax.inject.Inject
 
-object Util{
-    /*fun bitmapToUri(context: Context, bitmap: Bitmap): Uri? {
+class ConversionImageRepository @Inject constructor(
+    @ApplicationContext private val context: Context) {
+    fun bitmapToUri(bitmap: Bitmap): Uri? {
         val file = File(context.cacheDir, "${System.currentTimeMillis()}.png")
         return try {
             val outputStream = FileOutputStream(file)
@@ -27,10 +28,9 @@ object Util{
         }
     }
 
-    fun uriToBitmap(context: Context, imageUri: Uri): Bitmap? {
+    fun uriToBitmap(imageUri: Uri): Bitmap? {
         context.contentResolver.openInputStream(imageUri).use { inputStream ->
             return BitmapFactory.decodeStream(inputStream)
         }
-    }*/
+    }
 }
-

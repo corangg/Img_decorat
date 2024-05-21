@@ -2,23 +2,12 @@
     <!-- Base application theme. -->
 
     <style name="Theme.Img_decorat" parent="Theme.MaterialComponents.Light.NoActionBar" >
-
         <item name="overlapAnchor">false</item>
         <item name="android:dropDownVerticalOffset">200dp</item>
         <item name="colorPrimary">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
-
-
     </style>
 
-
-    <style name="AppTheme.Actionbar" parent="Widget.AppCompat.Toolbar.Button.Navigation">
-        <item name="android:tint">#00ffff</item>
-    </style>
-
-    <style name="AppTheme.OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
-        <item name="android:tint">#fff</item>
-    </style>
 
 
 </resources>

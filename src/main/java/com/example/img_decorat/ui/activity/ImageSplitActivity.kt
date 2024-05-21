@@ -3,49 +3,37 @@ package com.example.img_decorat.ui.activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import com.example.img_decorat.R
 import com.example.img_decorat.databinding.ActivityImageSplitBinding
-import com.example.img_decorat.repository.LayerListRepository
+import com.example.img_decorat.data.repository.LayerListRepository
+import com.example.img_decorat.ui.base.BaseActivity
 import com.example.img_decorat.ui.view.BTNAnimation
 import com.example.img_decorat.ui.view.SplitCircleView
 import com.example.img_decorat.ui.view.SplitPolygonView
-import com.example.img_decorat.ui.view.SplitSquareVIew
+import com.example.img_decorat.ui.view.SplitSquareView
 import com.example.img_decorat.viewmodel.SplitViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ImageSplitActivity : AppCompatActivity() {
-    lateinit var binding : ActivityImageSplitBinding
+class ImageSplitActivity : BaseActivity<ActivityImageSplitBinding>() {
     private val viewmodel: SplitViewModel by viewModels()
 
-    private lateinit var splitSquareView: SplitSquareVIew
+    private lateinit var splitSquareView: SplitSquareView
     private lateinit var splitCircleView: SplitCircleView
     private lateinit var splitPolygonView: SplitPolygonView
 
-
-    @Inject
-    lateinit var animation: BTNAnimation
-    @Inject
-    lateinit var layerListRepository: LayerListRepository
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_image_split)
-        (binding as ViewDataBinding).lifecycleOwner = this
-        binding.viewmodel = viewmodel
-
-        setObserve()
-        setIntent()
-        setSplitView()
-
+    override fun layoutResId(): Int {
+        return R.layout.activity_image_split
     }
+
+    override fun initializeUI() {
+        binding.viewmodel = viewmodel
+        setIntent()
+    }
+
     private fun setIntent(){
         val url = intent.getStringExtra("image")
         url?.let {
@@ -53,110 +41,99 @@ class ImageSplitActivity : AppCompatActivity() {
         }
     }
 
-    private fun setSplitView(){//생성을 조금 나중에 해야하나?
-        viewmodel.splitSquareView.value?.let {
-            splitSquareView = viewmodel.splitSquareView.value!!
-            binding.splitImgView.addView(splitSquareView)
+    override fun setObserve(){
+        viewmodel.splitSquareView.observe(this){
+            splitSquareView = it
+            binding.frameSplitImage.addView(splitSquareView)
             splitSquareView.visibility = View.GONE
         }
-        viewmodel.splitPolygonView.value?.let {
-            splitPolygonView = viewmodel.splitPolygonView.value!!
-            binding.splitImgView.addView(splitPolygonView)
-            splitPolygonView.visibility = View.GONE
-        }
-        viewmodel.splitCircleView.value?.let {
-            splitCircleView = viewmodel.splitCircleView.value!!
-            binding.splitImgView.addView(splitCircleView)
+
+        viewmodel.splitCircleView.observe(this){
+            splitCircleView = it
+            binding.frameSplitImage.addView(splitCircleView)
             splitCircleView.visibility = View.GONE
         }
-    }
+
+        viewmodel.splitPolygonView.observe(this){
+            splitPolygonView = it
+            binding.frameSplitImage.addView(splitPolygonView)
+            splitPolygonView.visibility = View.GONE
+        }
 
 
-    private fun setObserve(){
         viewmodel.selectToolbar.observe(this){
             when(it){
                 0->{
-                    animation.buttionAnimation(binding.backBtn)
+                    animation.buttionAnimation(binding.imgBtnBack)
                     finish()
                 }
                 1->{
-                    animation.buttionAnimation(binding.undoBtn)
-
+                    animation.buttionAnimation(binding.imgBtnPrevious)
                 }
                 2->{
-                    animation.buttionAnimation(binding.runBtn)
+                    animation.buttionAnimation(binding.imgBtnNext)
                 }
                 3->{
-                    animation.buttionAnimation(binding.splitBtn)
+                    animation.buttionAnimation(binding.imgBtnSplit)
                 }
                 4->{
-                    animation.buttionAnimation(binding.checkBtn)
-                    val resultIntent = Intent()
-                    resultIntent.putExtra("splitBitamp",viewmodel.splitUri.toString())
-                    setResult(RESULT_OK,resultIntent)
+                    animation.buttionAnimation(binding.imgBtnCheck)
+                    setResultIntent()
                     finish()
                 }
             }
         }
+
         viewmodel.selectSplitItem.observe(this){
+            allSplitViewGone()
             when(it){
                 0->{
-                    binding.sliderPolygon.visibility = View.GONE
-                    splitCircleView.visibility = View.GONE
-                    splitPolygonView.visibility = View.GONE
-
-                    if(splitSquareView.visibility == View.GONE){
-                        splitSquareView.visibility = View.VISIBLE
-                    }
+                    splitSquareView.visibility = View.VISIBLE
                 }
                 1->{
-                    binding.sliderPolygon.visibility = View.GONE
-                    splitSquareView.visibility = View.GONE
-                    splitPolygonView.visibility = View.GONE
-
-                    if(splitCircleView.visibility == View.GONE){
-                        splitCircleView.visibility = View.VISIBLE
-                    }
-
+                    splitCircleView.visibility = View.VISIBLE
                 }
                 2->{
-                    binding.sliderPolygon.visibility = View.VISIBLE
-                    splitCircleView.visibility = View.GONE
-                    splitSquareView.visibility = View.GONE
-
-                    if(splitPolygonView.visibility == View.GONE){
-                        splitPolygonView.visibility = View.VISIBLE
-                    }
+                    binding.linearPolygon.visibility = View.VISIBLE
+                    splitPolygonView.visibility = View.VISIBLE
                 }
-                /*3->{
-                    binding.sliderPolygon.visibility = View.GONE
-                }*/
             }
         }
-        viewmodel.splitImage.observe(this){
-            binding.splitImg.setImageBitmap(it)
+        viewmodel.currentImage.observe(this){
+            binding.imgViewSplit.setImageBitmap(it)
         }
 
         viewmodel.polygonPoint.observe(this){
             splitPolygonView.setPolygon(it)
         }
 
-        viewmodel.undoStackBoolean.observe(this){
+        viewmodel.previousStackState.observe(this){
             if(it){
-                binding.undoBtn.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+                binding.imgBtnPrevious.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
             }else{
-                binding.undoBtn.backgroundTintList = ColorStateList.valueOf(0xFF494949.toInt())
+                binding.imgBtnPrevious.backgroundTintList = ColorStateList.valueOf(0xFF494949.toInt())
             }
         }
-        viewmodel.runStackBoolean.observe(this){
+        viewmodel.nextStackState.observe(this){
             if(it){
-                binding.runBtn.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+                binding.imgBtnNext.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
             }
             else{
-                binding.runBtn.backgroundTintList = ColorStateList.valueOf(0xFF494949.toInt())
+                binding.imgBtnNext.backgroundTintList = ColorStateList.valueOf(0xFF494949.toInt())
             }
         }
     }
 
+    private fun setResultIntent(){
+        val resultIntent = Intent()
+        resultIntent.putExtra("splitBitamp",viewmodel.splitImageUri.toString())
+        setResult(RESULT_OK,resultIntent)
+    }
 
+    private fun allSplitViewGone(){
+        binding.linearPolygon.visibility = View.GONE
+        splitSquareView.visibility = View.GONE
+        splitPolygonView.visibility = View.GONE
+        splitCircleView.visibility = View.GONE
+    }
 }

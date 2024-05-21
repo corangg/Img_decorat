@@ -3,7 +3,7 @@ package com.example.img_decorat.ui.view
 import android.content.Context
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
-import com.example.img_decorat.repository.ImageDataRepository
+import com.example.img_decorat.data.repository.ImageDataRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton

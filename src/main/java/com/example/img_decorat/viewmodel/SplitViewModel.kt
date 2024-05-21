@@ -8,81 +8,79 @@ import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.img_decorat.R
-import com.example.img_decorat.repository.LayerListRepository
-import com.example.img_decorat.repository.SplitRepository
+import com.example.img_decorat.data.repository.ConversionImageRepository
+import com.example.img_decorat.data.repository.SplitRepository
+import com.example.img_decorat.data.repository.SplitStackRepository
 import com.example.img_decorat.ui.view.SplitCircleView
 import com.example.img_decorat.ui.view.SplitPolygonView
-import com.example.img_decorat.ui.view.SplitSquareVIew
+import com.example.img_decorat.ui.view.SplitSquareView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SplitViewModel@Inject constructor(
     application: Application,
-    private val splitRepository: SplitRepository,
-    private val layerListRepository: LayerListRepository)  : AndroidViewModel(application){
+    private val conversionImageRepository: ConversionImageRepository,
+    private val splitStackRepository: SplitStackRepository,
+    private val splitRepository: SplitRepository
+)  : AndroidViewModel(application){
+    val previousStackState : MutableLiveData<Boolean> = MutableLiveData(false)
+    val nextStackState : MutableLiveData<Boolean> = MutableLiveData(false)
 
     val selectToolbar : MutableLiveData<Int> = MutableLiveData(-1)
     val selectSplitItem : MutableLiveData<Int> = MutableLiveData(0)
-    val splitImage : MutableLiveData<Bitmap> = MutableLiveData()
-    val undoStackBoolean : MutableLiveData<Boolean> = MutableLiveData(false)
-    val runStackBoolean : MutableLiveData<Boolean> = MutableLiveData(false)
     val polygonPoint : MutableLiveData<Int> = MutableLiveData(3)
 
-    val splitSquareView : MutableLiveData<SplitSquareVIew> = MutableLiveData()
+    val currentImage : MutableLiveData<Bitmap> = MutableLiveData()
+
+    val splitSquareView : MutableLiveData<SplitSquareView> = MutableLiveData()
     val splitCircleView : MutableLiveData<SplitCircleView> = MutableLiveData()
     val splitPolygonView : MutableLiveData<SplitPolygonView> = MutableLiveData()
 
-    lateinit var splitUri : Uri
+    lateinit var splitImageUri : Uri
 
     init {
+        clearStack()
+        createSplitView()
+    }
+
+    private fun clearStack(){
+        splitStackRepository.clearPreviousStack()
+        splitStackRepository.clearNextStack()
+    }
+
+    private fun createSplitView(){
         splitSquareView.value = splitRepository.squareSplitView()
         splitCircleView.value = splitRepository.circleSplitView()
         splitPolygonView.value = splitRepository.polygoneSplitView()
-        splitRepository.resetUndoStack()
-        splitRepository.resetRunStack()
     }
 
-
+    fun intentToBitmap(uri : String){
+        conversionImageRepository.uriToBitmap(uri.toUri())?.let {
+            currentImage.value = it
+        }
+    }
 
     fun selectToolbarItem(item : Int):Boolean{
         when(item){
             0->{
-                selectToolbar.value = 0
+                clickedBackButoon(item)
                 return true
             }
             1->{
-                selectToolbar.value = 1
-                if(splitRepository.checkUndo()){
-                    splitRepository.addRunStack(splitImage.value)
-                    splitImage.value = splitRepository.popUndo()
-                    undoStackBoolean.value = splitRepository.checkUndo()
-                    runStackBoolean.value = splitRepository.checkRun()
-                }
+                clickedPreviousButoon(item)
                 return true
             }
             2->{
-                selectToolbar.value = 2
-                if(splitRepository.checkRun()){
-                    splitRepository.addUndoStack(splitImage.value)
-                    splitImage.value = splitRepository.popRun()
-                    undoStackBoolean.value = splitRepository.checkUndo()
-                    runStackBoolean.value = splitRepository.checkRun()
-                }
-                    return true
+                clickedNextButoon(item)
+                return true
             }
             3->{
-                selectToolbar.value = 3
-                splitRepository.addUndoStack(splitImage.value)
-                splitItem()
-                splitRepository.resetRunStack()
-                undoStackBoolean.value = splitRepository.checkUndo()
-                runStackBoolean.value = splitRepository.checkRun()
-                    return true
+                clickedSplitButoon(item)
+                return true
             }
             4->{
-                splitUri = layerListRepository.splitBitmaptoUri(splitImage.value!!)
-                selectToolbar.value = 4
+                clickedCompleteButoon(item)
                 return true
             }
         }
@@ -103,28 +101,65 @@ class SplitViewModel@Inject constructor(
                 selectSplitItem.value = 2
                 return true
             }
-            /*R.id.split_nav_freestyle->{
-                selectSplitItem.value = 3
-                return true
-            }*/
         }
         return false
     }
 
-    fun intentToBitmap(uri : String){
-        splitImage.value = layerListRepository.uriToBitmap(uri.toUri())
+    private fun checkStack(){
+        previousStackState.value = splitStackRepository.checkPreviousStackState()
+        nextStackState.value = splitStackRepository.checkNextStackState()
     }
 
-    fun splitItem(){
+    private fun clickedBackButoon(item: Int){
+        selectToolbar.value = item
+    }
+
+    private fun clickedPreviousButoon(item: Int){
+        selectToolbar.value = item
+        if(splitStackRepository.checkPreviousStackState()){
+            splitStackRepository.addNextStack(currentImage.value)
+            currentImage.value = splitStackRepository.popPrevious()
+            checkStack()
+        }
+    }
+
+    private fun clickedNextButoon(item: Int){
+        selectToolbar.value = item
+        if(splitStackRepository.checkNextStackState()){
+            splitStackRepository.addPreviousStack(currentImage.value)
+            currentImage.value = splitStackRepository.popNext()
+            checkStack()
+        }
+    }
+
+    private fun clickedSplitButoon(item: Int){
+        selectToolbar.value = item
+        splitStackRepository.addPreviousStack(currentImage.value)
+        splitImage()
+        splitStackRepository.clearNextStack()
+        checkStack()
+    }
+
+    private fun clickedCompleteButoon(item: Int){
+        val image = currentImage.value
+        image?.let {
+            conversionImageRepository.bitmapToUri(it)?.let {
+                splitImageUri = it
+                selectToolbar.value = item
+            }
+        }
+    }
+
+    private fun splitImage(){
         when(selectSplitItem.value){
             0->{
-                splitImage.value = splitRepository.cropSquareImage(splitSquareView.value!!,splitImage.value!!)
+                currentImage.value = splitRepository.cropSquareImage(splitSquareView.value!!,currentImage.value!!)
             }
             1->{
-                splitImage.value = splitRepository.cropCircleImage(splitCircleView.value!!,splitImage.value!!)
+                currentImage.value = splitRepository.cropCircleImage(splitCircleView.value!!,currentImage.value!!)
             }
             2->{
-                splitImage.value = splitRepository.cropPolygonImage(splitPolygonView.value!!,splitImage.value!!)
+                currentImage.value = splitRepository.cropPolygonImage(splitPolygonView.value!!,currentImage.value!!)
             }
         }
     }

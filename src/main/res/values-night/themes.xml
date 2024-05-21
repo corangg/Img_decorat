@@ -10,12 +10,6 @@
 
     </style>
 
-    <style name="AppTheme.Actionbar" parent="Widget.AppCompat.Toolbar.Button.Navigation">
-        <item name="android:tint">#00ffff</item>
-    </style>
 
-    <style name="AppTheme.OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
-        <item name="android:tint">#fff</item>
-    </style>
 
 </resources>
