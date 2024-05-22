@@ -13,7 +13,7 @@ import com.example.img_decorat.R
 import com.example.img_decorat.databinding.FragmentBackGroundBinding
 import com.example.img_decorat.databinding.FragmentTextColorBinding
 import com.example.img_decorat.ui.adapter.ColorAdapter
-import com.example.img_decorat.utils.ColorList
+import com.example.img_decorat.utils.UtilList
 import com.example.img_decorat.viewmodel.MainViewModel
 
 class TextColorFragment : Fragment(),ColorAdapter.OnColorItemClickListener {
@@ -53,14 +53,14 @@ class TextColorFragment : Fragment(),ColorAdapter.OnColorItemClickListener {
     private fun textColorAdapterSet(){
         binding.recycleTextColor.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL,false)
-        textColorAdapter = ColorAdapter(ColorList.colorsList, this,0)
+        textColorAdapter = ColorAdapter(UtilList.colorsList, this,0)
         binding.recycleTextColor.adapter = textColorAdapter
     }
 
     private fun backGroundColorAdapterSet(){
         binding.recycleTextBackgroundColor.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL,false)
-        backGroundColorAdapter = ColorAdapter(ColorList.colorsList, this,1)
+        backGroundColorAdapter = ColorAdapter(UtilList.colorsList, this,1)
         binding.recycleTextBackgroundColor.adapter = backGroundColorAdapter
     }
 

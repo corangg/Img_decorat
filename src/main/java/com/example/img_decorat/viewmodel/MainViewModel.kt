@@ -25,8 +25,7 @@ import com.example.img_decorat.data.repository.BackgroundRepository
 import com.example.img_decorat.data.source.remote.retrofit.EmojiRetrofit
 import com.example.img_decorat.data.repository.LayerListRepository
 import com.example.img_decorat.utils.APIKey
-import com.example.img_decorat.utils.ColorList
-import com.example.img_decorat.utils.FontsList
+import com.example.img_decorat.utils.UtilList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.LinkedList
@@ -38,7 +37,7 @@ class MainViewModel @Inject constructor(
     private val layerListRepository: LayerListRepository,
     private val backgroundRepository: BackgroundRepository
 ) : AndroidViewModel(application){
-    var screenWith : Int = 0
+    var screenSize : Int = 0
 
     val imgTitle : MutableLiveData<String> = MutableLiveData("New_Image")
     val imgSearch : MutableLiveData<String> = MutableLiveData()
@@ -81,8 +80,45 @@ class MainViewModel @Inject constructor(
         imageTransparencyValue.observeForever {
             layerListRepository.viewTransparency(it)
         }
-
     }
+
+    fun setViewSize(size : Int){
+        screenSize = size
+        selectBackgroundScale(0)
+    }
+
+    /*fun onMenuItemClicked(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_main_open -> {
+
+                return true
+            }
+
+        }
+        return false
+    }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     fun bottomNavigationItemSelected(item : MenuItem):Boolean{
         when(item.itemId){
@@ -108,7 +144,7 @@ class MainViewModel @Inject constructor(
             }
             R.id.munu_navi_text->{
                 selectNavigationItem.value = 4
-                liveLayerList.value = layerListRepository.addTextLayer(screenWith)
+                liveLayerList.value = layerListRepository.addTextLayer(screenSize)
                 liveViewList.value = layerListRepository.viewList
                 selectLayer(liveLayerList.value!!.size-1)
                 return true
@@ -161,7 +197,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun setImgLayerList(data: Intent?){
-        liveLayerList.value = layerListRepository.setImgLayerList(data,screenWith)
+        liveLayerList.value = layerListRepository.setImgLayerList(data,screenSize)
     }
 
     fun updateChecked(position: Int, checked: Boolean){
@@ -212,12 +248,12 @@ class MainViewModel @Inject constructor(
     }
 
     fun selectBackgroundColor(position: Int){
-        backGroundColor.value = ColorList.colorsList[position]
+        backGroundColor.value = UtilList.colorsList[position]
     }
 
     fun selectBackgroundScale(item:Int){
         selectBackgroundItem.value = item
-        selectBackgroundScale.value = backgroundRepository.setBackgroundScale(item, screenWith)
+        selectBackgroundScale.value = backgroundRepository.setBackgroundScale(item, screenSize)
 
     }
 
@@ -305,26 +341,26 @@ class MainViewModel @Inject constructor(
     }
 
     fun addEmogeLayer(emojiPosition:Int){
-        liveLayerList.value = layerListRepository.addEmojiLayer(emojiList.value!![emojiTab.value!!].groupList[emojiPosition],screenWith)
+        liveLayerList.value = layerListRepository.addEmojiLayer(emojiList.value!![emojiTab.value!!].groupList[emojiPosition],screenSize)
         liveViewList.value = layerListRepository.viewList
     }
     val textColor : MutableLiveData<Int> = MutableLiveData(Color.WHITE)
     val textBackgroundColor : MutableLiveData<Int> = MutableLiveData(Color.TRANSPARENT)
-    val textFont : MutableLiveData<Typeface> = MutableLiveData(FontsList.typefaces[0])
+    val textFont : MutableLiveData<Typeface> = MutableLiveData(UtilList.typefaces[0])
     val viewText : MutableLiveData<String> = MutableLiveData("")
     val textImageValue : MutableLiveData<String> = MutableLiveData("")
     fun textColorSet(position: Int){
-        textColor.value = ColorList.colorsList[position]
-        liveLayerList.value = layerListRepository.setEditTextViewTextColor(ColorList.colorsList[position])
+        textColor.value = UtilList.colorsList[position]
+        liveLayerList.value = layerListRepository.setEditTextViewTextColor(UtilList.colorsList[position])
     }
 
     fun textBackgroundColorSet(position: Int){
-        textBackgroundColor.value = ColorList.colorsList[position]
-        liveLayerList.value = layerListRepository.setEditTextViewBackgroundColor(ColorList.colorsList[position])
+        textBackgroundColor.value = UtilList.colorsList[position]
+        liveLayerList.value = layerListRepository.setEditTextViewBackgroundColor(UtilList.colorsList[position])
     }
 
     fun textFontSet(position: Int){
-        val font = FontsList.typefaces[position]
+        val font = UtilList.typefaces[position]
         textFont.value = font
         liveLayerList.value = layerListRepository.setEditTextViewTextFont(font)
     }

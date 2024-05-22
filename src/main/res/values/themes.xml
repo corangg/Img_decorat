@@ -1,13 +1,26 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-
-    <style name="Theme.Img_decorat" parent="Theme.MaterialComponents.Light.NoActionBar" >
+    <style name="Theme.Img_decoratA" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="overlapAnchor">false</item>
-        <item name="android:dropDownVerticalOffset">200dp</item>
+        <item name="android:dropDownVerticalOffset">?attr/actionBarSize</item>
         <item name="colorPrimary">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="actionBarPopupTheme">@style/CustomPopupMenu</item>
+        <item name="android:popupMenuStyle">@style/CustomPopupMenuItem</item>
+
     </style>
 
+    <style name="CustomPopupMenu" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:textSize">32sp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">@color/black</item>
 
+    </style>
+
+    <style name="CustomPopupMenuItem" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:textSize">32sp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 
 </resources>

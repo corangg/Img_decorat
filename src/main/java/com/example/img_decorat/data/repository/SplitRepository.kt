@@ -10,17 +10,29 @@ import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
+import android.net.Uri
 import android.widget.FrameLayout
 import com.example.img_decorat.ui.view.SplitCircleView
 import com.example.img_decorat.ui.view.SplitPolygonView
 import com.example.img_decorat.ui.view.SplitSquareView
+import com.example.img_decorat.utils.Util
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class SplitRepository @Inject constructor(
     @ApplicationContext private val context: Context) {
+    private val layout = FrameLayout.LayoutParams(
+        FrameLayout.LayoutParams.MATCH_PARENT,
+        FrameLayout.LayoutParams.MATCH_PARENT)
 
-    private val layout = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+    fun getIntentBitmap(uri: Uri): Bitmap?{
+        return Util.uriToBitmap(context = context, imageUri = uri)
+    }
+
+    fun setIntentUri(bitmap: Bitmap):Uri?{
+        return Util.bitmapToUri(context = context, bitmap = bitmap)
+    }
+
 
     fun squareSplitView():SplitSquareView{
         val splitArea = SplitSquareView(context).apply {

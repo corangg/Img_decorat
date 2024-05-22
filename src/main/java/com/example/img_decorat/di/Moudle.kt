@@ -2,7 +2,6 @@ package com.example.img_decorat.di
 
 import android.content.Context
 import com.example.img_decorat.data.repository.BackgroundRepository
-import com.example.img_decorat.data.repository.ConversionImageRepository
 import com.example.img_decorat.data.repository.ImageDataRepository
 import com.example.img_decorat.data.repository.LayerListRepository
 import com.example.img_decorat.data.repository.SplitRepository
@@ -29,12 +28,14 @@ object Moudle {
         return BTNAnimation(context)
     }
 
-    @Provides
-    @Singleton
-    fun provideConversionImageRepository(context: Context): ConversionImageRepository {
-        return ConversionImageRepository(context)
+  /*  @Provides
+    fun provideMainActivityHelper(
+        activity: Activity,
+        binding: ActivityMainBinding,
+    ): MainActivityHelper {
+        return MainActivityHelper(activity,binding)
     }
-
+*/
     @Singleton
     @Provides
     fun provideImageDataRepository(): ImageDataRepository {

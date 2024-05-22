@@ -10,7 +10,6 @@ class EmojiGroupAdapter(activity: FragmentActivity, listSize : Int): FragmentSta
     override fun getItemCount(): Int {
         return size
     }
-
     override fun createFragment(position: Int): Fragment {
         return EmojiFragment()
     }

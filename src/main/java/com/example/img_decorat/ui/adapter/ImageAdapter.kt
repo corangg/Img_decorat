@@ -7,10 +7,8 @@ import com.bumptech.glide.Glide
 import com.example.img_decorat.data.model.dataModels.unsplashimagedata.UnsplashData
 import com.example.img_decorat.databinding.ItemImageBinding
 
-
-class ImageViewHolder(val binding: ItemImageBinding): RecyclerView.ViewHolder(binding.root)
-class ImageAdapter(val imageList: MutableList<UnsplashData>, val onItemClickListener:OnColorItemClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    interface OnColorItemClickListener{
+class ImageAdapter(val imageList: MutableList<UnsplashData>, val onItemClickListener:OnImageItemClickListener):RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
+    interface OnImageItemClickListener{
         fun onImageItemClick(position: Int)
     }
 
@@ -18,16 +16,23 @@ class ImageAdapter(val imageList: MutableList<UnsplashData>, val onItemClickList
         return imageList.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder
     = ImageViewHolder(ItemImageBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val binding = (holder as ImageViewHolder).binding
+    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+        holder.setImage(position)
+        holder.clieckedItem(position)
+    }
 
-        Glide.with(binding.root).load(imageList[position].urls.small).into(binding.backgroundImageItem)
+    inner class ImageViewHolder(val binding: ItemImageBinding): RecyclerView.ViewHolder(binding.root){
+        fun setImage(position: Int){
+            Glide.with(binding.root).load(imageList[position].urls.small).into(binding.backgroundImageItem)
+        }
 
-        binding.backgroundImageItem.setOnClickListener {
-            onItemClickListener.onImageItemClick(position)
+        fun clieckedItem(position: Int){
+            binding.backgroundImageItem.setOnClickListener {
+                onItemClickListener.onImageItemClick(position)
+            }
         }
     }
 }

@@ -5,42 +5,42 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.databinding.ItemColorBinding
-import com.example.img_decorat.databinding.ItemMenuBinding
 
-
-class ColorViewHolder(val binding: ItemColorBinding): RecyclerView.ViewHolder(binding.root)
-
-class ColorAdapter(val colorList: MutableList<Int>, val onItemClickListener: OnColorItemClickListener, val case: Int):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-
+class ColorAdapter(val colorList: MutableList<Int>, val onItemClickListener: OnColorItemClickListener, val case: Int):RecyclerView.Adapter<ColorAdapter.ColorViewHolder>(){
     private var selectedPosition = -1
    interface OnColorItemClickListener{
-       fun onColorItemClick(position: Int,case: Int){
-           true
-       }
+       fun onColorItemClick(position: Int, case: Int)
    }
 
     override fun getItemCount(): Int {
         return colorList.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorViewHolder
     = ColorViewHolder(ItemColorBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val binding = (holder as ColorViewHolder).binding
-        binding.colorItem.setBackgroundColor(colorList[position])
+    override fun onBindViewHolder(holder: ColorViewHolder, position: Int) {
+        holder.setBackgroundColor(colorList[position])
+        holder.clickedItem(position)
+    }
 
-        binding.colorItem.setOnClickListener {
-            onItemClickListener.onColorItemClick(position,case)
-            val positionSet =position
-            val existingPosition = selectedPosition
-            val border = GradientDrawable()
-            border.setColor(colorList[position])
-            border.setStroke(4, android.graphics.Color.WHITE)
+    inner class ColorViewHolder(val binding: ItemColorBinding) : RecyclerView.ViewHolder(binding.root){
+        fun setBackgroundColor(color: Int){
+            binding.colorItem.setBackgroundColor(color)
+        }
 
-            selectedPosition = positionSet
-            binding.colorItem.background = border
-            notifyItemChanged(existingPosition)
+        fun clickedItem(position: Int){
+            binding.colorItem.setOnClickListener {
+                onItemClickListener.onColorItemClick(position, case)
+                val existingPosition = selectedPosition
+                val border = GradientDrawable()
+                border.setColor(colorList[position])
+                border.setStroke(4, android.graphics.Color.WHITE)
+
+                selectedPosition = position
+                binding.colorItem.background = border
+                notifyItemChanged(existingPosition)
+            }
         }
     }
 }

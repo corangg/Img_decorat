@@ -47,35 +47,25 @@
                         android:layout_toLeftOf="@+id/menu_more"
                         android:background="@drawable/ic_add"
                         android:backgroundTint="@color/white"
+
                         android:onClick="@{()->viewmodel.openGallery()}"/>
+
                     <ImageButton
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:id="@+id/menu_more"
                         android:layout_marginRight="12dp"
                         android:layout_alignParentRight="true"
+
                         android:background="@drawable/ic_more"
                         android:backgroundTint="@color/white"
                         android:onClick="@{()->viewmodel.moreMenu()}"/>
+
                 </RelativeLayout>
             </androidx.appcompat.widget.Toolbar>
 
-            <LinearLayout
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/menu_view"
-                android:orientation="vertical"
-                android:layout_alignParentRight="true"
-                android:background="#000000"
-                android:layout_marginHorizontal="6dp"
-                android:layout_below="@+id/main_toolbar"
-                android:visibility="gone">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:id="@+id/recycle_meun" />
-            </LinearLayout>
+
+
 
 
             <FrameLayout
@@ -119,7 +109,22 @@
                 app:menu="@menu/bottom_navigation_menu"
                 app:onNavigationItemSelectedListener="@{(item)->viewmodel.bottomNavigationItemSelected(item)}"/>
 
-
+            <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/menu_view"
+                android:orientation="vertical"
+                android:layout_alignParentRight="true"
+                android:background="#000000"
+                android:layout_marginHorizontal="6dp"
+                android:layout_below="@+id/main_toolbar"
+                android:visibility="gone">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:id="@+id/recycle_meun" />
+            </LinearLayout>
 
         </RelativeLayout>
         

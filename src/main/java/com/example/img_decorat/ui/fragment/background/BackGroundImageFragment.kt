@@ -17,7 +17,7 @@ import com.example.img_decorat.databinding.FragmentBackGroundImageBinding
 import com.example.img_decorat.ui.adapter.ImageAdapter
 import com.example.img_decorat.viewmodel.MainViewModel
 
-class BackGroundImageFragment : Fragment(),ImageAdapter.OnColorItemClickListener {
+class BackGroundImageFragment : Fragment(),ImageAdapter.OnImageItemClickListener {
     private val viewModel: MainViewModel by activityViewModels()
     private lateinit var binding : FragmentBackGroundImageBinding
     lateinit var imageAdapter: ImageAdapter

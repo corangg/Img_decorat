@@ -13,7 +13,7 @@ import com.example.img_decorat.R
 import com.example.img_decorat.utils.Util
 import com.example.img_decorat.databinding.FragmentBackGroundColorBinding
 import com.example.img_decorat.ui.adapter.ColorAdapter
-import com.example.img_decorat.utils.ColorList
+import com.example.img_decorat.utils.UtilList
 import com.example.img_decorat.viewmodel.MainViewModel
 
 class BackGroundColorFragment : Fragment(),ColorAdapter.OnColorItemClickListener {
@@ -40,7 +40,7 @@ class BackGroundColorFragment : Fragment(),ColorAdapter.OnColorItemClickListener
 
     private fun adapterSet(){
         binding.colorRecyclerview.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-        colorAdapter = ColorAdapter(ColorList.colorsList, this,0)
+        colorAdapter = ColorAdapter(UtilList.colorsList, this,0)
         binding.colorRecyclerview.adapter = colorAdapter
     }
     private fun setObserve(){

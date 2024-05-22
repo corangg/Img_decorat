@@ -10,12 +10,9 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.img_decorat.R
-import com.example.img_decorat.databinding.FragmentBackGroundColorBinding
 import com.example.img_decorat.databinding.FragmentTextFontBinding
-import com.example.img_decorat.ui.adapter.ColorAdapter
 import com.example.img_decorat.ui.adapter.FontsAdapter
-import com.example.img_decorat.utils.ColorList
-import com.example.img_decorat.utils.FontsList
+import com.example.img_decorat.utils.UtilList
 import com.example.img_decorat.viewmodel.MainViewModel
 
 class TextFontFragment : Fragment(),FontsAdapter.OnFontItemClickListener {
@@ -44,7 +41,7 @@ class TextFontFragment : Fragment(),FontsAdapter.OnFontItemClickListener {
     private fun adapterSet(){
         binding.textFont.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL,false)
-        fontAdapter = FontsAdapter(FontsList.typefaces, this)
+        fontAdapter = FontsAdapter(UtilList.typefaces, this)
         binding.textFont.adapter = fontAdapter
     }
     private fun setObserve(){

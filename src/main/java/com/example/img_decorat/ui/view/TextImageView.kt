@@ -33,8 +33,8 @@ class TextImageView @JvmOverloads constructor(
     private var viewModel: MainViewModel? = null
 
     private val matrix = Matrix()
-    private var scaleFactor = 1.0f
-    private var rotationDegrees = 0f
+    var scaleFactor = 1.0f
+    var rotationDegrees = 0f
     private val scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
     private val rotateGestureDetector = RotateGestureDetector(RotateListener())
     private var lastTouchX = 0f

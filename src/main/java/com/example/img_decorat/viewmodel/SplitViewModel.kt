@@ -6,21 +6,21 @@ import android.net.Uri
 import android.view.MenuItem
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.img_decorat.R
-import com.example.img_decorat.data.repository.ConversionImageRepository
 import com.example.img_decorat.data.repository.SplitRepository
 import com.example.img_decorat.data.repository.SplitStackRepository
 import com.example.img_decorat.ui.view.SplitCircleView
 import com.example.img_decorat.ui.view.SplitPolygonView
 import com.example.img_decorat.ui.view.SplitSquareView
+import com.example.img_decorat.utils.Util.bitmapToUri
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SplitViewModel@Inject constructor(
     application: Application,
-    private val conversionImageRepository: ConversionImageRepository,
     private val splitStackRepository: SplitStackRepository,
     private val splitRepository: SplitRepository
 )  : AndroidViewModel(application){
@@ -56,7 +56,7 @@ class SplitViewModel@Inject constructor(
     }
 
     fun intentToBitmap(uri : String){
-        conversionImageRepository.uriToBitmap(uri.toUri())?.let {
+        splitRepository.getIntentBitmap(uri.toUri())?.let {
             currentImage.value = it
         }
     }
@@ -143,7 +143,7 @@ class SplitViewModel@Inject constructor(
     private fun clickedCompleteButoon(item: Int){
         val image = currentImage.value
         image?.let {
-            conversionImageRepository.bitmapToUri(it)?.let {
+           splitRepository.setIntentUri(it)?.let {
                 splitImageUri = it
                 selectToolbar.value = item
             }

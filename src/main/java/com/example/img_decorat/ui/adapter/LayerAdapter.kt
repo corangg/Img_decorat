@@ -1,5 +1,6 @@
 package com.example.img_decorat.ui.adapter
 
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -11,30 +12,8 @@ import com.example.img_decorat.databinding.ItemLayerBinding
 import java.util.Collections
 import java.util.LinkedList
 
-class LayerViewHolder(val binding: ItemLayerBinding): RecyclerView.ViewHolder(binding.root){
-    fun bindLayer(layerItemData: LayerItemData, position: Int){
-        val num = position + 1
-        binding.layerNum.text = num.toString()
-
-        if(layerItemData.type == 0){
-            binding.layerImg.visibility = View.VISIBLE
-            Glide.with(binding.root).load(layerItemData.bitMap).into(binding.layerImg)
-        }else if(layerItemData.type == 1){
-            binding.layerText.visibility = View.VISIBLE
-
-            binding.layerText.background = layerItemData.text.background
-            binding.layerText.text = layerItemData.text.text
-            binding.layerText.setTextColor(layerItemData.text.textColors)
-            binding.layerText.typeface = layerItemData.text.typeface
-        }
-
-
-        binding.check.isChecked = layerItemData.check//체크되면 체크된 값 리턴해야할듯
-    }
-}
-
-class LayerAdapter(val layerList: LinkedList<LayerItemData>, val onLayerItemClickListener: OnLayerItemClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    interface OnLayerItemClickListener{//드래그 할꺼라 바꿔야 할ㄷ스
+class LayerAdapter(val layerList: LinkedList<LayerItemData>, val onLayerItemClickListener: OnLayerItemClickListener):RecyclerView.Adapter<LayerAdapter.LayerViewHolder>() {
+    interface OnLayerItemClickListener{
         fun onCheckedClick(position: Int, checked : Boolean)
 
         fun onLayerDelete(position: Int)
@@ -46,30 +25,64 @@ class LayerAdapter(val layerList: LinkedList<LayerItemData>, val onLayerItemClic
         return layerList.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LayerViewHolder
             = LayerViewHolder(ItemLayerBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val binding = (holder as LayerViewHolder).binding
-
+    override fun onBindViewHolder(holder: LayerViewHolder, position: Int) {
         holder.bindLayer(layerList[position], position)
+        holder.setSlectedLayer(position)
+        holder.clickedItem(position)
+        holder.clickedVisibleCheck(position)
+        holder.clickedDelete(position)
+    }
 
-        binding.itemLayer.setBackgroundColor(if (layerList[position].select) 0xFF202020.toInt() else Color.TRANSPARENT)
+    inner class LayerViewHolder(val binding: ItemLayerBinding): RecyclerView.ViewHolder(binding.root){
+        fun bindLayer(layerItemData: LayerItemData, position: Int){
+            val num = position + 1
+            binding.layerNum.text = num.toString()
+            binding.check.isChecked = layerItemData.check
 
-
-        binding.itemLayer.setOnClickListener {
-            onLayerItemClickListener.onLayerItemClick(position)
+            when(layerItemData.type){
+                0->setImage(layerItemData.bitMap)
+                1->setText(layerItemData)
+            }
         }
 
-        binding.check.setOnClickListener {
-            onLayerItemClickListener.onCheckedClick(position, binding.check.isChecked)
+        private fun setImage(bitmap: Bitmap){
+            binding.layerImg.visibility = View.VISIBLE
+            Glide.with(binding.root).load(bitmap).into(binding.layerImg)
         }
 
-        binding.layerDelete.setOnClickListener {
-            onLayerItemClickListener.onLayerDelete(position)
+        private fun setText(layerItemData: LayerItemData){
+            binding.layerText.visibility = View.VISIBLE
+
+            binding.layerText.background = layerItemData.text.background
+            binding.layerText.text = layerItemData.text.text
+            binding.layerText.setTextColor(layerItemData.text.textColors)
+            binding.layerText.typeface = layerItemData.text.typeface
         }
 
+        fun setSlectedLayer(position: Int){
+            binding.itemLayer.setBackgroundColor(if (layerList[position].select) 0xFF202020.toInt() else Color.TRANSPARENT)
+        }
 
+        fun clickedItem(position: Int){
+            binding.itemLayer.setOnClickListener {
+                onLayerItemClickListener.onLayerItemClick(position)
+            }
+        }
+
+        fun clickedVisibleCheck(position: Int){
+            binding.check.setOnClickListener {
+                onLayerItemClickListener.onCheckedClick(position, binding.check.isChecked)
+            }
+        }
+
+        fun clickedDelete(position: Int){
+            binding.layerDelete.setOnClickListener {
+                onLayerItemClickListener.onLayerDelete(position)
+            }
+        }
     }
 
     fun moveItem(fromPosition: Int, toPosition: Int) {//여기는 괜찮나?
@@ -80,5 +93,4 @@ class LayerAdapter(val layerList: LinkedList<LayerItemData>, val onLayerItemClic
             notifyItemChanged(i)
         }
     }
-
 }

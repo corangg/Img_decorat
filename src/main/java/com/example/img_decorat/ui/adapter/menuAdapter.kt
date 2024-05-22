@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.databinding.ItemMenuBinding
 
-class MenuViewHolder(val binding: ItemMenuBinding): RecyclerView.ViewHolder(binding.root)
-
-class MenuAdapter(val menuList: MutableList<String>, val onItemClickListener: OnItemClickListener):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class MenuAdapter(val menuList: List<String>, val onItemClickListener: OnItemClickListener):RecyclerView.Adapter<MenuAdapter.MenuViewHolder>(){
 
     interface OnItemClickListener{
         fun onItemClick(position: Int)
@@ -17,16 +15,24 @@ class MenuAdapter(val menuList: MutableList<String>, val onItemClickListener: On
         return menuList.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder
         = MenuViewHolder(ItemMenuBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val binding = (holder as MenuViewHolder).binding
+    override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
+        holder.setTitle(position)
+        holder.clickedItem(position)
+    }
 
-        binding.menuText.text = menuList[position]
-
-        binding.itemMenu.setOnClickListener {
-            onItemClickListener.onItemClick(position)
+    inner class MenuViewHolder(val binding: ItemMenuBinding): RecyclerView.ViewHolder(binding.root){
+        fun setTitle(position: Int){
+            binding.menuText.text = menuList[position]
         }
+
+        fun clickedItem(position: Int){
+            binding.itemMenu.setOnClickListener {
+                onItemClickListener.onItemClick(position)
+            }
+        }
+
     }
 }
