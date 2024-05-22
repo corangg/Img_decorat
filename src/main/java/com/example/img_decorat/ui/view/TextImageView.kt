@@ -8,57 +8,40 @@ import android.graphics.ColorMatrixColorFilter
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.Rect
-import android.graphics.RectF
-import android.net.Uri
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
 import com.example.img_decorat.viewmodel.MainViewModel
-import com.google.android.material.internal.ViewUtils.hideKeyboard
-import com.google.android.material.internal.ViewUtils.showKeyboard
 import kotlin.math.abs
 
 class TextImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : AppCompatEditText(context, attrs, defStyle), View.OnTouchListener {
-
-    private var viewModel: MainViewModel? = null
-
+    private val viewHelper = ViewHelper()
     private val matrix = Matrix()
-    var scaleFactor = 1.0f
-    var rotationDegrees = 0f
+
     private val scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
     private val rotateGestureDetector = RotateGestureDetector(RotateListener())
+
+    private var scaleFactor = 1.0f
+    private var rotationDegrees = 0f
     private var lastTouchX = 0f
     private var lastTouchY = 0f
-    private var isEditable = false
-
     private var saturationValue = 1f
     private var brightnessValue = 1f
 
-    private var selectBorderPaint = Paint().apply {
-        color = Color.WHITE
-        style = Paint.Style.STROKE
-        strokeWidth = 4f
-    }
-    private var unSelectBorderPaint = Paint().apply {
-        color = Color.TRANSPARENT
-        style = Paint.Style.STROKE
-        strokeWidth = 0f
-    }
+    private var isEditable = false
+
+    private var viewModel: MainViewModel? = null
 
     private var fillBackgroundPaint = Paint().apply {
         color =Color.TRANSPARENT
         style =Paint.Style.FILL
-
     }
 
     init {
@@ -70,7 +53,7 @@ class TextImageView @JvmOverloads constructor(
     override fun onTouch(v: View, event: MotionEvent): Boolean {
         val transPos = getTransformedPoints()
 
-        if (!isPointInPolygon(event.x, event.y, transPos)) {
+        if (!jundgeTouchableArea(event.x, event.y, transPos)) {
             isEditable = false
             clearFocus()
             hideKeyboard()
@@ -88,8 +71,6 @@ class TextImageView @JvmOverloads constructor(
                     lastTouchY = event.y
                     isEditable = true
                     viewModel?.selectLastImage(this.id)
-
-                    invalidate()
                 }
                 MotionEvent.ACTION_MOVE -> {
                     val dx = event.x - lastTouchX
@@ -102,16 +83,15 @@ class TextImageView @JvmOverloads constructor(
                     matrix.postTranslate(dx, dy)
                     lastTouchX = event.x
                     lastTouchY = event.y
-                    invalidate()
                 }
                 MotionEvent.ACTION_UP->{
                     if(isEditable){
                         showKeyboard()
-                        invalidate()
                     }
                 }
             }
         }
+        invalidate()
         return true
     }
 
@@ -119,13 +99,9 @@ class TextImageView @JvmOverloads constructor(
         drawBorder(canvas)
         canvas.save()
         canvas.concat(matrix)
-
         super.onDraw(canvas)
         canvas.restore()
-
-
     }
-
 
     private fun drawBorder(canvas: Canvas) {
         val points = getTransformedPoints()
@@ -138,10 +114,10 @@ class TextImageView @JvmOverloads constructor(
         }
 
         if(viewModel?.lastTouchedImageId?.value == this.id){
-            canvas.drawPath(path, selectBorderPaint)
+            canvas.drawPath(path, viewHelper.borderPaint(Color.WHITE,4f))
             canvas.drawPath(path, fillBackgroundPaint)
         }else{
-            canvas.drawPath(path, unSelectBorderPaint)
+            canvas.drawPath(path, viewHelper.borderPaint(Color.TRANSPARENT))
             canvas.drawPath(path, fillBackgroundPaint)
         }
     }
@@ -168,8 +144,7 @@ class TextImageView @JvmOverloads constructor(
         return points
     }
 
-
-    private fun isPointInPolygon(x: Float, y: Float, polygon: FloatArray): Boolean {
+    private fun jundgeTouchableArea(x: Float, y: Float, polygon: FloatArray): Boolean {
         var intersectCount = 0
         for (i in polygon.indices step 2) {
             val x1 = polygon[i]
@@ -207,37 +182,13 @@ class TextImageView @JvmOverloads constructor(
 
     fun setSaturation(saturation: Float) {
         saturationValue = (saturation + 100f)/100f
-        applyColorFilter()
+        paint.colorFilter = viewHelper.applyColorFilter(saturationValue, brightnessValue)
     }
 
     fun setBrightness(brightness: Float) {
-        brightnessValue = 0.008f*brightness +1f//(brightness + 80f) / 100f
-        applyColorFilter()
+        brightnessValue = 0.008f*brightness +1f
+        paint.colorFilter = viewHelper.applyColorFilter(saturationValue, brightnessValue)
     }
-
-    private fun applyColorFilter() {
-        val colorMatrix = ColorMatrix()
-
-        // 채도 설정
-        val saturationMatrix = ColorMatrix()
-        saturationMatrix.setSaturation(saturationValue)
-
-        // 명도 설정
-        val brightnessMatrix = ColorMatrix()
-        brightnessMatrix.setScale(brightnessValue, brightnessValue, brightnessValue, 1f)
-
-        // 두 매트릭스를 결합
-        colorMatrix.postConcat(saturationMatrix)
-        colorMatrix.postConcat(brightnessMatrix)
-
-        // 색상 필터 적용
-        val filter = ColorMatrixColorFilter(colorMatrix)
-
-        paint.colorFilter = filter
-
-        invalidate()
-    }
-
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
