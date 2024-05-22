@@ -55,16 +55,17 @@ class MainViewModel @Inject constructor(
 
     val liveLayerList : MutableLiveData<LinkedList<LayerItemData>> = MutableLiveData(LinkedList<LayerItemData>())
     val liveViewList : MutableLiveData<LinkedList<ViewItemData>> = MutableLiveData(LinkedList<ViewItemData>())
-    val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
-    val unsplashList: MutableLiveData<MutableList<UnsplashData>> = MutableLiveData()
 
-    val emojiList: MutableLiveData<MutableList<EmojiList>> = MutableLiveData()
+    val unsplashList: MutableLiveData<List<UnsplashData>> = MutableLiveData()
+    val emojiList: MutableLiveData<List<EmojiList>> = MutableLiveData(listOf())
 
     val imageSaturationValue : MutableLiveData<Int> = MutableLiveData(0)
     val imageBrightnessValue : MutableLiveData<Int> = MutableLiveData(0)
     val imageTransparencyValue : MutableLiveData<Int> = MutableLiveData(100)
+    val emojiTab : MutableLiveData<Int> = MutableLiveData(0)
+    val textSize : MutableLiveData<Int> = MutableLiveData(24)
 
-    val textSize : MutableLiveData<Int> = MutableLiveData(16)
+    val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
 
     lateinit var lastTouchedImage : Uri
 
@@ -84,6 +85,22 @@ class MainViewModel @Inject constructor(
     fun setViewSize(size : Int){
         screenSize = size
         selectBackgroundScale(0)
+    }
+
+    fun openGallery(){
+        openGalleryEvent.value = Unit
+    }
+
+    fun showOverFlowMenu(){
+        if(openMenuEvent.value == true){
+            openMenuEvent.value = false
+        }else{
+            openMenuEvent.value = true
+        }
+    }
+
+    fun closeOverFlowMenu(){
+        openMenuEvent.value = false
     }
 
     fun bottomNavigationItemSelected(item : MenuItem):Boolean{
@@ -139,104 +156,46 @@ class MainViewModel @Inject constructor(
         return false
     }
 
-    private fun clickedNavSplit(){
-        val lastTouchedId = lastTouchedImageId.value
-        lastTouchedId?.let {id->
-            if(layerListRepository.checkedViewType(id) == 0){
-                val uri = layerListRepository.setLastTouchedImage(id)
-                uri?.let {
-                    lastTouchedImage = it
-                    selectNavigationItem.value = 1
-                }
-            }
-        }
-    }
-
-    private fun clickedNavText(){
-        liveLayerList.value = layerListRepository.editTextViewAddList(screenSize)
-        liveViewList.value = layerListRepository.viewList
-        selectLayer(liveLayerList.value!!.size - 1)
-        selectNavigationItem.value = 4
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    fun openGallery(){
-        openGalleryEvent.value = Unit
-    }
-
-    fun moreMenu(){
-        if(openMenuEvent.value == true){
-            openMenuEvent.value = false
-        }else{
-            openMenuEvent.value = true
-        }
-    }
-
-    fun closeMenu(){
-        openMenuEvent.value = false
-    }
-
-    fun setImgLayerList(data: Intent?){
+    fun imgAddLayerList(data: Intent?){
         liveLayerList.value = layerListRepository.imgAddList(data,screenSize)
     }
 
     fun updateChecked(position: Int, checked: Boolean){
-        if(liveLayerList.value!!.size > position){
+        if (layerListSizeCheck(position)){
             liveLayerList.value = layerListRepository.checkedUpdateLayerList(position,checked)
+            liveViewList.value = layerListRepository.checkedUpdateViewList(position,checked)
         }
-        liveViewList.value = layerListRepository.checkedUpdateViewList(position,checked)
     }
-
 
     fun deleteLayer(position: Int){
-        if(liveLayerList.value!!.size > position){
+        if (layerListSizeCheck(position)){
             liveLayerList.value = layerListRepository.deleteLayerList(position)
+            liveViewList.value = layerListRepository.deleteImageViewList(position)
         }
-        liveViewList.value = layerListRepository.deleteImageViewList(position)
     }
 
-
-
     fun selectLayer(position: Int){
-        if(liveLayerList.value!!.size > position){
+        if (layerListSizeCheck(position)){
             val layerList = layerListRepository.selectLayer(position)
             liveLayerList.value = layerList
             lastTouchedImageId.value = layerList[position].id
         }
     }
 
-
-
     fun selectLastImage(id: Int){
         if(layerListRepository.checkLastSelectImage(id)){
             liveLayerList.value = layerListRepository.selectLastImage(id)
             liveViewList.value =layerListRepository.viewList
             lastTouchedImageId.value = id
-
-            imageSaturationValue.value = layerListRepository.checkSaturatio(imageSaturationValue.value)//얘네 다 널안전 검사해야함
-            imageBrightnessValue.value = layerListRepository.checkBrightness(imageBrightnessValue.value)
-            imageTransparencyValue.value = layerListRepository.checkTransparency(imageTransparencyValue.value)
-
+            layerListRepository.checkSaturatio(imageSaturationValue.value)?.let {
+                imageSaturationValue.value = it
+            }
+            layerListRepository.checkBrightness(imageBrightnessValue.value)?.let {
+                imageBrightnessValue.value = it
+            }
+            layerListRepository.checkTransparency(imageTransparencyValue.value)?.let {
+                imageTransparencyValue.value = it
+            }
         }
     }
 
@@ -258,7 +217,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val keword = imgSearch.value
             UnsplashRetrofit.getRandomPhotos(keword)?.let {
-                unsplashList.value = it.toMutableList()
+                unsplashList.value = it
             }
         }
     }
@@ -278,86 +237,30 @@ class MainViewModel @Inject constructor(
     }
 
     fun getEmoji(){
-        val getEmojiList = mutableListOf<EmojiData>()
         viewModelScope.launch {
-            val response = EmojiRetrofit.api.getEmojis(APIKey.EmojiApiKey)
-            if (response.isSuccessful) {
-                val emojis = response.body()
-                emojis?.let {
-                    for (emoji in it) {
-                        getEmojiList.add(emoji)
-                    }
-                }
-            } else {
-                Log.e("Emoji API", "Error: ${response.message()}")
-            }
-            emojiList.value = emojiListClassification(getEmojiList)
-        }
-    }
-    val emojiTab : MutableLiveData<Int> = MutableLiveData(0)
-
-
-
-    fun emojiListClassification(list : MutableList<EmojiData>): MutableList<EmojiList>{
-        val classification = mutableListOf<EmojiList>()
-        var groupName = list[0].group
-        var emojiBitmapList = mutableListOf<Bitmap>()
-
-        for(i in list){
-            if(i.group != groupName){
-                val emojiGroup  = EmojiList(groupName = groupName, groupList = emojiBitmapList)
-                classification.add(emojiGroup)
-                groupName = i.group
-                emojiBitmapList = mutableListOf()
-                emojiBitmapList.add(createBitmapFromEmoji(i.character))
-            }else{
-                emojiBitmapList.add(createBitmapFromEmoji(i.character))
+            EmojiRetrofit.getEmojis()?.let {
+                emojiList.value = layerListRepository.emojiListClassification(it)
             }
         }
-        val emojiGroup  = EmojiList(groupName = groupName, groupList = emojiBitmapList)
-        classification.add(emojiGroup)
-        return classification
-    }
-
-    fun createBitmapFromEmoji(emoji: String): Bitmap {
-        val paint = Paint()
-        paint.textSize = 200f
-        paint.isAntiAlias = true
-        paint.color = Color.BLACK
-        paint.textAlign = Paint.Align.CENTER
-
-        val baseline = -paint.ascent() // ascent() is negative
-        val width = (paint.measureText(emoji) + 0.5f).toInt() // round
-        val height = (baseline + paint.descent() + 0.5f).toInt()
-
-        val image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(image)
-        canvas.drawText(emoji, (width / 2).toFloat(), baseline, paint)
-
-        return image
     }
 
     fun addEmogeLayer(emojiPosition:Int){
-        liveLayerList.value = layerListRepository.emojiAddLayer(emojiList.value!![emojiTab.value!!].groupList[emojiPosition],screenSize)
-        liveViewList.value = layerListRepository.viewList
+        if(emojiList.value != null && emojiTab.value != null){
+            liveLayerList.value = layerListRepository.emojiAddLayer(emojiList.value!![emojiTab.value!!].groupList[emojiPosition],screenSize)
+            liveViewList.value = layerListRepository.viewList
+        }
     }
-    val textColor : MutableLiveData<Int> = MutableLiveData(Color.WHITE)
-    val textBackgroundColor : MutableLiveData<Int> = MutableLiveData(Color.TRANSPARENT)
-    val textFont : MutableLiveData<Typeface> = MutableLiveData(UtilList.typefaces[0])
 
     fun textColorSet(position: Int){
-        textColor.value = UtilList.colorsList[position]
         liveLayerList.value = layerListRepository.editTextViewSetTextColor(UtilList.colorsList[position])
     }
 
     fun textBackgroundColorSet(position: Int){
-        textBackgroundColor.value = UtilList.colorsList[position]
         liveLayerList.value = layerListRepository.editTextViewSetBackgroundColor(UtilList.colorsList[position])
     }
 
     fun textFontSet(position: Int){
         val font = UtilList.typefaces[position]
-        textFont.value = font
         liveLayerList.value = layerListRepository.EditTextViewSetFont(font)
     }
 
@@ -365,6 +268,32 @@ class MainViewModel @Inject constructor(
         liveLayerList.value = layerListRepository.layerViewUpdateText(text)
     }
 
+    private fun clickedNavSplit(){
+        val lastTouchedId = lastTouchedImageId.value
+        lastTouchedId?.let {id->
+            if(layerListRepository.checkedViewType(id) == 0){
+                val uri = layerListRepository.setLastTouchedImage(id)
+                uri?.let {
+                    lastTouchedImage = it
+                    selectNavigationItem.value = 1
+                }
+            }
+        }
+    }
 
+    private fun clickedNavText(){
+        liveLayerList.value = layerListRepository.editTextViewAddList(screenSize)
+        liveViewList.value = layerListRepository.viewList
+        selectLayer(liveLayerList.value!!.size - 1)
+        selectNavigationItem.value = 4
+    }
 
+    private fun layerListSizeCheck(position: Int):Boolean{
+        liveLayerList.value?.let {
+            if(it.size > position){
+                return true
+            }
+        }
+        return false
+    }
 }

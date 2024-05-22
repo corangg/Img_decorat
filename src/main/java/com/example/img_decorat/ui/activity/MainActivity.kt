@@ -1,35 +1,19 @@
 package com.example.img_decorat.ui.activity
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.example.img_decorat.R
 import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.data.model.dataModels.ViewItemData
-import com.example.img_decorat.utils.RequestCode
 import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.ui.adapter.LayerAdapter
 import com.example.img_decorat.ui.adapter.MenuAdapter
@@ -39,11 +23,10 @@ import com.example.img_decorat.ui.fragment.emoji.EmojiGroupFragment
 import com.example.img_decorat.ui.fragment.hueFragment.HueFragment
 import com.example.img_decorat.ui.fragment.text.TextFragment
 import com.example.img_decorat.ui.uihelper.MainActivityHelper
-import com.example.img_decorat.ui.view.BTNAnimation
 import com.example.img_decorat.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.LinkedList
-import javax.inject.Inject
+
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(),
     MenuAdapter.OnItemClickListener,
@@ -65,7 +48,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
 
     val requestGalleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if(it.resultCode == Activity.RESULT_OK && it.data != null){
-            viewModel.setImgLayerList(it.data)
+            viewModel.imgAddLayerList(it.data)
         }
     }
 

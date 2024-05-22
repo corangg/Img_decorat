@@ -44,7 +44,7 @@ class BackGroundImageFragment : BaseFragment<FragmentBackGroundImageBinding>(),I
         }
     }
 
-    private fun adapterSet(list:MutableList<UnsplashData>){
+    private fun adapterSet(list:List<UnsplashData>){
         binding.imageRecycle.layoutManager = GridLayoutManager(requireContext(),4)//LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         imageAdapter = ImageAdapter(list, this)
         binding.imageRecycle.adapter = imageAdapter

@@ -3,11 +3,15 @@ package com.example.img_decorat.data.repository
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Uri
 import android.widget.FrameLayout
 import android.widget.TextView
+import com.example.img_decorat.data.model.dataModels.EmojiData
+import com.example.img_decorat.data.model.dataModels.EmojiList
 
 import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.data.model.dataModels.ViewItemData
@@ -30,47 +34,6 @@ class LayerListRepository @Inject constructor(
     var layerList = LinkedList<LayerItemData>()
     val viewList = LinkedList<ViewItemData>()
     lateinit var lastSelectView : ViewItemData
-
-    private fun addLayerList(id : Int, bitmap: Bitmap){
-        val layerItemData = LayerItemData(context = context, check = false, id = id, bitMap = bitmap)
-        layerList.add(layerItemData)
-    }
-
-    private fun imageAddViewList(id : Int, bitmap: Bitmap, visibility: Boolean, scale : Float = 1.0f){
-        val imageView = createEditableImageView(context= context, viewId = id, bitmap = bitmap, scale = scale)
-        val viewData = ViewItemData(context = context, id = imageView.id, visible = visibility)
-        viewData.img = imageView
-        viewList.add(viewData)
-    }
-
-    private fun changeViewList(changeId : Int, bitmap: Bitmap){
-        val selectItem = viewList.find { it.id == changeId }
-        selectItem?.let {
-            val imageView = createEditableImageView(context = context, viewId = changeId, bitmap = bitmap)
-            it.img = imageView
-        }
-    }
-
-    private fun setLastSelectView(id: Int){
-        val selectedItem = viewList.find { it.id == id }
-        selectedItem?.let {
-            lastSelectView = it
-        }
-    }
-
-    private fun editTextViewAddViewList(addId : Int, viewSize: Int, visibility: Boolean, scale : Float = 1.0f){
-        val editView = TextImageView(context).apply {
-            layoutParams = FrameLayout.LayoutParams(
-                viewSize,
-                viewSize
-            )
-            id = addId
-            setTextSize(24f)
-        }
-        var viewData = ViewItemData(context = context, id = editView.id, visible = visibility, type = 1)
-        viewData.text = editView
-        viewList.add(viewData)
-    }
 
     fun imgAddList(data: Intent?, viewSize: Int): LinkedList<LayerItemData>{
         data?.clipData?.let{
@@ -287,6 +250,27 @@ class LayerListRepository @Inject constructor(
         return layerList
     }
 
+    fun emojiListClassification(list : List<EmojiData>): List<EmojiList>{
+        val classification = mutableListOf<EmojiList>()
+        var groupName = list[0].group
+        var emojiBitmapList = mutableListOf<Bitmap>()
+
+        for(i in list){
+            if(i.group != groupName){
+                val emojiGroup  = EmojiList(groupName = groupName, groupList = emojiBitmapList)
+                classification.add(emojiGroup)
+                groupName = i.group
+                emojiBitmapList = mutableListOf()
+                emojiBitmapList.add(createBitmapFromEmoji(i.character))
+            }else{
+                emojiBitmapList.add(createBitmapFromEmoji(i.character))
+            }
+        }
+        val emojiGroup  = EmojiList(groupName = groupName, groupList = emojiBitmapList)
+        classification.add(emojiGroup)
+        return classification
+    }
+
     fun editTextViewAddList(viewSize: Int):LinkedList<LayerItemData>{
         val textId = imageDataRepository.setID()
         var layerItemData = LayerItemData(context = context, check = true, id = textId, type = 1)
@@ -364,5 +348,63 @@ class LayerListRepository @Inject constructor(
             }
         }
         return layerList
+    }
+
+    private fun addLayerList(id : Int, bitmap: Bitmap){
+        val layerItemData = LayerItemData(context = context, check = false, id = id, bitMap = bitmap)
+        layerList.add(layerItemData)
+    }
+
+    private fun imageAddViewList(id : Int, bitmap: Bitmap, visibility: Boolean, scale : Float = 1.0f){
+        val imageView = createEditableImageView(context= context, viewId = id, bitmap = bitmap, scale = scale)
+        val viewData = ViewItemData(context = context, id = imageView.id, visible = visibility)
+        viewData.img = imageView
+        viewList.add(viewData)
+    }
+
+    private fun changeViewList(changeId : Int, bitmap: Bitmap){
+        val selectItem = viewList.find { it.id == changeId }
+        selectItem?.let {
+            val imageView = createEditableImageView(context = context, viewId = changeId, bitmap = bitmap)
+            it.img = imageView
+        }
+    }
+
+    private fun setLastSelectView(id: Int){
+        val selectedItem = viewList.find { it.id == id }
+        selectedItem?.let {
+            lastSelectView = it
+        }
+    }
+
+    private fun createBitmapFromEmoji(emoji: String): Bitmap {
+        val paint = Paint()
+        paint.textSize = 200f
+        paint.isAntiAlias = true
+        paint.textAlign = Paint.Align.CENTER
+
+        val baseline = - paint.ascent()
+        val width = (paint.measureText(emoji) + 0.5f).toInt()
+        val height = (baseline + paint.descent() + 0.5f).toInt()
+
+        val image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(image)
+        canvas.drawText(emoji, (width / 2).toFloat(), baseline, paint)
+
+        return image
+    }
+
+    private fun editTextViewAddViewList(addId : Int, viewSize: Int, visibility: Boolean, scale : Float = 1.0f){
+        val editView = TextImageView(context).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                viewSize,
+                viewSize
+            )
+            id = addId
+            setTextSize(24f)
+        }
+        var viewData = ViewItemData(context = context, id = editView.id, visible = visibility, type = 1)
+        viewData.text = editView
+        viewList.add(viewData)
     }
 }
