@@ -3,8 +3,6 @@ package com.example.img_decorat.ui.view
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
@@ -16,6 +14,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.ViewCompat
+import com.example.img_decorat.ui.uihelper.ViewHelper
 import com.example.img_decorat.viewmodel.MainViewModel
 import kotlin.math.abs
 

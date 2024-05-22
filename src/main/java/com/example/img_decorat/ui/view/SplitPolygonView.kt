@@ -3,7 +3,6 @@ package com.example.img_decorat.ui.view
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
@@ -11,7 +10,7 @@ import android.graphics.Region
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import androidx.appcompat.widget.AppCompatImageView
+import com.example.img_decorat.ui.uihelper.ViewHelper
 
 class SplitPolygonView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0, type: Int

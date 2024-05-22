@@ -1,9 +1,8 @@
-package com.example.img_decorat.ui.view
+package com.example.img_decorat.ui.uihelper
 
 import android.graphics.ColorFilter
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
-import android.graphics.Matrix
 import android.graphics.Paint
 
 class ViewHelper {
