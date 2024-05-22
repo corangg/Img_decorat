@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(),MenuAdapter.OnItemClickListener,LayerAd
         val displayMetrics = resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         setInitBackground(screenWidth)
-        viewModel.screenWith = screenWidth
+        viewModel.screenSize = screenWidth
     }
     private fun setInitBackground(screenWith:Int){
         binding.imgView.layoutParams = FrameLayout.LayoutParams(screenWith, screenWith)
