@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
+import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.FileProvider
 import com.example.img_decorat.ui.view.EditableImageView
@@ -15,6 +17,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Date
 
 object Util{
     fun bitmapToUri(context: Context, bitmap: Bitmap): Uri? {
@@ -35,6 +40,13 @@ object Util{
         context.contentResolver.openInputStream(imageUri).use { inputStream ->
             return BitmapFactory.decodeStream(inputStream)
         }
+    }
+
+    fun getBitmapFromView(view: View): Bitmap{
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.draw(canvas)
+        return bitmap
     }
 
     fun createEditableImageView(

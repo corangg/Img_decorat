@@ -58,19 +58,6 @@ class MainActivityHelper(
         binding.recycleMeun.layoutManager = LinearLayoutManager(activity)
     }
 
-    fun layerAdapterSet(list : LinkedList<LayerItemData>){
-        layerAdapter = LayerAdapter(list, activity as LayerAdapter.OnLayerItemClickListener)
-        binding.recycleLayer.adapter = layerAdapter
-    }
-
-    fun menuAdapterSet(){///흐으음 맘에 너무 안드는데
-        menuAdapter = MenuAdapter(UtilList.menuList,activity as MenuAdapter.OnItemClickListener)
-        binding.recycleMeun.adapter = menuAdapter
-        binding.recycleMeun.addItemDecoration(
-            DividerItemDecoration(activity,LinearLayoutManager.VERTICAL)
-        )
-    }
-
     fun openMenuEvent(visibility: Boolean){
         if(visibility){
             binding.menuView.visibility = View.VISIBLE

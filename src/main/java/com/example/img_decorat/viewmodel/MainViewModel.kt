@@ -10,6 +10,7 @@ import android.graphics.Typeface
 import android.net.Uri
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.FrameLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -22,6 +23,7 @@ import com.example.img_decorat.data.source.remote.retrofit.UnsplashRetrofit
 import com.example.img_decorat.data.model.dataModels.unsplashimagedata.UnsplashData
 import com.example.img_decorat.data.model.dataModels.ViewItemData
 import com.example.img_decorat.data.repository.BackgroundRepository
+import com.example.img_decorat.data.repository.ImageManagementRepository
 import com.example.img_decorat.data.source.remote.retrofit.EmojiRetrofit
 import com.example.img_decorat.data.repository.LayerListRepository
 import com.example.img_decorat.utils.APIKey
@@ -35,7 +37,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     application: Application,
     private val layerListRepository: LayerListRepository,
-    private val backgroundRepository: BackgroundRepository
+    private val backgroundRepository: BackgroundRepository,
+    private val imageManagementRepository: ImageManagementRepository
 ) : AndroidViewModel(application){
     var screenSize : Int = 0
 
@@ -266,6 +269,16 @@ class MainViewModel @Inject constructor(
 
     fun setViewText(text: String){
         liveLayerList.value = layerListRepository.layerViewUpdateText(text)
+    }
+
+    fun selectToolbarMenu(position: Int,view: View){
+        when(position){
+            1->{
+                imageManagementRepository.editViewSave(view,imgTitle.value!!)
+            }
+
+        }
+
     }
 
     private fun clickedNavSplit(){

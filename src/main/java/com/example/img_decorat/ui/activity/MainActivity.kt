@@ -1,15 +1,21 @@
 package com.example.img_decorat.ui.activity
 
+import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.R
 import com.example.img_decorat.data.model.dataModels.LayerItemData
@@ -23,6 +29,7 @@ import com.example.img_decorat.ui.fragment.emoji.EmojiGroupFragment
 import com.example.img_decorat.ui.fragment.hueFragment.HueFragment
 import com.example.img_decorat.ui.fragment.text.TextFragment
 import com.example.img_decorat.ui.uihelper.MainActivityHelper
+import com.example.img_decorat.utils.UtilList
 import com.example.img_decorat.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.LinkedList
@@ -33,6 +40,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
     LayerAdapter.OnLayerItemClickListener {
     private val viewModel: MainViewModel by viewModels()
     private lateinit var drawerToggle: ActionBarDrawerToggle
+    private lateinit var menuAdapter: MenuAdapter
     private lateinit var layerAdapter: LayerAdapter
     private lateinit var uiHelper: MainActivityHelper
 
@@ -64,7 +72,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
         setToolbar()
         viewModel.setViewSize(uiHelper.getScreenWith())
         uiHelper.recycleViewSet()
-        uiHelper.menuAdapterSet()
+        menuAdapterSet()
         itemTouchHelper()
     }
 
@@ -76,7 +84,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
     }
 
     override fun onItemClick(position: Int) {
-        position
+        viewModel.selectToolbarMenu(position, binding.imgView)
     }
 
     override fun onLayerItemClick(position: Int) {
@@ -177,6 +185,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
             com.example.img_decorat.R.string.drawer_close)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         drawerToggle.syncState()
+    }
+
+    private fun menuAdapterSet(){///흐으음 맘에 너무 안드는데
+        menuAdapter = MenuAdapter(UtilList.menuList, animation,this)
+        binding.recycleMeun.adapter = menuAdapter
+        binding.recycleMeun.addItemDecoration(
+            DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
+        )
     }
 
     private fun layerAdapterSet(list : LinkedList<LayerItemData>){

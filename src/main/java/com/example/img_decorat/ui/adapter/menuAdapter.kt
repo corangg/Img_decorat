@@ -4,8 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.databinding.ItemMenuBinding
+import com.example.img_decorat.ui.view.BTNAnimation
 
-class MenuAdapter(val menuList: List<String>, val onItemClickListener: OnItemClickListener):RecyclerView.Adapter<MenuAdapter.MenuViewHolder>(){
+class MenuAdapter(val menuList: List<String>, val animation: BTNAnimation, val onItemClickListener: OnItemClickListener):RecyclerView.Adapter<MenuAdapter.MenuViewHolder>(){
 
     interface OnItemClickListener{
         fun onItemClick(position: Int)
@@ -30,6 +31,7 @@ class MenuAdapter(val menuList: List<String>, val onItemClickListener: OnItemCli
 
         fun clickedItem(position: Int){
             binding.itemMenu.setOnClickListener {
+                animation.textAnimaation(binding.menuText)
                 onItemClickListener.onItemClick(position)
             }
         }

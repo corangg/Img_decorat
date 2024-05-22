@@ -394,7 +394,7 @@ class LayerListRepository @Inject constructor(
         return image
     }
 
-    private fun editTextViewAddViewList(addId : Int, viewSize: Int, visibility: Boolean, scale : Float = 1.0f){
+    private fun editTextViewAddViewList(addId : Int, viewSize: Int, visibility: Boolean){
         val editView = TextImageView(context).apply {
             layoutParams = FrameLayout.LayoutParams(
                 viewSize,
