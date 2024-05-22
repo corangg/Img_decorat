@@ -12,30 +12,24 @@ import androidx.fragment.app.activityViewModels
 import com.example.img_decorat.R
 import com.example.img_decorat.databinding.FragmentBackGroundBinding
 import com.example.img_decorat.databinding.FragmentBackGroundScaleBinding
+import com.example.img_decorat.ui.base.BaseFragment
 import com.example.img_decorat.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class BackGroundScaleFragment : Fragment() {
+class BackGroundScaleFragment : BaseFragment<FragmentBackGroundScaleBinding>() {
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var binding : FragmentBackGroundScaleBinding
+    private lateinit var selectScaleItem : LinearLayout
 
-    lateinit var selectScaleItem : LinearLayout
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_back_ground_scale,container,false)
-        (binding as ViewDataBinding).lifecycleOwner = this
-        binding.viewmodel = viewModel
-
-        selectScaleItem = binding.backgroundScale
-
-        setObserve()
-        return binding.root
+    override fun layoutResId(): Int {
+        return R.layout.fragment_back_ground_scale
     }
 
-    private fun setObserve(){
+    override fun initializeUI() {
+        binding.viewmodel = viewModel
+        selectScaleItem = binding.backgroundScale
+    }
+
+    override fun setObserve(){
         viewModel.selectBackgroundItem.observe(viewLifecycleOwner){
             selectScaleItem.setBackgroundColor(0x00FF0000)
             when(it){
@@ -70,5 +64,4 @@ class BackGroundScaleFragment : Fragment() {
             }
         }
     }
-
 }

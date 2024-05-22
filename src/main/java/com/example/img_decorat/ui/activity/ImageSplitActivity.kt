@@ -16,7 +16,6 @@ import com.example.img_decorat.ui.view.SplitSquareView
 import com.example.img_decorat.viewmodel.SplitViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
 @AndroidEntryPoint
 class ImageSplitActivity : BaseActivity<ActivityImageSplitBinding>() {
     private val viewmodel: SplitViewModel by viewModels()

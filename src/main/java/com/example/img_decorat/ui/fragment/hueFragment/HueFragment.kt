@@ -11,30 +11,19 @@ import androidx.fragment.app.activityViewModels
 import com.example.img_decorat.R
 import com.example.img_decorat.databinding.FragmentBackGroundBinding
 import com.example.img_decorat.databinding.FragmentHueBinding
+import com.example.img_decorat.ui.base.BaseFragment
 import com.example.img_decorat.viewmodel.MainViewModel
 
-class HueFragment : Fragment() {
-
+class HueFragment : BaseFragment<FragmentHueBinding>() {
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var binding : FragmentHueBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun layoutResId(): Int {
+        return R.layout.fragment_hue
+    }
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hue,container,false)
-        (binding as ViewDataBinding).lifecycleOwner = this
+    override fun initializeUI() {
         binding.viewmodel = viewModel
-
-        setObserve()
-        return binding.root
-
-        return inflater.inflate(R.layout.fragment_hue, container, false)
     }
 
-    private fun setObserve(){
-
-    }
-
+    override fun setObserve(){}
 }

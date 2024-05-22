@@ -15,27 +15,25 @@ import com.bumptech.glide.Glide
 import com.example.img_decorat.R
 import com.example.img_decorat.databinding.FragmentEmojiGroupBinding
 import com.example.img_decorat.ui.adapter.EmojiGroupAdapter
+import com.example.img_decorat.ui.base.BaseFragment
 import com.example.img_decorat.viewmodel.MainViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class EmojiGroupFragment : Fragment() {
+class EmojiGroupFragment : BaseFragment<FragmentEmojiGroupBinding>() {
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var binding : FragmentEmojiGroupBinding
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_emoji_group,container,false)
-        (binding as ViewDataBinding).lifecycleOwner = this
-        binding.viewmodel = viewModel
 
-        adapterViewpager()
-
-        setObserve()
-        return binding.root
+    override fun layoutResId(): Int {
+        return R.layout.fragment_emoji_group
     }
+
+    override fun initializeUI() {
+        binding.viewmodel = viewModel
+        adapterViewpager()
+    }
+
+    override fun setObserve(){}
 
     private fun adapterViewpager(){
         val emojiListSize = viewModel.emojiList.value?.size
@@ -58,10 +56,4 @@ class EmojiGroupFragment : Fragment() {
 
         tab.customView = imageView
     }
-
-
-    private fun setObserve(){
-
-    }
-
 }

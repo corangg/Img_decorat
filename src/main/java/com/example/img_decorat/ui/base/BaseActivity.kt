@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.example.img_decorat.R
 import com.example.img_decorat.ui.view.BTNAnimation
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
 
 abstract class BaseActivity<B : ViewDataBinding> : AppCompatActivity() {
 
@@ -33,5 +33,4 @@ abstract class BaseActivity<B : ViewDataBinding> : AppCompatActivity() {
     abstract fun initializeUI()
 
     abstract fun setObserve()
-
 }

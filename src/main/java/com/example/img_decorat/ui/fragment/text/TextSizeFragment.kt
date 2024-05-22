@@ -12,25 +12,19 @@ import com.example.img_decorat.R
 import com.example.img_decorat.databinding.FragmentTextColorBinding
 import com.example.img_decorat.databinding.FragmentTextFontBinding
 import com.example.img_decorat.databinding.FragmentTextSizeBinding
+import com.example.img_decorat.ui.base.BaseFragment
 import com.example.img_decorat.viewmodel.MainViewModel
 
-
-class TextSizeFragment : Fragment() {
-
+class TextSizeFragment : BaseFragment<FragmentTextSizeBinding>() {
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var binding : FragmentTextSizeBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_text_size,container,false)
-        (binding as ViewDataBinding).lifecycleOwner = this
-        binding.viewmodel = viewModel
-
-
-        return binding.root
+    override fun layoutResId(): Int {
+        return R.layout.fragment_text_size
     }
 
+    override fun initializeUI() {
+        binding.viewmodel = viewModel
+    }
 
+    override fun setObserve() {}
 }

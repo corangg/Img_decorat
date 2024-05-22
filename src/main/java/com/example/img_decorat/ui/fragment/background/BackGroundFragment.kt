@@ -10,48 +10,29 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
 import com.example.img_decorat.R
 import com.example.img_decorat.databinding.FragmentBackGroundBinding
+import com.example.img_decorat.ui.base.BaseFragment
 import com.example.img_decorat.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class BackGroundFragment : Fragment() {
-
+@AndroidEntryPoint
+class BackGroundFragment : BaseFragment<FragmentBackGroundBinding>() {
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var binding : FragmentBackGroundBinding
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_back_ground,container,false)
-        (binding as ViewDataBinding).lifecycleOwner = this
-        binding.viewmodel = viewModel
-
-        setObserve()
-        return binding.root
+    override fun layoutResId(): Int {
+        return R.layout.fragment_back_ground
     }
 
-    private fun setObserve(){
+    override fun initializeUI() {
+        binding.viewmodel = viewModel
+    }
 
+    override fun setObserve(){
         viewModel.selectbackgroundMenu.observe(viewLifecycleOwner){
             when(it){
-                0->{
-                    parentFragmentManager.beginTransaction().replace(binding.backgroundItemView.id,
-                        BackGroundScaleFragment()
-                    ).commit()
-                }
-                1->{
-                    parentFragmentManager.beginTransaction().replace(binding.backgroundItemView.id,
-                        BackGroundColorFragment()
-                    ).commit()
-                }
-                2->{
-                    parentFragmentManager.beginTransaction().replace(binding.backgroundItemView.id,
-                        BackGroundImageFragment()
-                    ).commit()
-                }
-
+                0 -> parentFragmentManager.beginTransaction().replace(binding.backgroundItemView.id, BackGroundScaleFragment()).commit()
+                1 -> parentFragmentManager.beginTransaction().replace(binding.backgroundItemView.id, BackGroundColorFragment()).commit()
+                2 -> parentFragmentManager.beginTransaction().replace(binding.backgroundItemView.id, BackGroundImageFragment()).commit()
             }
         }
-
     }
 }

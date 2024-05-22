@@ -44,14 +44,13 @@ import com.example.img_decorat.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.LinkedList
 import javax.inject.Inject
-
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(),
     MenuAdapter.OnItemClickListener,
     LayerAdapter.OnLayerItemClickListener {
     private val viewModel: MainViewModel by viewModels()
-    lateinit var drawerToggle: ActionBarDrawerToggle
-    lateinit var layerAdapter: LayerAdapter
+    private lateinit var drawerToggle: ActionBarDrawerToggle
+    private lateinit var layerAdapter: LayerAdapter
     private lateinit var uiHelper: MainActivityHelper
 
 

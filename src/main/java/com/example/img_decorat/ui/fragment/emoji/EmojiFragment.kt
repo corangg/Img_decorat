@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
@@ -12,26 +13,31 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.img_decorat.R
 import com.example.img_decorat.databinding.FragmentEmojiBinding
 import com.example.img_decorat.ui.adapter.EmojiAdapter
+import com.example.img_decorat.ui.base.BaseFragment
 import com.example.img_decorat.viewmodel.MainViewModel
 
-class EmojiFragment : Fragment(),EmojiAdapter.OnEmojiItemClickListener {
+class EmojiFragment :
+    BaseFragment<FragmentEmojiBinding>(),
+    EmojiAdapter.OnEmojiItemClickListener {
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var binding : FragmentEmojiBinding
-    lateinit var emojiAdapter: EmojiAdapter
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_emoji,container,false)
-        (binding as ViewDataBinding).lifecycleOwner = this
-        binding.viewmodel = viewModel
+    private lateinit var emojiAdapter: EmojiAdapter
 
-        setObserve()
-        return binding.root
+    override fun layoutResId(): Int {
+        return R.layout.fragment_emoji
+    }
+
+    override fun initializeUI() {
+        binding.viewmodel = viewModel
     }
 
     override fun onEmojiItemClick(position: Int) {
         viewModel.addEmogeLayer(position)
+    }
+
+    override fun setObserve(){
+        viewModel.emojiTab.observe(viewLifecycleOwner){
+            adapterSet()
+        }
     }
 
     private fun adapterSet(){
@@ -44,11 +50,6 @@ class EmojiFragment : Fragment(),EmojiAdapter.OnEmojiItemClickListener {
                 emojiAdapter = EmojiAdapter(emojiList,this)
                 binding.emojiRecycle.adapter = emojiAdapter
             }
-        }
-    }
-    private fun setObserve(){
-        viewModel.emojiTab.observe(viewLifecycleOwner){
-            adapterSet()
         }
     }
 }

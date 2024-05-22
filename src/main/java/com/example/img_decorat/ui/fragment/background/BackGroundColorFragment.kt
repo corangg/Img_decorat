@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
@@ -13,38 +14,35 @@ import com.example.img_decorat.R
 import com.example.img_decorat.utils.Util
 import com.example.img_decorat.databinding.FragmentBackGroundColorBinding
 import com.example.img_decorat.ui.adapter.ColorAdapter
+import com.example.img_decorat.ui.base.BaseFragment
 import com.example.img_decorat.utils.UtilList
 import com.example.img_decorat.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class BackGroundColorFragment : Fragment(),ColorAdapter.OnColorItemClickListener {
+@AndroidEntryPoint
+class BackGroundColorFragment : BaseFragment<FragmentBackGroundColorBinding>(),ColorAdapter.OnColorItemClickListener {
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var binding : FragmentBackGroundColorBinding
-    lateinit var colorAdapter: ColorAdapter
+    private lateinit var colorAdapter : ColorAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_back_ground_color,container,false)
-        (binding as ViewDataBinding).lifecycleOwner = this
+    override fun layoutResId(): Int {
+        return R.layout.fragment_back_ground_color
+    }
+
+    override fun initializeUI() {
         binding.viewmodel = viewModel
-
         adapterSet()
-        setObserve()
-        return binding.root
     }
 
     override fun onColorItemClick(position: Int, case: Int) {
         viewModel.selectBackgroundColor(position)
     }
 
+    override fun setObserve() {}
+
     private fun adapterSet(){
         binding.colorRecyclerview.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         colorAdapter = ColorAdapter(UtilList.colorsList, this,0)
         binding.colorRecyclerview.adapter = colorAdapter
-    }
-    private fun setObserve(){
-
     }
 
 }

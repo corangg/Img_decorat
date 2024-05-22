@@ -85,8 +85,7 @@
             android:layout_above="@id/linear_polygon"
             android:id="@+id/frame_split_image"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="40dp"
-            android:layout_marginHorizontal="10dp">
+            android:layout_marginBottom="40dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
