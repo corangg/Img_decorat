@@ -143,16 +143,6 @@
                 android:paddingTop="20dp"
                 android:layout_marginBottom="80dp"
                 android:id="@+id/recycle_layer" />
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:id="@+id/layer_add"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/ic_add"
-                android:backgroundTint="@color/white"
-                android:onClick="@{()->viewmodel.addLayer()}"/>
         </RelativeLayout>
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

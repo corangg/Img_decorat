@@ -54,7 +54,6 @@ class MainViewModel @Inject constructor(
     val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
 
     val liveLayerList : MutableLiveData<LinkedList<LayerItemData>> = MutableLiveData(LinkedList<LayerItemData>())
-    //val liveImageViewList : MutableLiveData<LinkedList<ImageViewData>> = MutableLiveData(LinkedList<ImageViewData>())
     val liveViewList : MutableLiveData<LinkedList<ViewItemData>> = MutableLiveData(LinkedList<ViewItemData>())
     val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
     val unsplashList: MutableLiveData<MutableList<UnsplashData>> = MutableLiveData()
@@ -72,7 +71,7 @@ class MainViewModel @Inject constructor(
     init {
         getEmoji()
         imageSaturationValue.observeForever {
-            layerListRepository.editImageViewSaturation(it)
+            layerListRepository.editViewSaturation(it)
         }
         imageBrightnessValue.observeForever {
             layerListRepository.editImageViewBrightness(it)
@@ -87,39 +86,6 @@ class MainViewModel @Inject constructor(
         selectBackgroundScale(0)
     }
 
-    /*fun onMenuItemClicked(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_main_open -> {
-
-                return true
-            }
-
-        }
-        return false
-    }*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     fun bottomNavigationItemSelected(item : MenuItem):Boolean{
         when(item.itemId){
             R.id.menu_navi_background->{
@@ -127,11 +93,7 @@ class MainViewModel @Inject constructor(
                 return true
             }
             R.id.menu_navi_split->{
-                val lastTouchedId = lastTouchedImageId.value
-                if(lastTouchedId != -1 && lastTouchedId != null&& layerListRepository.divisionViewType(lastTouchedId)==0){
-                    lastTouchedImage = layerListRepository.setLastTouchedImage(lastTouchedId)
-                    selectNavigationItem.value = 1
-                }
+                clickedNavSplit()
                 return true
             }
             R.id.menu_navi_hue->{
@@ -143,10 +105,7 @@ class MainViewModel @Inject constructor(
                 return true
             }
             R.id.munu_navi_text->{
-                selectNavigationItem.value = 4
-                liveLayerList.value = layerListRepository.addTextLayer(screenSize)
-                liveViewList.value = layerListRepository.viewList
-                selectLayer(liveLayerList.value!!.size-1)
+                clickedNavText()
                 return true
             }
             R.id.menu_background_scale->{
@@ -172,13 +131,54 @@ class MainViewModel @Inject constructor(
             R.id.menu_text_size->{
                 selectTextMenu.value = 2
                 textSize.observeForever{
-                    layerListRepository.setEditTextVIewTextSize(it)
+                    layerListRepository.EditTextViewSetTextSize(it)
                 }
                 return true
             }
         }
         return false
     }
+
+    private fun clickedNavSplit(){
+        val lastTouchedId = lastTouchedImageId.value
+        lastTouchedId?.let {id->
+            if(layerListRepository.checkedViewType(id) == 0){
+                val uri = layerListRepository.setLastTouchedImage(id)
+                uri?.let {
+                    lastTouchedImage = it
+                    selectNavigationItem.value = 1
+                }
+            }
+        }
+    }
+
+    private fun clickedNavText(){
+        liveLayerList.value = layerListRepository.editTextViewAddList(screenSize)
+        liveViewList.value = layerListRepository.viewList
+        selectLayer(liveLayerList.value!!.size - 1)
+        selectNavigationItem.value = 4
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     fun openGallery(){
         openGalleryEvent.value = Unit
@@ -197,14 +197,14 @@ class MainViewModel @Inject constructor(
     }
 
     fun setImgLayerList(data: Intent?){
-        liveLayerList.value = layerListRepository.setImgLayerList(data,screenSize)
+        liveLayerList.value = layerListRepository.imgAddList(data,screenSize)
     }
 
     fun updateChecked(position: Int, checked: Boolean){
         if(liveLayerList.value!!.size > position){
-            liveLayerList.value = layerListRepository.updateLayerListChecked(position,checked)
+            liveLayerList.value = layerListRepository.checkedUpdateLayerList(position,checked)
         }
-        liveViewList.value = layerListRepository.updateImageViewListChecked(position,checked)
+        liveViewList.value = layerListRepository.checkedUpdateViewList(position,checked)
     }
 
 
@@ -215,9 +215,7 @@ class MainViewModel @Inject constructor(
         liveViewList.value = layerListRepository.deleteImageViewList(position)
     }
 
-    fun addLayer(){
-        liveLayerList.value = layerListRepository.addLayer()
-    }
+
 
     fun selectLayer(position: Int){
         if(liveLayerList.value!!.size > position){
@@ -232,11 +230,10 @@ class MainViewModel @Inject constructor(
     fun selectLastImage(id: Int){
         if(layerListRepository.checkLastSelectImage(id)){
             liveLayerList.value = layerListRepository.selectLastImage(id)
-            layerListRepository.setLastSelectView(id)
             liveViewList.value =layerListRepository.viewList
             lastTouchedImageId.value = id
 
-            imageSaturationValue.value = layerListRepository.checkSaturatio(imageSaturationValue.value)
+            imageSaturationValue.value = layerListRepository.checkSaturatio(imageSaturationValue.value)//얘네 다 널안전 검사해야함
             imageBrightnessValue.value = layerListRepository.checkBrightness(imageBrightnessValue.value)
             imageTransparencyValue.value = layerListRepository.checkTransparency(imageTransparencyValue.value)
 
@@ -276,7 +273,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun reseultSplitView(uri:Uri){
-        liveLayerList.value = layerListRepository.addSplitImage(uri)
+        liveLayerList.value = layerListRepository.splitImageChangeList(uri)
         liveViewList.value = layerListRepository.viewList
     }
 
@@ -341,32 +338,31 @@ class MainViewModel @Inject constructor(
     }
 
     fun addEmogeLayer(emojiPosition:Int){
-        liveLayerList.value = layerListRepository.addEmojiLayer(emojiList.value!![emojiTab.value!!].groupList[emojiPosition],screenSize)
+        liveLayerList.value = layerListRepository.emojiAddLayer(emojiList.value!![emojiTab.value!!].groupList[emojiPosition],screenSize)
         liveViewList.value = layerListRepository.viewList
     }
     val textColor : MutableLiveData<Int> = MutableLiveData(Color.WHITE)
     val textBackgroundColor : MutableLiveData<Int> = MutableLiveData(Color.TRANSPARENT)
     val textFont : MutableLiveData<Typeface> = MutableLiveData(UtilList.typefaces[0])
-    val viewText : MutableLiveData<String> = MutableLiveData("")
-    val textImageValue : MutableLiveData<String> = MutableLiveData("")
+
     fun textColorSet(position: Int){
         textColor.value = UtilList.colorsList[position]
-        liveLayerList.value = layerListRepository.setEditTextViewTextColor(UtilList.colorsList[position])
+        liveLayerList.value = layerListRepository.editTextViewSetTextColor(UtilList.colorsList[position])
     }
 
     fun textBackgroundColorSet(position: Int){
         textBackgroundColor.value = UtilList.colorsList[position]
-        liveLayerList.value = layerListRepository.setEditTextViewBackgroundColor(UtilList.colorsList[position])
+        liveLayerList.value = layerListRepository.editTextViewSetBackgroundColor(UtilList.colorsList[position])
     }
 
     fun textFontSet(position: Int){
         val font = UtilList.typefaces[position]
         textFont.value = font
-        liveLayerList.value = layerListRepository.setEditTextViewTextFont(font)
+        liveLayerList.value = layerListRepository.EditTextViewSetFont(font)
     }
 
     fun setViewText(text: String){
-        liveLayerList.value = layerListRepository.updateLayerViewText(text)
+        liveLayerList.value = layerListRepository.layerViewUpdateText(text)
     }
 
 

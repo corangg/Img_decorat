@@ -32,10 +32,4 @@ object BindingAdapter {
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
     }
-
-    @JvmStatic
-    @BindingAdapter("onMenuItemClick")
-    fun setOnMenuItemClickListener(toolbar: Toolbar, listener: Toolbar.OnMenuItemClickListener?) {
-        toolbar.setOnMenuItemClickListener(listener)
-    }
 }
