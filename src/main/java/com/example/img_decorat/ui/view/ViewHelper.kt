@@ -9,9 +9,6 @@ import android.graphics.Paint
 class ViewHelper {
 
 
-    fun setImageScale(){
-
-    }
     fun borderPaint(colorValue: Int, stroke: Float = 0f): Paint {
         return Paint().apply {
             color = colorValue
