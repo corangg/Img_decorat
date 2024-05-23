@@ -9,6 +9,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 
@@ -44,4 +46,21 @@ class RoomTypeConverter {
         objectInputStream.close()
         return byteArrayList.map { toBitmap(it) }.toMutableList()
     }
+
+    @TypeConverter
+    fun fromStringList(list: List<String>?): String {
+        return Gson().toJson(list)
+    }
+
+    @TypeConverter
+    fun toStringList(data: String?): List<String>? {
+        if (data == null) {
+            return emptyList()
+        }
+
+        val listType = object : TypeToken<List<String>>() {}.type
+        return Gson().fromJson(data, listType)
+    }
+
+
 }

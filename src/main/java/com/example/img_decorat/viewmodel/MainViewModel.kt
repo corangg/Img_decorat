@@ -91,8 +91,8 @@ class MainViewModel @Inject constructor(
 
     fun getDB(){
         viewModelScope.launch {
-            dbRepository.deleteEmojiData()
-            //getImojiDB()
+            //dbRepository.deleteEmojiData()
+            getImojiDB()
         }
     }
 
@@ -258,7 +258,8 @@ class MainViewModel @Inject constructor(
             if(getData.size == 0){
                 getEmoji()
             }else{
-                emojiList.value= getData!!
+                val list = getData!!
+                emojiList.value = layerListRepository.emojiDataStringToBitmap(list)
             }
         }
     }
@@ -266,8 +267,8 @@ class MainViewModel @Inject constructor(
     fun getEmoji(){
         viewModelScope.launch {
             EmojiRetrofit.getEmojis()?.let {
-                val list = layerListRepository.emojiListClassification(it)
-                emojiList.value = list
+                val list = layerListRepository.emojiDBListClassification(it)
+                emojiList.value = layerListRepository.emojiDataStringToBitmap(list)
                 dbRepository.insertEmojiData(list)
             }
         }
@@ -302,9 +303,7 @@ class MainViewModel @Inject constructor(
             1->{
                 imageManagementRepository.editViewSave(view,imgTitle.value!!)
             }
-
         }
-
     }
 
     private fun clickedNavSplit(){

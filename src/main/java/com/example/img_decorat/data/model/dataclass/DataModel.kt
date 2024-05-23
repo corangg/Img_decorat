@@ -36,9 +36,15 @@ data class ViewItemData(
     var text: TextImageView = TextImageView(context)
 }
 
-@Entity(tableName = "emoji_data")
-@TypeConverters(RoomTypeConverter::class)
+
 data class EmojiList(
-    @PrimaryKey val groupName : String,
+    val groupName : String,
     val groupList : MutableList<Bitmap>
+)
+
+@Entity(tableName = "emoji_list")
+@TypeConverters(RoomTypeConverter::class)
+data class EmojiDBData(
+    @PrimaryKey val groupName : String,
+    val groupList : List<String>
 )

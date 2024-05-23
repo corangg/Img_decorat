@@ -10,6 +10,7 @@ import android.graphics.Typeface
 import android.net.Uri
 import android.widget.FrameLayout
 import android.widget.TextView
+import com.example.img_decorat.data.model.dataModels.EmojiDBData
 import com.example.img_decorat.data.model.dataModels.EmojiData
 import com.example.img_decorat.data.model.dataModels.EmojiList
 
@@ -250,35 +251,27 @@ class LayerListRepository @Inject constructor(
         return layerList
     }
 
-    fun emojiListClassification(list : List<EmojiData>): List<EmojiList>{
-        val classification = mutableListOf<EmojiList>()
-        var groupName = list[0].group
-        var emojiBitmapList = mutableListOf<Bitmap>()
-
-        for(i in list){
-            if(i.group != groupName){
-                val emojiGroup  = EmojiList(groupName = groupName, groupList = emojiBitmapList)
-                classification.add(emojiGroup)
-                groupName = i.group
-                emojiBitmapList = mutableListOf()
-                emojiBitmapList.add(createBitmapFromEmoji(i.character))
-            }else{
-                emojiBitmapList.add(createBitmapFromEmoji(i.character))
+    fun emojiDataStringToBitmap(list : List<EmojiDBData>): List<EmojiList>{
+        val transformationList = mutableListOf<EmojiList>()
+        for (i in list){
+            val groupName = i.groupName
+            val emojiList = mutableListOf<Bitmap>()
+            for(j in i.groupList){
+                emojiList.add(createBitmapFromEmoji(j))
             }
+            transformationList.add(EmojiList(groupName,emojiList))
         }
-        val emojiGroup  = EmojiList(groupName = groupName, groupList = emojiBitmapList)
-        classification.add(emojiGroup)
-        return classification
+        return transformationList
     }
 
-    /*fun emojiDBListClassification(list : List<EmojiData>): List<EmojiListData>{
-        val classification = mutableListOf<EmojiListData>()
+    fun emojiDBListClassification(list : List<EmojiData>): List<EmojiDBData>{
+        val classification = mutableListOf<EmojiDBData>()
         var groupName = list[0].group
         var emojiBitmapList = mutableListOf<String>()
 
         for(i in list){
             if(i.group != groupName){
-                val emojiGroup  = EmojiListData(groupName = groupName, groupList = emojiBitmapList)
+                val emojiGroup  = EmojiDBData(groupName = groupName, groupList = emojiBitmapList)
                 classification.add(emojiGroup)
                 groupName = i.group
                 emojiBitmapList = mutableListOf()
@@ -287,10 +280,10 @@ class LayerListRepository @Inject constructor(
                 emojiBitmapList.add(i.character)
             }
         }
-        val emojiGroup  = EmojiListData(groupName = groupName, groupList = emojiBitmapList)
+        val emojiGroup  = EmojiDBData(groupName = groupName, groupList = emojiBitmapList)
         classification.add(emojiGroup)
         return classification
-    }*/
+    }
 
     fun editTextViewAddList(viewSize: Int):LinkedList<LayerItemData>{
         val textId = imageDataRepository.setID()
