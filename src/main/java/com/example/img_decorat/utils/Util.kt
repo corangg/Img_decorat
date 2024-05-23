@@ -6,12 +6,21 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
+import android.os.Build
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.core.content.FileProvider
+import androidx.core.view.ViewCompat
 import com.example.img_decorat.ui.view.EditableImageView
+import com.example.img_decorat.ui.view.TextImageView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
@@ -23,6 +32,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 object Util{
+    fun createDefaultBitmap(): Bitmap {
+        val bitmap = Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888)
+        return bitmap
+    }
     fun bitmapToUri(context: Context, bitmap: Bitmap): Uri? {
         val file = File(context.cacheDir, "${System.currentTimeMillis()}.png")
         return try {
@@ -35,6 +48,16 @@ object Util{
             e.printStackTrace()
             null
         }
+    }
+
+    fun setID() : Int{
+        val id =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                View.generateViewId()
+            } else {
+                ViewCompat.generateViewId()
+            }
+        return id
     }
 
     fun uriToBitmap(context: Context, imageUri: Uri): Bitmap? {
@@ -83,10 +106,83 @@ object Util{
         }
     }
 
-    fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
-        val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-        return outputStream.toByteArray()
+    fun getBackgroundColor(view: View): Int {
+        if (view.background is ColorDrawable) {
+            return (view.background as ColorDrawable).color
+        }
+        return Color.TRANSPARENT
+    }
+
+    fun getBackgroundImage(view: View): Bitmap? {
+        val drawable = view.background ?: return null
+        val width = drawable.intrinsicWidth
+        val height = drawable.intrinsicHeight
+        if (width <= 0 || height <= 0) {
+            return null
+        }
+
+        if (drawable is BitmapDrawable) {
+            return drawable.bitmap
+        }
+        val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
+    }
+
+    fun deserializeView(viewDataString: String, parent: ViewGroup, context: Context): View {
+        val viewData = Gson().fromJson<Map<String, Any>>(viewDataString, object : TypeToken<Map<String, Any>>() {}.type)
+        val viewType = viewData["type"] as String
+
+        val view: View = when (viewType) {
+            "TextView" -> {
+                val textView = TextView(context)
+                textView.text = viewData["text"] as String
+                textView
+            }
+            "EditableImageView" -> {
+                val editableImageView = EditableImageView(context)
+                editableImageView.scaleFactor = (viewData["scaleFactor"] as Double).toFloat()
+                editableImageView.rotationDegrees = (viewData["rotationDegrees"] as Double).toFloat()
+                editableImageView.saturationValue = (viewData["saturationValue"] as Double).toFloat()
+                editableImageView.brightnessValue = (viewData["brightnessValue"] as Double).toFloat()
+
+                val matrixValues = (viewData["matrixValues"] as List<Double>).map { it.toFloat() }.toFloatArray()
+                editableImageView.matrix.setValues(matrixValues)
+                editableImageView.imageMatrix = editableImageView.matrix
+                editableImageView
+            }
+            "TextImageView" -> {
+                val textImageView = TextImageView(context)
+                textImageView.scaleFactor = (viewData["scaleFactor"] as Double).toFloat()
+                textImageView.rotationDegrees = (viewData["rotationDegrees"] as Double).toFloat()
+                textImageView.saturationValue = (viewData["saturationValue"] as Double).toFloat()
+                textImageView.brightnessValue = (viewData["brightnessValue"] as Double).toFloat()
+                //textImageView.text = viewData["text"] as String
+                textImageView.fillBackgroundPaint.color = (viewData["fillBackgroundColor"] as Double).toInt()
+
+                val matrixValues = (viewData["matrixValues"] as List<Double>).map { it.toFloat() }.toFloatArray()
+                textImageView.matrix.setValues(matrixValues)
+                textImageView
+            }
+            "FrameLayout" -> {
+                val frameLayout = FrameLayout(context)
+                val children = viewData["children"] as List<Map<String, Any>>
+                for (childData in children) {
+                    val childView = deserializeView(Gson().toJson(childData), frameLayout, context)
+                    frameLayout.addView(childView)
+                }
+                frameLayout
+            }
+            else -> {
+                throw IllegalArgumentException("Unknown view type: $viewType")
+            }
+        }
+
+        view.alpha = (viewData["alpha"] as Double).toFloat()
+        parent.addView(view)
+        return view
     }
 
 

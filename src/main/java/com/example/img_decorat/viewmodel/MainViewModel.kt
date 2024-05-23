@@ -17,7 +17,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.R
-import com.example.img_decorat.data.model.dataModels.EmojiData
 import com.example.img_decorat.data.model.dataModels.EmojiList
 import com.example.img_decorat.data.source.remote.retrofit.UnsplashRetrofit
 import com.example.img_decorat.data.model.dataModels.unsplashimagedata.UnsplashData
@@ -28,6 +27,7 @@ import com.example.img_decorat.data.repository.ImageManagementRepository
 import com.example.img_decorat.data.source.remote.retrofit.EmojiRetrofit
 import com.example.img_decorat.data.repository.LayerListRepository
 import com.example.img_decorat.utils.APIKey
+import com.example.img_decorat.utils.Util
 import com.example.img_decorat.utils.UtilList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
@@ -48,6 +48,7 @@ class MainViewModel @Inject constructor(
     val imgTitle : MutableLiveData<String> = MutableLiveData("New_Image")
     val imgSearch : MutableLiveData<String> = MutableLiveData()
     val selectBackGroundImage : MutableLiveData<String> = MutableLiveData()
+    val loadData : MutableLiveData<String> = MutableLiveData()
 
     val selectNavigationItem : MutableLiveData<Int> = MutableLiveData(0)
     val selectbackgroundMenu: MutableLiveData<Int> = MutableLiveData(0)
@@ -55,8 +56,15 @@ class MainViewModel @Inject constructor(
     val lastTouchedImageId : MutableLiveData<Int> = MutableLiveData(-1)
     val selectBackgroundItem : MutableLiveData<Int> = MutableLiveData(0)
     val backGroundColor : MutableLiveData<Int> = MutableLiveData()
+    val imageSaturationValue : MutableLiveData<Int> = MutableLiveData(0)
+    val imageBrightnessValue : MutableLiveData<Int> = MutableLiveData(0)
+    val imageTransparencyValue : MutableLiveData<Int> = MutableLiveData(100)
+    val emojiTab : MutableLiveData<Int> = MutableLiveData(0)
+    val textSize : MutableLiveData<Int> = MutableLiveData(24)
+    val overflowMenuToast : MutableLiveData<Int> = MutableLiveData(-1)
 
     val openGalleryEvent : MutableLiveData<Unit> = MutableLiveData()
+    val openSaveDataActivity :MutableLiveData<Unit> = MutableLiveData()
     val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
 
     val liveLayerList : MutableLiveData<LinkedList<LayerItemData>> = MutableLiveData(LinkedList<LayerItemData>())
@@ -65,19 +73,12 @@ class MainViewModel @Inject constructor(
     val unsplashList: MutableLiveData<List<UnsplashData>> = MutableLiveData()
     val emojiList: MutableLiveData<List<EmojiList>> = MutableLiveData(listOf())
 
-    val imageSaturationValue : MutableLiveData<Int> = MutableLiveData(0)
-    val imageBrightnessValue : MutableLiveData<Int> = MutableLiveData(0)
-    val imageTransparencyValue : MutableLiveData<Int> = MutableLiveData(100)
-    val emojiTab : MutableLiveData<Int> = MutableLiveData(0)
-    val textSize : MutableLiveData<Int> = MutableLiveData(24)
-
     val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
 
     lateinit var lastTouchedImage : Uri
 
     init {
         getDB()
-        //getEmoji()
         imageSaturationValue.observeForever {
             layerListRepository.editViewSaturation(it)
         }
@@ -91,7 +92,6 @@ class MainViewModel @Inject constructor(
 
     fun getDB(){
         viewModelScope.launch {
-            //dbRepository.deleteEmojiData()
             getImojiDB()
         }
     }
@@ -298,10 +298,47 @@ class MainViewModel @Inject constructor(
         liveLayerList.value = layerListRepository.layerViewUpdateText(text)
     }
 
-    fun selectToolbarMenu(position: Int,view: View){
+
+    fun selectToolbarMenu(position: Int,view: FrameLayout){
+        closeOverFlowMenu()
         when(position){
+            0->{
+                openSaveDataActivity.value = Unit
+            }
             1->{
+                saveViewData(view)
+                overflowMenuToast.value = position
+            }
+            2->{
                 imageManagementRepository.editViewSave(view,imgTitle.value!!)
+                overflowMenuToast.value = position
+            }
+        }
+    }
+
+    fun loadData(name: String?, jsonData : String?){
+        name?.let {
+            imgTitle.value = it
+        }
+        jsonData?.let {
+            loadData.value = it
+        }
+    }
+
+    private fun saveViewData(view: FrameLayout){
+        viewModelScope.launch {
+            val list = liveViewList.value
+            val scale = selectBackgroundScale.value
+            val name = imgTitle.value
+            if(list != null && scale != null && name != null){
+                val data = imageManagementRepository.saveView(
+                    list = list,
+                    view = view,
+                    scale = scale,
+                    name = name
+                )
+
+                dbRepository.insertViewData(data)
             }
         }
     }

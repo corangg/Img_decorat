@@ -9,7 +9,9 @@ import com.example.img_decorat.data.repository.LayerListRepository
 import com.example.img_decorat.data.repository.SplitRepository
 import com.example.img_decorat.data.repository.SplitStackRepository
 import com.example.img_decorat.data.source.local.DB.EmojiDB
+import com.example.img_decorat.data.source.local.DB.ViewDB
 import com.example.img_decorat.data.source.local.Dao.EmojiDao
+import com.example.img_decorat.data.source.local.Dao.ViewDao
 import com.example.img_decorat.ui.view.BTNAnimation
 import dagger.Module
 import dagger.Provides
@@ -71,8 +73,8 @@ object Moudle {
 
     @Provides
     @Singleton
-    fun provideDBRepository(emojiDao: EmojiDao): DBRepository {
-        return DBRepository(emojiDao)
+    fun provideDBRepository(emojiDao: EmojiDao, viewDao: ViewDao): DBRepository {
+        return DBRepository(emojiDao, viewDao)
     }
 
     @Singleton
@@ -84,5 +86,16 @@ object Moudle {
     @Provides
     fun provideEmojiDao(emojiDB: EmojiDB): EmojiDao {
         return emojiDB.emojiDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideViewDB(@ApplicationContext context: Context): ViewDB {
+        return ViewDB.getDatabase(context)
+    }
+
+    @Provides
+    fun provideViewDao(viewDB: ViewDB): ViewDao {
+        return viewDB.viewDao()
     }
 }

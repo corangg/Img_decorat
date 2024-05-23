@@ -1,11 +1,14 @@
 package com.example.img_decorat.ui.view
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.Typeface
+import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
@@ -27,18 +30,18 @@ class TextImageView @JvmOverloads constructor(
     private val scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
     private val rotateGestureDetector = RotateGestureDetector(RotateListener())
 
-    private var scaleFactor = 1.0f
-    private var rotationDegrees = 0f
+    var scaleFactor = 1.0f
+    var rotationDegrees = 0f
     private var lastTouchX = 0f
     private var lastTouchY = 0f
-    private var saturationValue = 1f
-    private var brightnessValue = 1f
+    var saturationValue = 1f
+    var brightnessValue = 1f
 
     private var isEditable = false
 
     private var viewModel: MainViewModel? = null
 
-    private var fillBackgroundPaint = Paint().apply {
+    var fillBackgroundPaint = Paint().apply {
         color =Color.TRANSPARENT
         style =Paint.Style.FILL
     }
@@ -187,6 +190,25 @@ class TextImageView @JvmOverloads constructor(
     fun setBrightness(brightness: Float) {
         brightnessValue = 0.008f*brightness +1f
         paint.colorFilter = viewHelper.applyColorFilter(saturationValue, brightnessValue)
+    }
+
+    fun getBackgroundColor(): Int {
+        return fillBackgroundPaint.color
+    }
+
+    fun getTextColor(): Int {
+        return currentTextColor
+    }
+
+    fun getTextTypeface(): Typeface {
+        return typeface
+    }
+    fun getTextContent(): String {
+        return text.toString()
+    }
+
+    fun getTextSizeValue(): Int{
+        return textSize.toInt()
     }
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {

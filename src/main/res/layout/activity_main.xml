@@ -82,16 +82,6 @@
                     android:layout_height="match_parent"
                     android:id="@+id/img_view"
                     android:background="#2D2D2D" />
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:text="안녕하세요 테스트"
-                    android:id="@+id/textWriteView"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    />
             </FrameLayout>
 
             <FrameLayout

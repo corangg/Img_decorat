@@ -2,11 +2,14 @@ package com.example.img_decorat.data.repository
 
 import com.example.img_decorat.data.model.dataModels.EmojiDBData
 import com.example.img_decorat.data.model.dataModels.EmojiList
+import com.example.img_decorat.data.model.dataModels.SaveViewData
 import com.example.img_decorat.data.source.local.Dao.EmojiDao
+import com.example.img_decorat.data.source.local.Dao.ViewDao
 import javax.inject.Inject
 
 class DBRepository @Inject constructor(
-    private val emojiDao: EmojiDao
+    private val emojiDao: EmojiDao,
+    private val viewDao: ViewDao
 ){
     suspend fun insertEmojiData(list: List<EmojiDBData>) {
         for (i in list) {
@@ -20,5 +23,17 @@ class DBRepository @Inject constructor(
 
     suspend fun deleteEmojiData(){
         emojiDao.deleteAllEmojiList()
+    }
+
+    suspend fun insertViewData(saveViewData: SaveViewData){
+        viewDao.insertSaveViewData(saveViewData)
+    }
+
+    suspend fun getViewData():List<SaveViewData>?{
+        return viewDao.getSaveViewDataList()
+    }
+
+    suspend fun deleteViewData(){
+        viewDao.deleteAllsaveViewDataList()
     }
 }

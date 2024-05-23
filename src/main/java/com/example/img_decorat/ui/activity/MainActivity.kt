@@ -29,6 +29,7 @@ import com.example.img_decorat.ui.fragment.emoji.EmojiGroupFragment
 import com.example.img_decorat.ui.fragment.hueFragment.HueFragment
 import com.example.img_decorat.ui.fragment.text.TextFragment
 import com.example.img_decorat.ui.uihelper.MainActivityHelper
+import com.example.img_decorat.utils.Util
 import com.example.img_decorat.utils.UtilList
 import com.example.img_decorat.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,6 +58,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
     val requestGalleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if(it.resultCode == Activity.RESULT_OK && it.data != null){
             viewModel.imgAddLayerList(it.data)
+        }
+    }
+
+    val requestLoadData = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if(it.resultCode == Activity.RESULT_OK){
+            it.data?.let { intentdata ->
+                val name = intentdata.getStringExtra("name")
+                val data = intentdata.getStringExtra("viewData")
+                viewModel.loadData(name, data)
+            }
+
+
+
         }
     }
 
@@ -107,6 +121,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
 
         viewModel.openMenuEvent.observe(this){
             uiHelper.openMenuEvent(it)
+        }
+        viewModel.loadData.observe(this){
+            Util.deserializeView(it,binding.imgView,this)//둘중 하나일듯
+            //binding.imgView = Util.deserializeView(it,binding.imgView,this)
+        }
+
+        viewModel.openSaveDataActivity.observe(this){
+            openSaveDataActivity()
         }
 
         viewModel.liveLayerList.observe(this){
@@ -211,6 +233,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
         val intent = Intent(this, ImageSplitActivity::class.java)
         intent.putExtra("image",uri.toString())
         startForResult.launch(intent)
+    }
+
+    private fun openSaveDataActivity(){
+        val intent = Intent(this, SaveDataActivity::class.java)
+        requestLoadData.launch(intent)
     }
 
     private fun flameLayoutSet(list: LinkedList<ViewItemData>){

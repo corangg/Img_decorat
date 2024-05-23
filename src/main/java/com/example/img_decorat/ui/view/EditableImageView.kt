@@ -1,10 +1,12 @@
 package com.example.img_decorat.ui.view
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Path
+import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
@@ -22,12 +24,13 @@ class EditableImageView @JvmOverloads constructor(
     private val scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
     private val rotateGestureDetector = RotateGestureDetector(RotateListener())
 
-    private var scaleFactor = 1.0f
-    private var rotationDegrees = 0f
+    var scaleFactor = 1.0f
+    var rotationDegrees = 0f
     private var lastTouchX = 0f
     private var lastTouchY = 0f
-    private var saturationValue = 1f
-    private var brightnessValue = 1f
+    var saturationValue = 1f
+    var brightnessValue = 1f
+    var transparencyValue = 1f
 
     private var viewModel: MainViewModel? = null
 
@@ -62,7 +65,6 @@ class EditableImageView @JvmOverloads constructor(
 
                     lastTouchX = event.x
                     lastTouchY = event.y
-
                 }
             }
         }
@@ -128,6 +130,7 @@ class EditableImageView @JvmOverloads constructor(
 
     fun setImageTransparency(alpha: Float) {
         val clampedAlpha = Math.max(0f, Math.min(alpha, 100f)) / 100f
+        transparencyValue = alpha
         this.alpha = clampedAlpha
     }
 
@@ -145,6 +148,10 @@ class EditableImageView @JvmOverloads constructor(
     fun setImageBrightness(brightness: Float) {
         brightnessValue = 0.008f*brightness +1f
         colorFilter = viewHelper.applyColorFilter(saturationValue, brightnessValue)
+    }
+
+    fun getImageBitmap(): Bitmap? {
+        return (drawable as? BitmapDrawable)?.bitmap
     }
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {

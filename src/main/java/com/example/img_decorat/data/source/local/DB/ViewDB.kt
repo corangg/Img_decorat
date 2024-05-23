@@ -5,26 +5,26 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.img_decorat.data.model.dataModels.EmojiDBData
-import com.example.img_decorat.data.source.local.Dao.EmojiDao
+import com.example.img_decorat.data.model.dataModels.SaveViewData
+import com.example.img_decorat.data.source.local.Dao.ViewDao
 import com.example.img_decorat.data.source.local.RoomTypeConverter
 
-@Database(entities = [EmojiDBData::class], version = 1, exportSchema = false)
+@Database(entities = [SaveViewData::class], version = 1, exportSchema = false)
 @TypeConverters(RoomTypeConverter::class)
-abstract class EmojiDB : RoomDatabase() {
+abstract class ViewDB : RoomDatabase() {
 
-    abstract fun emojiDao(): EmojiDao
+    abstract fun viewDao(): ViewDao
 
     companion object {
         @Volatile
-        private var INSTANCE: EmojiDB? = null
+        private var INSTANCE: ViewDB? = null
 
-        fun getDatabase(context: Context): EmojiDB {
+        fun getDatabase(context: Context): ViewDB {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    EmojiDB::class.java,
-                    "emojilist_database"
+                    ViewDB::class.java,
+                    "view_data"
                 ).build()
                 INSTANCE = instance
                 instance

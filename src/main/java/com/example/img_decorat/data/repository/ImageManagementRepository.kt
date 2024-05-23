@@ -9,8 +9,17 @@ import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.view.View
+import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.example.img_decorat.data.model.dataModels.SaveViewData
+import com.example.img_decorat.data.model.dataModels.SaveViewDataInfo
+import com.example.img_decorat.data.model.dataModels.ViewItemData
+import com.example.img_decorat.ui.view.EditableImageView
+import com.example.img_decorat.ui.view.TextImageView
+import com.example.img_decorat.utils.Util.bitmapToUri
+import com.example.img_decorat.utils.Util.getBackgroundColor
+import com.example.img_decorat.utils.Util.getBackgroundImage
 import com.example.img_decorat.utils.Util.getBitmapFromView
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -48,10 +57,76 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
         }
     }
 
+    fun saveView(list: List<ViewItemData>, view: FrameLayout, scale:FrameLayout.LayoutParams, name: String):SaveViewData{
+        val scaleValue : Float= scale.width.toFloat()/scale.height.toFloat()
+        val bitmap = getBackgroundImage(view)
+        val titleBitmap = getBitmapFromView(view)
 
 
+        if(bitmap != null){
+            return SaveViewData(
+                name = name,
+                data = saveViewDataSet(list),
+                scale = scaleValue,
+                bgColor = getBackgroundColor(view),
+                bgImg = bitmapToUri(context,bitmap).toString(),
+                titleImage = bitmapToUri(context,titleBitmap).toString()
+            )
+        }else{
+            return SaveViewData(
+                name = name,
+                data = saveViewDataSet(list),
+                scale = scaleValue,
+                bgColor = getBackgroundColor(view),
+                titleImage = bitmapToUri(context,titleBitmap).toString()
+            )
+        }
+    }
 
 
-
-
+    fun saveViewDataSet(list : List<ViewItemData>):List<SaveViewDataInfo>{
+        val saveViewDataInfoList : MutableList<SaveViewDataInfo> = mutableListOf()
+        for(i in list){
+            when(i.type){
+                0->{
+                    val img = i.img.getImageBitmap()
+                    var uri : String = ""
+                    img?.let {
+                        uri = bitmapToUri(context,it).toString()
+                    }
+                    val saveData = SaveViewDataInfo(
+                        type = i.type,
+                        visible = i.visible,
+                        scale = i.img.scaleFactor,
+                        rotationDegrees = i.img.rotationDegrees,
+                        saturationValue = i.saturation,
+                        brightnessValue = i.brightness,
+                        transparencyValue = i.transparency,
+                        matrixValue = FloatArray(9).apply { i.img.matrix.getValues(this) },
+                        img = uri
+                    )
+                    saveViewDataInfoList.add(saveData)
+                }
+                1->{
+                    val saveData = SaveViewDataInfo(
+                        type = i.type,
+                        visible = i.visible,
+                        scale = i.text.scaleFactor,
+                        rotationDegrees = i.text.rotationDegrees,
+                        saturationValue = i.saturation,
+                        brightnessValue = i.brightness,
+                        transparencyValue = i.transparency,
+                        matrixValue = FloatArray(9).apply { i.text.matrix.getValues(this) },
+                        text = i.text.getTextContent(),
+                        textSize = i.text.getTextSizeValue(),
+                        textColor = i.text.getTextColor(),
+                        bgColor = i.text.getBackgroundColor(),
+                        font = i.text.getTextTypeface().toString()
+                    )
+                    saveViewDataInfoList.add(saveData)
+                }
+            }
+        }
+        return saveViewDataInfoList
+    }
 }
