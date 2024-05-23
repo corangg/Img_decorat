@@ -2,11 +2,14 @@ package com.example.img_decorat.di
 
 import android.content.Context
 import com.example.img_decorat.data.repository.BackgroundRepository
+import com.example.img_decorat.data.repository.DBRepository
 import com.example.img_decorat.data.repository.ImageDataRepository
 import com.example.img_decorat.data.repository.ImageManagementRepository
 import com.example.img_decorat.data.repository.LayerListRepository
 import com.example.img_decorat.data.repository.SplitRepository
 import com.example.img_decorat.data.repository.SplitStackRepository
+import com.example.img_decorat.data.source.local.DB.EmojiDB
+import com.example.img_decorat.data.source.local.Dao.EmojiDao
 import com.example.img_decorat.ui.view.BTNAnimation
 import dagger.Module
 import dagger.Provides
@@ -64,5 +67,22 @@ object Moudle {
     @Singleton
     fun provideSplitRepository(context: Context): SplitRepository {
         return SplitRepository(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDBRepository(emojiDao: EmojiDao): DBRepository {
+        return DBRepository(emojiDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideEmojiDB(@ApplicationContext context: Context): EmojiDB {
+        return EmojiDB.getDatabase(context)
+    }
+
+    @Provides
+    fun provideEmojiDao(emojiDB: EmojiDB): EmojiDao {
+        return emojiDB.emojiDao()
     }
 }

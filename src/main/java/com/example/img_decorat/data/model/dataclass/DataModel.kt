@@ -4,6 +4,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.widget.TextView
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.img_decorat.data.source.local.RoomTypeConverter
 import com.example.img_decorat.ui.view.EditableImageView
 import com.example.img_decorat.ui.view.TextImageView
 
@@ -32,7 +36,9 @@ data class ViewItemData(
     var text: TextImageView = TextImageView(context)
 }
 
+@Entity(tableName = "emoji_data")
+@TypeConverters(RoomTypeConverter::class)
 data class EmojiList(
-    var groupName : String,
-    var groupList : MutableList<Bitmap>
+    @PrimaryKey val groupName : String,
+    val groupList : MutableList<Bitmap>
 )

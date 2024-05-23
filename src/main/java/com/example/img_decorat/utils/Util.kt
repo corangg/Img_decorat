@@ -14,6 +14,7 @@ import androidx.core.content.FileProvider
 import com.example.img_decorat.ui.view.EditableImageView
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -82,6 +83,11 @@ object Util{
         }
     }
 
+    fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        return outputStream.toByteArray()
+    }
 
 
 }

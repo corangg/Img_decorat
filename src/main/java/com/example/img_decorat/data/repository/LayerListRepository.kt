@@ -271,6 +271,27 @@ class LayerListRepository @Inject constructor(
         return classification
     }
 
+    /*fun emojiDBListClassification(list : List<EmojiData>): List<EmojiListData>{
+        val classification = mutableListOf<EmojiListData>()
+        var groupName = list[0].group
+        var emojiBitmapList = mutableListOf<String>()
+
+        for(i in list){
+            if(i.group != groupName){
+                val emojiGroup  = EmojiListData(groupName = groupName, groupList = emojiBitmapList)
+                classification.add(emojiGroup)
+                groupName = i.group
+                emojiBitmapList = mutableListOf()
+                emojiBitmapList.add(i.character)
+            }else{
+                emojiBitmapList.add(i.character)
+            }
+        }
+        val emojiGroup  = EmojiListData(groupName = groupName, groupList = emojiBitmapList)
+        classification.add(emojiGroup)
+        return classification
+    }*/
+
     fun editTextViewAddList(viewSize: Int):LinkedList<LayerItemData>{
         val textId = imageDataRepository.setID()
         var layerItemData = LayerItemData(context = context, check = true, id = textId, type = 1)

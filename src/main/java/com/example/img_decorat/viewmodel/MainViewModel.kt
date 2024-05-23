@@ -23,12 +23,14 @@ import com.example.img_decorat.data.source.remote.retrofit.UnsplashRetrofit
 import com.example.img_decorat.data.model.dataModels.unsplashimagedata.UnsplashData
 import com.example.img_decorat.data.model.dataModels.ViewItemData
 import com.example.img_decorat.data.repository.BackgroundRepository
+import com.example.img_decorat.data.repository.DBRepository
 import com.example.img_decorat.data.repository.ImageManagementRepository
 import com.example.img_decorat.data.source.remote.retrofit.EmojiRetrofit
 import com.example.img_decorat.data.repository.LayerListRepository
 import com.example.img_decorat.utils.APIKey
 import com.example.img_decorat.utils.UtilList
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.util.LinkedList
 import javax.inject.Inject
@@ -38,7 +40,8 @@ class MainViewModel @Inject constructor(
     application: Application,
     private val layerListRepository: LayerListRepository,
     private val backgroundRepository: BackgroundRepository,
-    private val imageManagementRepository: ImageManagementRepository
+    private val imageManagementRepository: ImageManagementRepository,
+    private val dbRepository: DBRepository
 ) : AndroidViewModel(application){
     var screenSize : Int = 0
 
@@ -73,7 +76,8 @@ class MainViewModel @Inject constructor(
     lateinit var lastTouchedImage : Uri
 
     init {
-        getEmoji()
+        getDB()
+        //getEmoji()
         imageSaturationValue.observeForever {
             layerListRepository.editViewSaturation(it)
         }
@@ -82,6 +86,13 @@ class MainViewModel @Inject constructor(
         }
         imageTransparencyValue.observeForever {
             layerListRepository.viewTransparency(it)
+        }
+    }
+
+    fun getDB(){
+        viewModelScope.launch {
+            dbRepository.deleteEmojiData()
+            //getImojiDB()
         }
     }
 
@@ -239,10 +250,25 @@ class MainViewModel @Inject constructor(
         liveViewList.value = layerListRepository.viewList
     }
 
+
+
+    suspend fun getImojiDB(){
+        val getData = dbRepository.getEmojiData()
+        getData?.let {
+            if(getData.size == 0){
+                getEmoji()
+            }else{
+                emojiList.value= getData!!
+            }
+        }
+    }
+
     fun getEmoji(){
         viewModelScope.launch {
             EmojiRetrofit.getEmojis()?.let {
-                emojiList.value = layerListRepository.emojiListClassification(it)
+                val list = layerListRepository.emojiListClassification(it)
+                emojiList.value = list
+                dbRepository.insertEmojiData(list)
             }
         }
     }
