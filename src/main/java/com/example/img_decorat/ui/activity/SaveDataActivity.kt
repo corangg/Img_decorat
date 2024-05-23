@@ -2,7 +2,9 @@ package com.example.img_decorat.ui.activity
 
 import android.view.Menu
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.img_decorat.R
+import com.example.img_decorat.data.model.dataModels.LoadData
 import com.example.img_decorat.databinding.ActivitySaveDataBinding
 import com.example.img_decorat.ui.adapter.LoadViewAdapter
 import com.example.img_decorat.ui.base.BaseActivity
@@ -16,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SaveDataActivity : BaseActivity<ActivitySaveDataBinding>(),LoadViewAdapter.OnLoadItemClickListener {
     private val viewModel : SaveDataViewModel by viewModels()
     private lateinit var loadViewAdapter: LoadViewAdapter
-    lateinit var editableImageView: EditableImageView
+
 
     override fun layoutResId(): Int {
         return R.layout.activity_save_data
@@ -43,44 +45,14 @@ class SaveDataActivity : BaseActivity<ActivitySaveDataBinding>(),LoadViewAdapter
     }
 
     override fun setObserve() {
-        /*viewModel.getSaveDataList.observe(this){
-            //adapterSet(it)
-            //Util.deserializeView(it[0].viewData,binding.test,this)
-            //testFrame(it[0].viewData)
-        }*/
-    }
-
-
-    /*fun testFrame(viewDataString: String){
-        val viewData = Gson().fromJson<Map<String, Any>>(viewDataString, object : TypeToken<Map<String, Any>>() {}.type)
-        val viewType = viewData["type"] as String
-        if(viewType == "FrameLayout"){
-            val children = viewData["children"] as List<Map<String, Any>>
-            for (i in children){
-                val data = deserializeEditableImageView(Gson().toJson(i))
-                when(data["type"] as String){
-                    "EditableImageView" ->{
-                        val editableImageView = Util.createEditableImageView(
-                            context = this,
-
-                        )
-                    }
-
-
-                }
-            }
-
+        viewModel.dataTitleList.observe(this){
+            adapterSet(it)
         }
-    }*/
-
-    fun deserializeEditableImageView(viewDataString: String): Map<String,Any> {
-        val viewData = Gson().fromJson<Map<String, Any>>(viewDataString, object : TypeToken<Map<String, Any>>() {}.type)
-        return viewData
     }
 
-    /*private fun adapterSet(list : List<EditViewData>){
+    private fun adapterSet(list : List<LoadData>){
         binding.recycleLoadData.layoutManager = GridLayoutManager(this, 2)
-        loadViewAdapter = LoadViewAdapter(this, list,this)
+        loadViewAdapter = LoadViewAdapter(list,this)
         binding.recycleLoadData.adapter = loadViewAdapter
-    }*/
+    }
 }

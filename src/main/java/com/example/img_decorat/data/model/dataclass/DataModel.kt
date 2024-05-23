@@ -47,6 +47,11 @@ data class EmojiList(
     val groupList : MutableList<Bitmap>
 )
 
+data class LoadData(
+    val titleImage: Bitmap,
+    val title : String
+)
+
 @Entity(tableName = "emoji_list")
 @TypeConverters(RoomTypeConverter::class)
 data class EmojiDBData(

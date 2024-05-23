@@ -30,8 +30,7 @@ import javax.inject.Singleton
 @Singleton
 class LayerListRepository @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val imageDataRepository: ImageDataRepository
-) {
+    private val imageDataRepository: ImageDataRepository) {
     var layerList = LinkedList<LayerItemData>()
     val viewList = LinkedList<ViewItemData>()
     lateinit var lastSelectView : ViewItemData

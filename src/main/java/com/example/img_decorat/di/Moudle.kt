@@ -6,6 +6,7 @@ import com.example.img_decorat.data.repository.DBRepository
 import com.example.img_decorat.data.repository.ImageDataRepository
 import com.example.img_decorat.data.repository.ImageManagementRepository
 import com.example.img_decorat.data.repository.LayerListRepository
+import com.example.img_decorat.data.repository.SaveDataRepository
 import com.example.img_decorat.data.repository.SplitRepository
 import com.example.img_decorat.data.repository.SplitStackRepository
 import com.example.img_decorat.data.source.local.DB.EmojiDB
@@ -77,6 +78,12 @@ object Moudle {
         return DBRepository(emojiDao, viewDao)
     }
 
+    @Provides
+    @Singleton
+    fun provideSaveDataRepository(context: Context): SaveDataRepository {
+        return SaveDataRepository(context)
+    }
+
     @Singleton
     @Provides
     fun provideEmojiDB(@ApplicationContext context: Context): EmojiDB {
@@ -98,4 +105,5 @@ object Moudle {
     fun provideViewDao(viewDB: ViewDB): ViewDao {
         return viewDB.viewDao()
     }
+
 }

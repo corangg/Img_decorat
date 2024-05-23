@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:id="@+id/item_load_data"
     android:padding="24dp">
-    <FrameLayout
+    <ImageView
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:id="@+id/load_view"/>
