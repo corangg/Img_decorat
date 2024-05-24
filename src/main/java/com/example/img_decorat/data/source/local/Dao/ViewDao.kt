@@ -18,5 +18,8 @@ interface ViewDao {
     @Query("DELETE FROM save_view_data")
     suspend fun deleteAllsaveViewDataList()
 
+    @Query("SELECT * FROM save_view_data WHERE name = :name")
+    suspend fun getSaveViewDataByName(name: String): SaveViewData?
+
 }
 
