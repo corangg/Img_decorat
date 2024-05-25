@@ -12,14 +12,19 @@ interface ViewDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSaveViewData(item: SaveViewData)
 
+    @Query("SELECT * FROM save_view_data WHERE name = :name")
+    suspend fun getSaveViewDataByName(name: String): SaveViewData?
+
     @Query("SELECT * FROM save_view_data")
     suspend fun getSaveViewDataList(): List<SaveViewData>
+
+    @Query("DELETE FROM save_view_data WHERE name = :name")
+    suspend fun deletesaveViewDataList(name: String)
 
     @Query("DELETE FROM save_view_data")
     suspend fun deleteAllsaveViewDataList()
 
-    @Query("SELECT * FROM save_view_data WHERE name = :name")
-    suspend fun getSaveViewDataByName(name: String): SaveViewData?
+
 
 }
 
