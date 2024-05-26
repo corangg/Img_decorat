@@ -62,37 +62,19 @@ class SplitRepository @Inject constructor(
         return splitArea
     }
 
-    fun cropSquareImage(splitAreaView : SplitSquareView, bitmap: Bitmap) : Bitmap {//수정 필요한 메서드
-        val (viewWidth, viewHeight) = splitAreaView.getParentSize()
-        val rect = splitAreaView.getViewBoundsInParent()
-        val scaleX = bitmap.width.toFloat() / viewWidth
-        val scaleY = bitmap.height.toFloat() / viewHeight
+    fun cropSquareImage(splitAreaView : SplitSquareView, bitmap: Bitmap) : Bitmap {
+        val viewSize = splitAreaView.getParentSize()
+        val areaPoints = splitAreaView.areaPoint()
+        val path = Path().apply {
+            moveTo(areaPoints[0], areaPoints[1])
+            lineTo(areaPoints[2], areaPoints[1])
+            lineTo(areaPoints[2], areaPoints[3])
+            lineTo(areaPoints[0], areaPoints[3])
+            close()
+        }
+        val (scale, offsetX, offsetY) = calculateScaleAndOffset(viewSize, bitmap)
 
-        val (left, top, right, bottom) = if (scaleX > scaleY) {
-            val voidHeight = (scaleX * viewHeight - bitmap.height) / 2
-            listOf(
-                rect.left * scaleX,
-                rect.top * scaleX - voidHeight,
-                rect.right * scaleX,
-                rect.bottom * scaleX - voidHeight
-            )
-        } else {
-            val voidWidth = (scaleY * viewWidth - bitmap.width) / 2
-            listOf(
-                rect.left * scaleY - voidWidth,
-                rect.top * scaleY,
-                rect.right * scaleY - voidWidth,
-                rect.bottom * scaleY
-            )
-        }.map { it.coerceIn(0f, bitmap.width.toFloat()) }
-
-        return Bitmap.createBitmap(
-            bitmap,
-            left.toInt(),
-            top.toInt(),
-            (right - left).toInt(),
-            (bottom - top).toInt()
-        )
+        return createScaledBitmap(bitmap, viewSize, path, scale, offsetX, offsetY)
     }
 
     fun cropCircleImage(circleView: SplitCircleView, bitmap: Bitmap): Bitmap {

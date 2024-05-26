@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -165,6 +166,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
         viewModel.lastTouchedImageId.observe(this){
             binding.imgView.invalidate()
         }
+
+        viewModel.startloading.observe(this){
+            if(it){
+                binding.loadingAnimation.visibility = View.VISIBLE
+            }else{
+                binding.loadingAnimation.visibility = View.GONE
+            }
+        }
+        viewModel.showToast.observe(this){
+            when(it){
+                0->{
+                    Toast.makeText(this,"선택된 이미지가 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+                1->{
+                    Toast.makeText(this,"저장 완료.",Toast.LENGTH_SHORT).show()
+                }
+                2->{
+                    Toast.makeText(this,"이미지 저장 완료.",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun itemTouchHelper(){
@@ -232,7 +254,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
     }
 
     private fun flameLayoutSet(list: LinkedList<ViewItemData>){
-        binding.imgView.removeAllViews()//잠깐 쓰는거//새로 생성하면 비효율 적일거 같음
+        binding.imgView.removeAllViews()
         for(i in list){
             if(i.visible == true){
                 if(i.type == 0){
@@ -245,5 +267,4 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
             }
         }
     }
-
 }

@@ -36,6 +36,8 @@ class MainViewModel @Inject constructor(
 ) : AndroidViewModel(application){
     var screenSize : Int = 0
 
+    val startloading : MutableLiveData<Boolean> = MutableLiveData(false)
+
     val imgTitle : MutableLiveData<String> = MutableLiveData("New_Image")
     val imgSearch : MutableLiveData<String> = MutableLiveData()
     val selectBackGroundImage : MutableLiveData<String> = MutableLiveData()
@@ -52,6 +54,7 @@ class MainViewModel @Inject constructor(
     val emojiTab : MutableLiveData<Int> = MutableLiveData(0)
     val textSize : MutableLiveData<Int> = MutableLiveData(24)
     val overflowMenuToast : MutableLiveData<Int> = MutableLiveData(-1)
+    val showToast : MutableLiveData<Int> = MutableLiveData(-1)
 
     val openGalleryEvent : MutableLiveData<Unit> = MutableLiveData()
     val openSaveDataActivity :MutableLiveData<Unit> = MutableLiveData()
@@ -222,10 +225,12 @@ class MainViewModel @Inject constructor(
 
     fun clickedImageSearch(){
         viewModelScope.launch {
+            startloading.value = true
             val keword = imgSearch.value
             UnsplashRetrofit.getRandomPhotos(keword)?.let {
                 unsplashList.value = it
             }
+            startloading.value = false
         }
     }
 
@@ -312,11 +317,14 @@ class MainViewModel @Inject constructor(
                 overflowMenuToast.value = position
             }
             2->{
+                startloading.value = true
                 val flagLastTouchedImageId = lastTouchedImageId.value
                 lastTouchedImageId.value = -1
                 imageManagementRepository.editViewSave(view,imgTitle.value!!)
                 overflowMenuToast.value = position
                 lastTouchedImageId.value = flagLastTouchedImageId!!
+                startloading.value = false
+                showToast.value = 2
             }
         }
     }
@@ -350,6 +358,7 @@ class MainViewModel @Inject constructor(
 
     private fun saveViewData(view: FrameLayout){
         viewModelScope.launch {
+            startloading.value = true
             val flagLastTouchedImageId = lastTouchedImageId.value
             lastTouchedImageId.value = -1
             val list = liveViewList.value
@@ -363,8 +372,9 @@ class MainViewModel @Inject constructor(
                 )
                 dbRepository.insertViewData(data)
             }
-
             lastTouchedImageId.value = flagLastTouchedImageId!!
+            startloading.value = false
+            showToast.value = 1
         }
     }
 
@@ -377,6 +387,8 @@ class MainViewModel @Inject constructor(
                     lastTouchedImage = it
                     selectNavigationItem.value = 1
                 }
+            }else{
+                showToast.value = 0
             }
         }
     }
