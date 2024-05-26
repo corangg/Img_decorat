@@ -78,7 +78,6 @@ class ImageSplitActivity : BaseActivity<ActivityImageSplitBinding>() {
                 4->{
                     animation.buttionAnimation(binding.imgBtnCheck)
                     setResultIntent()
-                    finish()
                 }
             }
         }
@@ -127,6 +126,7 @@ class ImageSplitActivity : BaseActivity<ActivityImageSplitBinding>() {
         val resultIntent = Intent()
         resultIntent.putExtra("splitBitamp",viewmodel.splitImageUri.toString())
         setResult(RESULT_OK,resultIntent)
+        finish()
     }
 
     private fun allSplitViewGone(){

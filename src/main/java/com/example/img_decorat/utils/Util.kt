@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
@@ -58,6 +59,10 @@ object Util{
                 ViewCompat.generateViewId()
             }
         return id
+    }
+
+    fun stringToTypeface(context: Context, fontName: String): Typeface {
+        return Typeface.create(fontName, Typeface.NORMAL)
     }
 
     fun uriToBitmap(context: Context, imageUri: Uri): Bitmap? {

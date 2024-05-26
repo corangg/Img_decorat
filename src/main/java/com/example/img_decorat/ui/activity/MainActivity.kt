@@ -65,12 +65,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
         if(it.resultCode == Activity.RESULT_OK){
             it.data?.let { intentdata ->
                 val name = intentdata.getStringExtra("name")
-                val data = intentdata.getStringExtra("viewData")
-                viewModel.loadData(name, data)
+                viewModel.loadData(name)
             }
-
-
-
         }
     }
 

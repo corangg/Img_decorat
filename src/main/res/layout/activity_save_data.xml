@@ -19,13 +19,16 @@
         tools:context=".ui.activity.SaveDataActivity">
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="64dp"
             android:id="@+id/save_toolbar"
             app:title=" "
-            app:menu="@menu/menu_savedata"/>
+            app:menu="@menu/menu_savedata"
+            app:onMenuSaveDataOpenClick="@{viewmodel}"
+            />
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:id="@+id/recycle_load_data" />
         <FrameLayout
@@ -33,7 +36,5 @@
             android:layout_height="match_parent"
             android:id="@+id/test"
             android:background="@color/white"/>
-
-
     </LinearLayout>
 </layout>

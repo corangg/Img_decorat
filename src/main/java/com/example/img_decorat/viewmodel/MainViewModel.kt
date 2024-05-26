@@ -2,15 +2,8 @@ package com.example.img_decorat.viewmodel
 
 import android.app.Application
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Typeface
 import android.net.Uri
-import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.FrameLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -26,11 +19,8 @@ import com.example.img_decorat.data.repository.DBRepository
 import com.example.img_decorat.data.repository.ImageManagementRepository
 import com.example.img_decorat.data.source.remote.retrofit.EmojiRetrofit
 import com.example.img_decorat.data.repository.LayerListRepository
-import com.example.img_decorat.utils.APIKey
-import com.example.img_decorat.utils.Util
 import com.example.img_decorat.utils.UtilList
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.util.LinkedList
 import javax.inject.Inject
@@ -282,16 +272,27 @@ class MainViewModel @Inject constructor(
     }
 
     fun textColorSet(position: Int){
-        liveLayerList.value = layerListRepository.editTextViewSetTextColor(UtilList.colorsList[position])
+        val id = lastTouchedImageId.value
+        id?.let {
+            liveLayerList.value = layerListRepository.editTextViewSetTextColor(idValue = it, color = UtilList.colorsList[position])
+        }
     }
 
     fun textBackgroundColorSet(position: Int){
-        liveLayerList.value = layerListRepository.editTextViewSetBackgroundColor(UtilList.colorsList[position])
+        val id = lastTouchedImageId.value
+        id?.let {
+            liveLayerList.value = layerListRepository.editTextViewSetBackgroundColor(id = it, color = UtilList.colorsList[position])
+        }
     }
 
     fun textFontSet(position: Int){
         val font = UtilList.typefaces[position]
-        liveLayerList.value = layerListRepository.EditTextViewSetFont(font)
+        val id = lastTouchedImageId.value
+        id?.let {
+            liveLayerList.value = layerListRepository.editTextViewSetFont(id = it, font = font)
+        }
+
+
     }
 
     fun setViewText(text: String){
@@ -316,12 +317,19 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun loadData(name: String?, jsonData : String?){
+    fun loadData(name: String?){
         name?.let {
-            imgTitle.value = it
+            //imgTitle.value = it
+            getSaveData(name)
         }
-        jsonData?.let {
-            loadData.value = it
+    }
+
+    private fun getSaveData(key : String){
+        viewModelScope.launch {
+            val data = dbRepository.getViewData(key)
+            data?.let {
+                liveLayerList.value = layerListRepository.loadImageList(it)
+            }
         }
     }
 

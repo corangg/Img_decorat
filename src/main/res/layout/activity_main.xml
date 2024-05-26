@@ -37,6 +37,7 @@
                         android:id="@+id/title_edit"
                         android:textColor="@color/white"
                         android:textSize="20sp"
+                        android:paddingRight="10dp"
                         android:background="@null"
                         android:text= "@={viewmodel.imgTitle}" />
                     <ImageButton

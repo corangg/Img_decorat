@@ -1,7 +1,6 @@
 package com.example.img_decorat.data.repository
 
 import com.example.img_decorat.data.model.dataModels.EmojiDBData
-import com.example.img_decorat.data.model.dataModels.EmojiList
 import com.example.img_decorat.data.model.dataModels.SaveViewData
 import com.example.img_decorat.data.source.local.Dao.EmojiDao
 import com.example.img_decorat.data.source.local.Dao.ViewDao
@@ -29,11 +28,19 @@ class DBRepository @Inject constructor(
         viewDao.insertSaveViewData(saveViewData)
     }
 
-    suspend fun getViewData():List<SaveViewData>?{
+    suspend fun getAllViewData():List<SaveViewData>{
         return viewDao.getSaveViewDataList()
     }
 
-    suspend fun deleteViewData(){
+    suspend fun getViewData(key: String):SaveViewData?{
+        return viewDao.getSaveViewDataByName(key)
+    }
+
+    suspend fun deleteAllViewData(){
         viewDao.deleteAllsaveViewDataList()
+    }
+
+    suspend fun deleteViewData(key: String){
+        viewDao.deletesaveViewDataList(key)
     }
 }

@@ -1,6 +1,8 @@
 package com.example.img_decorat.ui.activity
 
+import android.content.Intent
 import android.view.Menu
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.img_decorat.R
@@ -40,13 +42,25 @@ class SaveDataActivity : BaseActivity<ActivitySaveDataBinding>(),LoadViewAdapter
         return super.onPrepareOptionsMenu(menu)
     }
 
-    override fun onLoadItemClick(position: Int) {
-        true
+    override fun onLoadItemClick(position: Int, clickedItem: Int) {
+        viewModel. clickedLoadItem(type = clickedItem, position = position)
     }
 
     override fun setObserve() {
         viewModel.dataTitleList.observe(this){
             adapterSet(it)
+        }
+        viewModel.showToastMessage.observe(this){
+            when(it){
+                0->{
+                    Toast.makeText(this,"선택된 이미지가 없습니다.",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        viewModel.openLoadData.observe(this){
+            if(it){
+                setResultIntent()
+            }
         }
     }
 
@@ -54,5 +68,13 @@ class SaveDataActivity : BaseActivity<ActivitySaveDataBinding>(),LoadViewAdapter
         binding.recycleLoadData.layoutManager = GridLayoutManager(this, 2)
         loadViewAdapter = LoadViewAdapter(list,this)
         binding.recycleLoadData.adapter = loadViewAdapter
+    }
+
+    private fun setResultIntent(){
+        val title = viewModel.selectItemName
+        val resultIntent = Intent()
+        resultIntent.putExtra("name",title)
+        setResult(RESULT_OK,resultIntent)
+        finish()
     }
 }

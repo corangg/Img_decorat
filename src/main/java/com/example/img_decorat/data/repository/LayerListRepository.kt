@@ -10,16 +10,20 @@ import android.graphics.Typeface
 import android.net.Uri
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.core.net.toUri
 import com.example.img_decorat.data.model.dataModels.EmojiDBData
 import com.example.img_decorat.data.model.dataModels.EmojiData
 import com.example.img_decorat.data.model.dataModels.EmojiList
 
 import com.example.img_decorat.data.model.dataModels.LayerItemData
+import com.example.img_decorat.data.model.dataModels.SaveViewData
+import com.example.img_decorat.data.model.dataModels.SaveViewDataInfo
 import com.example.img_decorat.data.model.dataModels.ViewItemData
 import com.example.img_decorat.ui.view.TextImageView
 import com.example.img_decorat.utils.Util.bitmapToUri
 import com.example.img_decorat.utils.Util.createEditableImageView
 import com.example.img_decorat.utils.Util.resizeBitmap
+import com.example.img_decorat.utils.Util.stringToTypeface
 import com.example.img_decorat.utils.Util.uriToBitmap
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Collections
@@ -32,7 +36,7 @@ class LayerListRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val imageDataRepository: ImageDataRepository) {
     var layerList = LinkedList<LayerItemData>()
-    val viewList = LinkedList<ViewItemData>()
+    var viewList = LinkedList<ViewItemData>()
     lateinit var lastSelectView : ViewItemData
 
     fun imgAddList(data: Intent?, viewSize: Int): LinkedList<LayerItemData>{
@@ -286,28 +290,43 @@ class LayerListRepository @Inject constructor(
 
     fun editTextViewAddList(viewSize: Int):LinkedList<LayerItemData>{
         val textId = imageDataRepository.setID()
-        var layerItemData = LayerItemData(context = context, check = true, id = textId, type = 1)
-        layerItemData.text = TextView(context).apply {
-            id = textId
-            setBackgroundColor(Color.TRANSPARENT)
-            layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-            )
-        }
-        layerList.add(layerItemData)
+        addEditTextViewViewList(textId,"")
         editTextViewAddViewList(textId,viewSize,true)
         return layerList
     }
 
-    fun editTextViewSetTextColor(color: Int):LinkedList<LayerItemData>{
-        if(lastSelectView.type == 1){
-            val selectItem = layerList.find { it.select }
-            selectItem?.let {
-                it.text.apply {
-                    setTextColor(color)
-                }
+    private fun layerTextViewSetTextColor(id: Int, color: Int){
+        val selectItem = layerList.find { it.id == id }
+        selectItem?.let {
+            it.text.apply {
+                setTextColor(color)
             }
+        }
+    }
+
+    private fun layerTextViewSetTextBackgroundColor(id: Int, color: Int){
+        val selectItem = layerList.find { it.id == id }
+        selectItem?.let {
+            it.text.apply {
+                setBackgroundColor(color)
+            }
+        }
+    }
+
+    private fun layerTextViewSetTextFont(id: Int, font: Typeface){
+        val selectItem = layerList.find { it.id == id }
+        selectItem?.let {
+            it.text.apply {
+                typeface = font
+            }
+        }
+    }
+
+
+
+    fun editTextViewSetTextColor(idValue: Int, color: Int):LinkedList<LayerItemData>{
+        if(lastSelectView.type == 1){
+            layerTextViewSetTextColor(id = idValue, color = color)
             lastSelectView.text.apply {
                 setTextColor(color)
             }
@@ -315,14 +334,9 @@ class LayerListRepository @Inject constructor(
         return layerList
     }
 
-    fun editTextViewSetBackgroundColor(color: Int):LinkedList<LayerItemData>{
+    fun editTextViewSetBackgroundColor(id: Int, color: Int):LinkedList<LayerItemData>{
         if(lastSelectView.type ==1){
-            val selectItem = layerList.find { it.select }
-            selectItem?.let {
-                it.text.apply {
-                    setBackgroundColor(color)
-                }
-            }
+            layerTextViewSetTextBackgroundColor(id = id, color = color)
             lastSelectView.text.setBackgroundClolor(color)
         }
         return layerList
@@ -336,7 +350,7 @@ class LayerListRepository @Inject constructor(
         }
     }
 
-    fun EditTextViewSetFont(font: Typeface):LinkedList<LayerItemData>{
+    fun editTextViewSetFont(id: Int, font: Typeface):LinkedList<LayerItemData>{
         if(lastSelectView.type ==1){
             val selectItem = layerList.find { it.select }
             selectItem?.let {
@@ -344,6 +358,7 @@ class LayerListRepository @Inject constructor(
                     typeface = font
                 }
             }
+            layerTextViewSetTextFont(id = id, font = font)
             lastSelectView.text.apply {
                 typeface = font
             }
@@ -361,6 +376,35 @@ class LayerListRepository @Inject constructor(
             }
         }
         return layerList
+    }
+
+    fun loadImageList(data : SaveViewData):LinkedList<LayerItemData>{
+        layerList = LinkedList<LayerItemData>()
+        viewList = LinkedList<ViewItemData>()
+        val list = data.data
+        setLoadData(list)
+
+        return layerList
+    }
+
+    private fun setLoadData(list : List<SaveViewDataInfo>){
+        for (i in list){
+            val idValue = imageDataRepository.setID()
+            when(i.type){
+                0->{
+                    val bitmap = uriToBitmap(context, i.img.toUri())
+                    bitmap?.let {
+                        addLayerList(id = idValue, bitmap = it)
+                    }
+                }
+                1->{
+                    addEditTextViewViewList(idValue,i.text)
+                    layerTextViewSetTextColor(id = idValue, color = i.textColor)
+                    layerTextViewSetTextBackgroundColor(id = idValue, color = i.bgColor)
+                    layerTextViewSetTextFont(id = idValue, font = stringToTypeface(context,i.font))
+                }
+            }
+        }
     }
 
     private fun addLayerList(id : Int, bitmap: Bitmap){
@@ -405,6 +449,20 @@ class LayerListRepository @Inject constructor(
         canvas.drawText(emoji, (width / 2).toFloat(), baseline, paint)
 
         return image
+    }
+
+    private fun addEditTextViewViewList(textId: Int, textValue: String){
+        var layerItemData = LayerItemData(context = context, check = true, id = textId, type = 1)
+        layerItemData.text = TextView(context).apply {
+            id = textId
+            setBackgroundColor(Color.TRANSPARENT)
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            )
+            text = textValue
+        }
+        layerList.add(layerItemData)
     }
 
     private fun editTextViewAddViewList(addId : Int, viewSize: Int, visibility: Boolean){

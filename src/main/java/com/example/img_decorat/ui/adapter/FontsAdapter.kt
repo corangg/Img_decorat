@@ -33,6 +33,7 @@ class FontsAdapter(val fontsList : List<Typeface>,val onItemClickListener: OnFon
     inner class FontsViewHolder(val binding: ItemFontBinding): RecyclerView.ViewHolder(binding.root){
         fun applyFont(font: Typeface){
             binding.fontItem.typeface = font
+            binding.fontItem.setBackgroundColor(Color.TRANSPARENT)
         }
 
         fun clickedItem(position: Int){
