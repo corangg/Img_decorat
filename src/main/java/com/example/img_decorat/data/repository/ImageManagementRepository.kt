@@ -57,8 +57,7 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
         }
     }
 
-    fun saveView(list: List<ViewItemData>, view: FrameLayout, scale:FrameLayout.LayoutParams, name: String):SaveViewData{
-        val scaleValue : Float= scale.width.toFloat()/scale.height.toFloat()
+    fun saveView(list: List<ViewItemData>, view: FrameLayout, scale : Float, name: String):SaveViewData{
         val bitmap = getBackgroundImage(view)
         val titleBitmap = getBitmapFromView(view)
 
@@ -66,7 +65,7 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
             return SaveViewData(
                 name = name,
                 data = saveViewDataSet(list),
-                scale = scaleValue,
+                scale = scale,
                 bgColor = getBackgroundColor(view),
                 bgImg = bitmapToUri(context,bitmap).toString(),
                 titleImage = bitmapToUri(context,titleBitmap).toString()
@@ -75,7 +74,7 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
             return SaveViewData(
                 name = name,
                 data = saveViewDataSet(list),
-                scale = scaleValue,
+                scale = scale,
                 bgColor = getBackgroundColor(view),
                 titleImage = bitmapToUri(context,titleBitmap).toString()
             )

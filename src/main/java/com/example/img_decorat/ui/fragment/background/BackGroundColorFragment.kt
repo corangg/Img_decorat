@@ -34,7 +34,7 @@ class BackGroundColorFragment : BaseFragment<FragmentBackGroundColorBinding>(),C
     }
 
     override fun onColorItemClick(position: Int, case: Int) {
-        viewModel.selectBackgroundColor(position)
+        viewModel.selectBackgroundColor(UtilList.colorsList[position])
     }
 
     override fun setObserve() {}

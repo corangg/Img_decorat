@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.R
 import com.example.img_decorat.data.model.dataModels.EmojiList
+import com.example.img_decorat.data.model.dataModels.SaveViewData
 import com.example.img_decorat.data.source.remote.retrofit.UnsplashRetrofit
 import com.example.img_decorat.data.model.dataModels.unsplashimagedata.UnsplashData
 import com.example.img_decorat.data.model.dataModels.ViewItemData
@@ -38,7 +39,6 @@ class MainViewModel @Inject constructor(
     val imgTitle : MutableLiveData<String> = MutableLiveData("New_Image")
     val imgSearch : MutableLiveData<String> = MutableLiveData()
     val selectBackGroundImage : MutableLiveData<String> = MutableLiveData()
-    //val loadData : MutableLiveData<String> = MutableLiveData()
 
     val selectNavigationItem : MutableLiveData<Int> = MutableLiveData(0)
     val selectbackgroundMenu: MutableLiveData<Int> = MutableLiveData(0)
@@ -66,6 +66,7 @@ class MainViewModel @Inject constructor(
     val selectBackgroundScale : MutableLiveData<FrameLayout.LayoutParams> = MutableLiveData()
 
     lateinit var lastTouchedImage : Uri
+    var selectBackgroundScaleType : Float = -1f
 
     init {
         getDB()
@@ -208,13 +209,14 @@ class MainViewModel @Inject constructor(
         liveViewList.value = layerListRepository.swapImageView(fromPos,toPos)
     }
 
-    fun selectBackgroundColor(position: Int){
-        backGroundColor.value = UtilList.colorsList[position]
+    fun selectBackgroundColor(color: Int){
+        backGroundColor.value = color
     }
 
     fun selectBackgroundScale(item:Int){
         selectBackgroundItem.value = item
         selectBackgroundScale.value = backgroundRepository.setBackgroundScale(item, screenSize)
+        selectBackgroundScaleType = item.toFloat()
 
     }
 
@@ -292,8 +294,6 @@ class MainViewModel @Inject constructor(
         id?.let {
             liveLayerList.value = layerListRepository.editTextViewSetFont(id = it, font = font)
         }
-
-
     }
 
     fun setViewText(text: String){
@@ -312,8 +312,11 @@ class MainViewModel @Inject constructor(
                 overflowMenuToast.value = position
             }
             2->{
+                val flagLastTouchedImageId = lastTouchedImageId.value
+                lastTouchedImageId.value = -1
                 imageManagementRepository.editViewSave(view,imgTitle.value!!)
                 overflowMenuToast.value = position
+                lastTouchedImageId.value = flagLastTouchedImageId!!
             }
         }
     }
@@ -329,26 +332,39 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val data = dbRepository.getViewData(key)
             data?.let {
+                FrameLayoutSet(data)
                 liveLayerList.value = layerListRepository.loadLayerList(it)
                 liveViewList.value = layerListRepository.loadViewList(it)
             }
         }
     }
 
+    private fun FrameLayoutSet(data : SaveViewData){
+        val scaleType = data.scale.toInt()
+        selectBackgroundScale(scaleType)
+        selectBackgroundColor(data.bgColor)
+        if(data.bgImg != ""){
+            selectBackGroundImage.value = data.bgImg
+        }
+    }
+
     private fun saveViewData(view: FrameLayout){
         viewModelScope.launch {
+            val flagLastTouchedImageId = lastTouchedImageId.value
+            lastTouchedImageId.value = -1
             val list = liveViewList.value
-            val scale = selectBackgroundScale.value
             val name = imgTitle.value
-            if(list != null && scale != null && name != null){
+            if(list != null && name != null){
                 val data = imageManagementRepository.saveView(
                     list = list,
                     view = view,
-                    scale = scale,
+                    scale = selectBackgroundScaleType,
                     name = name
                 )
                 dbRepository.insertViewData(data)
             }
+
+            lastTouchedImageId.value = flagLastTouchedImageId!!
         }
     }
 

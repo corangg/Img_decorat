@@ -365,6 +365,10 @@ class LayerListRepository @Inject constructor(
         return viewList
     }
 
+    fun deleteBorder(){
+
+    }
+
     private fun setLoadLayerData(list : List<SaveViewDataInfo>){
         for (i in list){
             val idValue = imageDataRepository.setID()

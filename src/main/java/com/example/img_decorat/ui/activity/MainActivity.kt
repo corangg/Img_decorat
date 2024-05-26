@@ -164,7 +164,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
 
         viewModel.lastTouchedImageId.observe(this){
             binding.imgView.invalidate()
-
         }
     }
 
