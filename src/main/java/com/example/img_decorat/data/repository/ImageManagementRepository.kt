@@ -62,7 +62,6 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
         val bitmap = getBackgroundImage(view)
         val titleBitmap = getBitmapFromView(view)
 
-
         if(bitmap != null){
             return SaveViewData(
                 name = name,
@@ -83,7 +82,6 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
         }
     }
 
-
     fun saveViewDataSet(list : List<ViewItemData>):List<SaveViewDataInfo>{
         val saveViewDataInfoList : MutableList<SaveViewDataInfo> = mutableListOf()
         for(i in list){
@@ -94,6 +92,8 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
                     img?.let {
                         uri = bitmapToUri(context,it).toString()
                     }
+                    val mat = i.img.getMatrixValues()
+
                     val saveData = SaveViewDataInfo(
                         type = i.type,
                         visible = i.visible,
@@ -102,7 +102,7 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
                         saturationValue = i.saturation,
                         brightnessValue = i.brightness,
                         transparencyValue = i.transparency,
-                        matrixValue = FloatArray(9).apply { i.img.matrix.getValues(this) },
+                        matrixValue = i.img.getMatrixValues(),
                         img = uri
                     )
                     saveViewDataInfoList.add(saveData)
@@ -116,7 +116,7 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
                         saturationValue = i.saturation,
                         brightnessValue = i.brightness,
                         transparencyValue = i.transparency,
-                        matrixValue = FloatArray(9).apply { i.text.matrix.getValues(this) },
+                        matrixValue = i.text.getMatrixValues(),
                         text = i.text.getTextContent(),
                         textSize = i.text.getTextSizeValue(),
                         textColor = i.text.getTextColor(),

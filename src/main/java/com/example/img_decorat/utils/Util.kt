@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Matrix
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
@@ -61,7 +62,7 @@ object Util{
         return id
     }
 
-    fun stringToTypeface(context: Context, fontName: String): Typeface {
+    fun stringToTypeface(fontName: String): Typeface {
         return Typeface.create(fontName, Typeface.NORMAL)
     }
 
@@ -76,6 +77,11 @@ object Util{
         val canvas = Canvas(bitmap)
         view.draw(canvas)
         return bitmap
+    }
+
+    fun FloatArray.toMatrix(): Matrix {
+        if (this.size != 9) throw IllegalArgumentException("Array must have exactly 9 elements to convert to a Matrix")
+        return Matrix().apply { setValues(this@toMatrix) }
     }
 
     fun createEditableImageView(
@@ -96,6 +102,24 @@ object Util{
         imageView.setImageScale(scale)
 
         return imageView
+    }
+
+    fun createEditableTextView(
+        context : Context,
+        viewId :Int,
+        textSize : Float = 24f,
+        withSize : Int = FrameLayout.LayoutParams.WRAP_CONTENT,
+        heightSize : Int = FrameLayout.LayoutParams.WRAP_CONTENT): TextImageView{
+        val editView = TextImageView(context).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                withSize,
+                heightSize
+            )
+            id = viewId
+            setTextSize(textSize)
+        }
+
+        return editView
     }
 
     fun resizeBitmap(bitmap: Bitmap,size: Int): Pair<Bitmap,Float>{
@@ -136,59 +160,7 @@ object Util{
         return bitmap
     }
 
-    fun deserializeView(viewDataString: String, parent: ViewGroup, context: Context): View {
-        val viewData = Gson().fromJson<Map<String, Any>>(viewDataString, object : TypeToken<Map<String, Any>>() {}.type)
-        val viewType = viewData["type"] as String
 
-        val view: View = when (viewType) {
-            "TextView" -> {
-                val textView = TextView(context)
-                textView.text = viewData["text"] as String
-                textView
-            }
-            "EditableImageView" -> {
-                val editableImageView = EditableImageView(context)
-                editableImageView.scaleFactor = (viewData["scaleFactor"] as Double).toFloat()
-                editableImageView.rotationDegrees = (viewData["rotationDegrees"] as Double).toFloat()
-                editableImageView.saturationValue = (viewData["saturationValue"] as Double).toFloat()
-                editableImageView.brightnessValue = (viewData["brightnessValue"] as Double).toFloat()
-
-                val matrixValues = (viewData["matrixValues"] as List<Double>).map { it.toFloat() }.toFloatArray()
-                editableImageView.matrix.setValues(matrixValues)
-                editableImageView.imageMatrix = editableImageView.matrix
-                editableImageView
-            }
-            "TextImageView" -> {
-                val textImageView = TextImageView(context)
-                textImageView.scaleFactor = (viewData["scaleFactor"] as Double).toFloat()
-                textImageView.rotationDegrees = (viewData["rotationDegrees"] as Double).toFloat()
-                textImageView.saturationValue = (viewData["saturationValue"] as Double).toFloat()
-                textImageView.brightnessValue = (viewData["brightnessValue"] as Double).toFloat()
-                //textImageView.text = viewData["text"] as String
-                textImageView.fillBackgroundPaint.color = (viewData["fillBackgroundColor"] as Double).toInt()
-
-                val matrixValues = (viewData["matrixValues"] as List<Double>).map { it.toFloat() }.toFloatArray()
-                textImageView.matrix.setValues(matrixValues)
-                textImageView
-            }
-            "FrameLayout" -> {
-                val frameLayout = FrameLayout(context)
-                val children = viewData["children"] as List<Map<String, Any>>
-                for (childData in children) {
-                    val childView = deserializeView(Gson().toJson(childData), frameLayout, context)
-                    frameLayout.addView(childView)
-                }
-                frameLayout
-            }
-            else -> {
-                throw IllegalArgumentException("Unknown view type: $viewType")
-            }
-        }
-
-        view.alpha = (viewData["alpha"] as Double).toFloat()
-        parent.addView(view)
-        return view
-    }
 
 
 }

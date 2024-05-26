@@ -118,10 +118,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
         viewModel.openMenuEvent.observe(this){
             uiHelper.openMenuEvent(it)
         }
-        viewModel.loadData.observe(this){
-            Util.deserializeView(it,binding.imgView,this)//둘중 하나일듯
-            //binding.imgView = Util.deserializeView(it,binding.imgView,this)
-        }
 
         viewModel.openSaveDataActivity.observe(this){
             openSaveDataActivity()

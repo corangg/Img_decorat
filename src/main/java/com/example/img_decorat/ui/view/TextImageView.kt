@@ -10,6 +10,7 @@ import android.graphics.Path
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
@@ -144,6 +145,19 @@ class TextImageView @JvmOverloads constructor(
         )
         matrix.mapPoints(points)
         return points
+    }
+
+    fun getMatrixValues(): FloatArray {
+        val matrixValues = FloatArray(9)
+        matrix.getValues(matrixValues)
+        return matrixValues
+    }
+
+    fun setMatreixData(matrixValue: FloatArray, scale: Float, degrees: Float){
+        matrix.setValues(matrixValue)
+        scaleFactor = scale
+        rotationDegrees = degrees
+
     }
 
     private fun jundgeTouchableArea(x: Float, y: Float, polygon: FloatArray): Boolean {

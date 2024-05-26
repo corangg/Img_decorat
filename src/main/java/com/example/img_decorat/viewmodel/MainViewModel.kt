@@ -38,7 +38,7 @@ class MainViewModel @Inject constructor(
     val imgTitle : MutableLiveData<String> = MutableLiveData("New_Image")
     val imgSearch : MutableLiveData<String> = MutableLiveData()
     val selectBackGroundImage : MutableLiveData<String> = MutableLiveData()
-    val loadData : MutableLiveData<String> = MutableLiveData()
+    //val loadData : MutableLiveData<String> = MutableLiveData()
 
     val selectNavigationItem : MutableLiveData<Int> = MutableLiveData(0)
     val selectbackgroundMenu: MutableLiveData<Int> = MutableLiveData(0)
@@ -88,6 +88,7 @@ class MainViewModel @Inject constructor(
 
     fun setViewSize(size : Int){
         screenSize = size
+        layerListRepository.setViewSize(size)
         selectBackgroundScale(0)
     }
 
@@ -161,7 +162,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun imgAddLayerList(data: Intent?){
-        liveLayerList.value = layerListRepository.imgAddList(data,screenSize)
+        liveLayerList.value = layerListRepository.imgAddList(data)
     }
 
     fun updateChecked(position: Int, checked: Boolean){
@@ -266,7 +267,7 @@ class MainViewModel @Inject constructor(
 
     fun addEmogeLayer(emojiPosition:Int){
         if(emojiList.value != null && emojiTab.value != null){
-            liveLayerList.value = layerListRepository.emojiAddLayer(emojiList.value!![emojiTab.value!!].groupList[emojiPosition],screenSize)
+            liveLayerList.value = layerListRepository.emojiAddLayer(emojiList.value!![emojiTab.value!!].groupList[emojiPosition])
             liveViewList.value = layerListRepository.viewList
         }
     }
@@ -319,7 +320,7 @@ class MainViewModel @Inject constructor(
 
     fun loadData(name: String?){
         name?.let {
-            //imgTitle.value = it
+            imgTitle.value = it
             getSaveData(name)
         }
     }
@@ -328,7 +329,8 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val data = dbRepository.getViewData(key)
             data?.let {
-                liveLayerList.value = layerListRepository.loadImageList(it)
+                liveLayerList.value = layerListRepository.loadLayerList(it)
+                liveViewList.value = layerListRepository.loadViewList(it)
             }
         }
     }
@@ -345,7 +347,6 @@ class MainViewModel @Inject constructor(
                     scale = scale,
                     name = name
                 )
-
                 dbRepository.insertViewData(data)
             }
         }
@@ -365,7 +366,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun clickedNavText(){
-        liveLayerList.value = layerListRepository.editTextViewAddList(screenSize)
+        liveLayerList.value = layerListRepository.editTextViewAddList()
         liveViewList.value = layerListRepository.viewList
         selectLayer(liveLayerList.value!!.size - 1)
         selectNavigationItem.value = 4

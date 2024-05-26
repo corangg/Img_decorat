@@ -134,12 +134,6 @@ class EditableImageView @JvmOverloads constructor(
         this.alpha = clampedAlpha
     }
 
-    fun setImageScale(scale: Float) {
-        scaleFactor = scale
-        matrix.setScale(scaleFactor, scaleFactor)
-        imageMatrix = matrix
-    }
-
     fun setImageSaturation(saturation: Float) {
         saturationValue = (saturation + 100f)/100f
         colorFilter = viewHelper.applyColorFilter(saturationValue, brightnessValue)
@@ -152,6 +146,27 @@ class EditableImageView @JvmOverloads constructor(
 
     fun getImageBitmap(): Bitmap? {
         return (drawable as? BitmapDrawable)?.bitmap
+    }
+
+    fun setMatreixData(matrixValue: FloatArray, scale: Float, degrees: Float){
+        matrix.setValues(matrixValue)
+        imageMatrix = matrix
+
+        scaleFactor = scale
+        rotationDegrees = degrees
+
+    }
+
+    fun setImageScale(scale: Float) {
+        scaleFactor = scale
+        matrix.postScale(scaleFactor, scaleFactor)
+        imageMatrix = matrix
+    }
+
+    fun getMatrixValues(): FloatArray {
+        val matrixValues = FloatArray(9)
+        matrix.getValues(matrixValues)
+        return matrixValues
     }
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
