@@ -27,7 +27,6 @@
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
                 android:padding="10dp"
-                android:layout_marginStart="10dp"
                 android:onClick="@{()->viewmodel.selectBackgroundScale(0)}">
 
                 <RelativeLayout

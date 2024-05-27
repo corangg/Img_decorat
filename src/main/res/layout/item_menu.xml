@@ -12,5 +12,4 @@
         android:padding="10dp"
         android:textColor="@color/pointcolor"
         android:textSize="20sp"/>
-
 </LinearLayout>
