@@ -126,10 +126,6 @@ class SplitRepository @Inject constructor(
             isFilterBitmap = true
             isDither = true
         }
-
-        canvas.drawPath(path, paint)
-        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-
         val srcRect = Rect(0, 0, bitmap.width, bitmap.height)
         val destRect = Rect(
             offsetX.toInt(),
@@ -137,8 +133,13 @@ class SplitRepository @Inject constructor(
             (bitmap.width * scale + offsetX).toInt(),
             (bitmap.height * scale + offsetY).toInt()
         )
-
         canvas.drawBitmap(bitmap, srcRect, destRect, paint)
+
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
+        val inversePath = Path()
+        inversePath.addRect(0f, 0f, viewSize.first.toFloat(), viewSize.second.toFloat(), Path.Direction.CW)
+        inversePath.op(path, Path.Op.DIFFERENCE)
+        canvas.drawPath(inversePath, paint)
 
         return scaledBitmap
     }
