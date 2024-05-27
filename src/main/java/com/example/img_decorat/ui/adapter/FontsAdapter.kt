@@ -7,6 +7,7 @@ import android.graphics.fonts.Font
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.img_decorat.R
 
 import com.example.img_decorat.databinding.ItemEmojiBinding
 import com.example.img_decorat.databinding.ItemFontBinding
@@ -43,7 +44,7 @@ class FontsAdapter(val fontsList : List<Typeface>,val onItemClickListener: OnFon
                 val border = GradientDrawable()
                 border.setColor(Color.TRANSPARENT)
                 border.cornerRadius = 12f
-                border.setStroke(4, Color.WHITE)
+                border.setStroke(4, 0xFFE3CDF2.toInt())
 
                 selectedPosition = position
                 binding.fontItem.background = border

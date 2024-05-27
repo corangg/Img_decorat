@@ -27,7 +27,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/bg_basic"
+            app:itemIconTint="@color/navigation_ic_color"
+            app:itemTextColor="@color/navigation_ic_color"
             app:labelVisibilityMode="auto"
+            app:elevation="0dp"
             app:menu="@menu/menu_text"
             app:onNavigationItemSelectedListener="@{(item)->viewmodel.bottomNavigationItemSelected(item)}"
             />

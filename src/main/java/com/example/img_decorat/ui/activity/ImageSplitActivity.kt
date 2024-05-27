@@ -109,17 +109,17 @@ class ImageSplitActivity : BaseActivity<ActivityImageSplitBinding>() {
 
         viewmodel.previousStackState.observe(this){
             if(it){
-                binding.imgBtnPrevious.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+                binding.imgBtnPrevious.backgroundTintList = ColorStateList.valueOf(0xFFE3CDF2.toInt())
             }else{
-                binding.imgBtnPrevious.backgroundTintList = ColorStateList.valueOf(0xFF494949.toInt())
+                binding.imgBtnPrevious.backgroundTintList = ColorStateList.valueOf(0xFFDFDFDF.toInt())
             }
         }
         viewmodel.nextStackState.observe(this){
             if(it){
-                binding.imgBtnNext.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+                binding.imgBtnNext.backgroundTintList = ColorStateList.valueOf(0xFFE3CDF2.toInt())
             }
             else{
-                binding.imgBtnNext.backgroundTintList = ColorStateList.valueOf(0xFF494949.toInt())
+                binding.imgBtnNext.backgroundTintList = ColorStateList.valueOf(0xFFDFDFDF.toInt())
             }
         }
     }

@@ -11,11 +11,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#121212"
+        android:background="@color/backgroundcolor"
         >
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="52dp"
+            android:background="@color/white"
             android:id="@+id/toolbar_split">
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -26,7 +27,7 @@
                     android:id="@+id/img_btn_back"
                     android:layout_centerVertical="true"
                     android:background="@drawable/ic_back"
-                    android:backgroundTint="@color/white"
+                    android:backgroundTint="@color/pointcolor"
                     android:onClick="@{()->viewmodel.selectToolbarItem(0)}"/>
 
                 <ImageButton
@@ -34,10 +35,10 @@
                     android:layout_height="28dp"
                     android:id="@+id/img_btn_check"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="16dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/ic_check"
-                    android:backgroundTint="@color/white"
+                    android:backgroundTint="@color/pointcolor"
                     android:onClick="@{()->viewmodel.selectToolbarItem(4)}"/>
 
                 <ImageButton
@@ -45,10 +46,10 @@
                     android:layout_height="32dp"
                     android:id="@+id/img_btn_split"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/img_btn_check"
-                    android:layout_marginRight="16dp"
+                    android:layout_toStartOf="@id/img_btn_check"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/ic_split"
-                    android:backgroundTint="@color/white"
+                    android:backgroundTint="@color/pointcolor"
                     android:onClick="@{()->viewmodel.selectToolbarItem(3)}"/>
 
                 <ImageButton
@@ -56,10 +57,10 @@
                     android:layout_height="28dp"
                     android:id="@+id/img_btn_next"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/img_btn_split"
-                    android:layout_marginRight="16dp"
+                    android:layout_toStartOf="@id/img_btn_split"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/ic_run"
-                    android:backgroundTint="@color/darkGray"
+                    android:backgroundTint="@color/backgroundcolor"
                     android:onClick="@{()->viewmodel.selectToolbarItem(2)}"/>
 
                 <ImageButton
@@ -67,19 +68,18 @@
                     android:layout_height="28dp"
                     android:id="@+id/img_btn_previous"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/img_btn_next"
-                    android:layout_marginRight="16dp"
+                    android:layout_toStartOf="@id/img_btn_next"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/ic_undo"
-                    android:backgroundTint="@color/darkGray"
+                    android:backgroundTint="@color/backgroundcolor"
                     android:onClick="@{()->viewmodel.selectToolbarItem(1)}"/>
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:background="#2D2D2D"
             android:layout_below="@id/toolbar_split"
             android:layout_above="@id/linear_polygon"
             android:id="@+id/frame_split_image"
@@ -105,24 +105,26 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:background="@drawable/ic_point"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="@color/pointcolor"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:id="@+id/text_polygon"
                 android:layout_gravity="center"
                 android:text="@{String.valueOf(viewmodel.polygonPoint)}"
-                android:textSize="16dp"
-                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textColor="@color/pointcolor"
                 android:textStyle="bold"/>
             <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_unselect_roundview"
                 android:min="3"
                 android:max="20"
-                android:layout_marginRight="10dp"
+                android:layout_marginHorizontal="16dp"
                 android:progressTint="@color/white"
                 android:thumbTint="@color/white"
                 android:layout_gravity="center"
@@ -137,6 +139,8 @@
             android:layout_marginBottom="16dp"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_basic"
+            app:itemIconTint="@color/navigation_ic_color"
+            app:itemTextColor="@color/navigation_ic_color"
             android:layout_alignParentBottom="true"
             app:labelVisibilityMode="auto"
             app:menu="@menu/menu_split"

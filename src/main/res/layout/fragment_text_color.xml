@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -19,20 +20,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_gravity="center"
+                android:layout_marginHorizontal="2dp"
                 android:background="@drawable/ic_text"
-                android:backgroundTint="@color/white" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
+                android:backgroundTint="@color/pointcolor" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/recycle_text_color"
-                android:layout_marginLeft="10dp"
-                android:scrollbars="horizontal"/>
+                android:padding="8dp"
+                android:layout_marginLeft="12dp"
+                android:background="@drawable/bg_colorview">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="12dp">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/recycle_text_color"
+                        android:scrollbars="horizontal"/>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,17 +56,24 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:background="@drawable/ic_text_background"
-                android:backgroundTint="@color/white" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
+                android:backgroundTint="@color/pointcolor" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/recycle_text_background_color"
-                android:scrollbars="horizontal"/>
+                android:padding="8dp"
+                android:layout_marginLeft="12dp"
+                android:background="@drawable/bg_colorview">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="12dp">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/recycle_text_background_color"
+                        android:scrollbars="horizontal"/>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
         </LinearLayout>
-
-
-
-
     </LinearLayout>
 </layout>

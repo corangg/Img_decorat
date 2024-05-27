@@ -2,6 +2,7 @@ package com.example.img_decorat.ui.adapter
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,7 +64,7 @@ class LayerAdapter(val layerList: LinkedList<LayerItemData>, val onLayerItemClic
         }
 
         fun setSlectedLayer(position: Int){
-            binding.itemLayer.setBackgroundColor(if (layerList[position].select) 0xFF202020.toInt() else Color.TRANSPARENT)
+            binding.itemLayer.setBackgroundColor(if (layerList[position].select) 0xFFE3CDF2.toInt() else Color.TRANSPARENT)
         }
 
         fun clickedItem(position: Int){

@@ -29,6 +29,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/check"
                 android:checked="true"
+                android:backgroundTint="@color/white"
+                android:buttonTint="@color/white"
                 android:layout_gravity="center" />
 
             <TextView

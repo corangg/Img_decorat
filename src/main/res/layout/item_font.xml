@@ -6,7 +6,7 @@
     android:id="@+id/font_item"
     android:text="Aa"
     android:gravity="center"
-    android:textColor="@color/white"
-    android:textSize="18dp">
+    android:textColor="@color/pointcolor"
+    android:textSize="18sp">
 
 </TextView>

@@ -47,7 +47,7 @@
                         android:id="@+id/title_edit"
                         android:textColor="@color/pointcolor"
                         android:textSize="20sp"
-                        android:layout_toRightOf="@+id/menu_open_drawerlayout"
+                        android:layout_toEndOf="@+id/menu_open_drawerlayout"
                         android:paddingHorizontal="10dp"
                         android:layout_centerVertical="true"
                         android:background="@null"
@@ -56,8 +56,8 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:id="@+id/menu_add"
-                        android:layout_marginRight="12dp"
-                        android:layout_toLeftOf="@+id/menu_more"
+                        android:layout_marginEnd="12dp"
+                        android:layout_toStartOf="@+id/menu_more"
                         android:background="@drawable/ic_add"
                         android:backgroundTint="@color/pointcolor"
                         android:layout_centerVertical="true"
@@ -67,12 +67,12 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:id="@+id/menu_more"
-                        android:layout_marginRight="12dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="6dp"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:background="@drawable/ic_more"
                         android:backgroundTint="@color/pointcolor"
-                        android:onClick="@{()->viewmodel.showOverFlowMenu()}"/>
+                        android:onClick="@{()->viewmodel.showOverFlowMenu()}" />
 
                 </RelativeLayout>
             </androidx.appcompat.widget.Toolbar>
@@ -125,10 +125,12 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/menu_view"
+                android:background="@drawable/bg_menu"
                 android:orientation="vertical"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginHorizontal="6dp"
                 android:layout_below="@+id/main_toolbar"
+                android:layout_marginTop="6dp"
                 android:visibility="gone">
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"

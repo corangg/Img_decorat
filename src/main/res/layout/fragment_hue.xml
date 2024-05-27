@@ -30,8 +30,8 @@
                 android:layout_weight="1.4"
                 android:gravity="center"
                 android:text="채도"
-                android:textSize="16dp"
-                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textColor="@color/pointcolor"
                 android:textStyle="bold"/>
             <TextView
                 android:layout_width="0dp"
@@ -39,22 +39,23 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:text="@{String.valueOf(viewmodel.imageSaturationValue)}"
-                android:textSize="16dp"
-                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textColor="@color/pointcolor"
                 android:textStyle="bold"/>
 
             <SeekBar
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
+                android:background="@drawable/bg_unselect_roundview"
                 android:gravity="center"
                 android:min="-100"
                 android:max="100"
-                android:layout_marginRight="10dp"
-                android:progressTint="@color/white"
-                android:thumbTint="@color/white"
+                android:layout_marginHorizontal="6dp"
+                android:progressTint="@color/pointcolor"
+                android:thumbTint="@color/pointcolor"
                 android:layout_gravity="center"
                 android:progress="@={viewmodel.imageSaturationValue}"/>
         </LinearLayout>
@@ -72,8 +73,8 @@
                 android:layout_weight="1.4"
                 android:gravity="center"
                 android:text="명도"
-                android:textSize="16dp"
-                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textColor="@color/pointcolor"
                 android:textStyle="bold"/>
             <TextView
                 android:layout_width="0dp"
@@ -81,10 +82,10 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:text="@{String.valueOf(viewmodel.imageBrightnessValue)}"
-                android:textSize="16dp"
-                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textColor="@color/pointcolor"
                 android:textStyle="bold"/>
 
             <SeekBar
@@ -92,11 +93,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
                 android:gravity="center"
+                android:background="@drawable/bg_unselect_roundview"
                 android:min="-100"
                 android:max="100"
-                android:layout_marginRight="10dp"
-                android:progressTint="@color/white"
-                android:thumbTint="@color/white"
+                android:layout_marginHorizontal="6dp"
+                android:progressTint="@color/pointcolor"
+                android:thumbTint="@color/pointcolor"
                 android:layout_gravity="center"
                 android:progress="@={viewmodel.imageBrightnessValue}"/>
         </LinearLayout>
@@ -115,8 +117,8 @@
                 android:layout_weight="1.4"
                 android:gravity="center"
                 android:text="투명도"
-                android:textSize="16dp"
-                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textColor="@color/pointcolor"
                 android:textStyle="bold"/>
             <TextView
                 android:layout_width="0dp"
@@ -124,10 +126,10 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:text="@{String.valueOf(viewmodel.imageTransparencyValue)}"
-                android:textSize="16dp"
-                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textColor="@color/pointcolor"
                 android:textStyle="bold"/>
 
             <SeekBar
@@ -135,11 +137,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
                 android:gravity="center"
+                android:background="@drawable/bg_unselect_roundview"
                 android:min="0"
                 android:max="100"
-                android:layout_marginRight="10dp"
-                android:progressTint="@color/white"
-                android:thumbTint="@color/white"
+                android:layout_marginHorizontal="6dp"
+                android:progressTint="@color/pointcolor"
+                android:thumbTint="@color/pointcolor"
                 android:layout_gravity="center"
                 android:progress="@={viewmodel.imageTransparencyValue}"/>
         </LinearLayout>

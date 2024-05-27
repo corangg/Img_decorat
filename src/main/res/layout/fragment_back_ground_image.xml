@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:padding="10dp">
             <EditText
                 android:layout_width="0dp"
@@ -38,14 +39,9 @@
                 android:id="@+id/img_search_btn"
                 android:layout_marginLeft="16dp"
                 android:onClick="@{()->viewmodel.clickedImageSearch()}"
-                android:background="@drawable/ic_search"/>
+                android:background="@drawable/ic_search"
+                android:backgroundTint="@color/pointcolor"/>
         </LinearLayout>
-        <!--<androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:layout_marginTop="0dp"
-            android:id="@+id/image_recycle"/>-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -54,7 +50,7 @@
                 android:id="@+id/image_recycle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
+                android:paddingHorizontal="16dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHeight_max="300dp" />

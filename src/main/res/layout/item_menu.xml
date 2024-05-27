@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/menu_text"
         android:padding="10dp"
-        android:textColor="@color/white"
+        android:textColor="@color/pointcolor"
         android:textSize="20sp"/>
 
 </LinearLayout>

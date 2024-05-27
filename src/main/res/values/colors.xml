@@ -12,9 +12,6 @@
     <color name="pointcolor">#E3CDF2</color>
     <color name="backgroundcolor">#DFDFDF</color>
     <color name="selectcolor">#C0C0C0</color>
-
-
-
-
+    <color name="unseletcolor">#FAEFFA</color>
 
 </resources>
