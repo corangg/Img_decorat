@@ -22,6 +22,8 @@ class SaveDataViewModel @Inject constructor(
     val dataTitleList : MutableLiveData<List<LoadData>> = MutableLiveData()
     val openLoadData : MutableLiveData<Boolean> = MutableLiveData()
     val showToastMessage : MutableLiveData<Int> = MutableLiveData(-1)
+    val finisheLoadDataActivity : MutableLiveData<Unit> = MutableLiveData()
+    val recyclerLayoutManagerSet : MutableLiveData<Boolean> = MutableLiveData()
     var selectItemName : String = ""
 
 
@@ -31,9 +33,8 @@ class SaveDataViewModel @Inject constructor(
 
     fun getViewData(){
         viewModelScope.launch {
-            dbRepository.getAllViewData()?.let {
-                dataTitleList.value = saveDataRepository.setLoadTitle(it)
-            }
+            dataTitleList.value = saveDataRepository.setLoadTitle(dbRepository.getAllViewData())
+            clickedLinearRecycler()
         }
     }
 
@@ -56,20 +57,24 @@ class SaveDataViewModel @Inject constructor(
         }
     }
 
-    fun onMenuSaveDataOpenClicked(item : MenuItem) {
-        when(item.itemId){
-            R.id.menu_save_data_open->{
-                clickedOpenLoadData()
-            }
-        }
+    fun clickedBack(){
+        finisheLoadDataActivity.value = Unit
     }
 
-    private fun clickedOpenLoadData(){
+    fun clickedOpenLoadData(){
         if (selectItemName != ""){
             openLoadData.value = true
         }else{
             showToastMessage.value = 0
         }
+    }
+
+    fun clickedLinearRecycler(){
+        recyclerLayoutManagerSet.value = true
+    }
+
+    fun clickedGrideRecycler(){
+        recyclerLayoutManagerSet.value = false
     }
 
 

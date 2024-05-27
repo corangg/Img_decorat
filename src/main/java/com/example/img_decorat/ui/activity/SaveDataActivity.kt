@@ -1,25 +1,28 @@
 package com.example.img_decorat.ui.activity
 
 import android.content.Intent
-import android.view.Menu
+import android.content.res.ColorStateList
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.img_decorat.R
 import com.example.img_decorat.data.model.dataModels.LoadData
 import com.example.img_decorat.databinding.ActivitySaveDataBinding
-import com.example.img_decorat.ui.adapter.LoadViewAdapter
+import com.example.img_decorat.ui.adapter.GridLoadViewAdapter
+import com.example.img_decorat.ui.adapter.LinearLoadViewAdapter
 import com.example.img_decorat.ui.base.BaseActivity
-import com.example.img_decorat.ui.view.EditableImageView
 import com.example.img_decorat.viewmodel.SaveDataViewModel
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SaveDataActivity : BaseActivity<ActivitySaveDataBinding>(),LoadViewAdapter.OnLoadItemClickListener {
+class SaveDataActivity : BaseActivity<ActivitySaveDataBinding>(),
+    LinearLoadViewAdapter.OnLinearLoadItemClickListener,
+    GridLoadViewAdapter.OnGridLoadItemClickListener{
     private val viewModel : SaveDataViewModel by viewModels()
-    private lateinit var loadViewAdapter: LoadViewAdapter
+    private lateinit var linearLoadViewAdapter: LinearLoadViewAdapter
+    private lateinit var gridLoadViewAdapter: GridLoadViewAdapter
 
 
     override fun layoutResId(): Int {
@@ -30,26 +33,36 @@ class SaveDataActivity : BaseActivity<ActivitySaveDataBinding>(),LoadViewAdapter
         binding.viewmodel = viewModel
 
         setSupportActionBar(binding.saveToolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayShowTitleEnabled(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_savedata,menu)
-        return super.onCreateOptionsMenu(menu)
+    override fun onLinearLoadItemClick(position: Int, clickedItem: Int) {
+        viewModel. clickedLoadItem(type = clickedItem, position = position)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        return super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onLoadItemClick(position: Int, clickedItem: Int) {
+    override fun onGridLoadItemClick(position: Int, clickedItem: Int) {
         viewModel. clickedLoadItem(type = clickedItem, position = position)
     }
 
     override fun setObserve() {
-        viewModel.dataTitleList.observe(this){
-            adapterSet(it)
+        viewModel.recyclerLayoutManagerSet.observe(this){
+            viewModel.dataTitleList.value?.let {list->
+                if(it){
+                    binding.menuLinear.backgroundTintList = ColorStateList.valueOf(0xFFE3CDF2.toInt())
+                    binding.menuGride.backgroundTintList = ColorStateList.valueOf(0xFFDFDFDF.toInt())
+                    linearAdapterSet(list)
+                }else{
+                    binding.menuGride.backgroundTintList = ColorStateList.valueOf(0xFFE3CDF2.toInt())
+                    binding.menuLinear.backgroundTintList = ColorStateList.valueOf(0xFFDFDFDF.toInt())
+                    gridAdapterSet(list)
+                }
+            }
         }
+
+        viewModel.finisheLoadDataActivity.observe(this){
+            finish()
+        }
+
         viewModel.showToastMessage.observe(this){
             when(it){
                 0->{
@@ -57,6 +70,7 @@ class SaveDataActivity : BaseActivity<ActivitySaveDataBinding>(),LoadViewAdapter
                 }
             }
         }
+
         viewModel.openLoadData.observe(this){
             if(it){
                 setResultIntent()
@@ -64,10 +78,19 @@ class SaveDataActivity : BaseActivity<ActivitySaveDataBinding>(),LoadViewAdapter
         }
     }
 
-    private fun adapterSet(list : List<LoadData>){
+    private fun linearAdapterSet(list : List<LoadData>){
+        binding.recycleLoadData.layoutManager = LinearLayoutManager(this)//GridLayoutManager(this, 2)
+        linearLoadViewAdapter = LinearLoadViewAdapter(list = list, onItemClickListener = this)
+        binding.recycleLoadData.adapter = linearLoadViewAdapter
+        binding.recycleLoadData.addItemDecoration(
+            DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
+        )
+    }
+
+    private fun gridAdapterSet(list : List<LoadData>){
         binding.recycleLoadData.layoutManager = GridLayoutManager(this, 2)
-        loadViewAdapter = LoadViewAdapter(list,this)
-        binding.recycleLoadData.adapter = loadViewAdapter
+        gridLoadViewAdapter = GridLoadViewAdapter(list = list, onItemClickListener = this)
+        binding.recycleLoadData.adapter = gridLoadViewAdapter
     }
 
     private fun setResultIntent(){

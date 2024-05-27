@@ -30,8 +30,7 @@
                 android:id="@+id/main_toolbar">
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
                     <ImageButton
                         android:layout_width="40dp"
                         android:layout_height="40dp"
@@ -42,21 +41,26 @@
                         android:onClick="@{()->viewmodel.openDrawerLayout()}"/>
 
                     <EditText
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/title_edit"
                         android:textColor="@color/pointcolor"
                         android:textSize="20sp"
                         android:layout_toEndOf="@+id/menu_open_drawerlayout"
+                        android:layout_toStartOf="@+id/menu_add"
                         android:paddingHorizontal="10dp"
                         android:layout_centerVertical="true"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:layout_marginEnd="20dp"
                         android:background="@null"
                         android:text= "@={viewmodel.imgTitle}" />
                     <ImageButton
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:id="@+id/menu_add"
-                        android:layout_marginEnd="12dp"
+                        android:layout_marginEnd="16dp"
                         android:layout_toStartOf="@+id/menu_more"
                         android:background="@drawable/ic_add"
                         android:backgroundTint="@color/pointcolor"
@@ -79,7 +83,7 @@
 
             <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/main_toolbar"
                 android:layout_above="@id/detail_navigaionView"
                 android:layout_centerVertical="true"
@@ -88,10 +92,10 @@
                 android:layout_marginBottom="20dp">
 
                 <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:id="@+id/img_view"
-                    android:background="@drawable/bg_view" />
+                     />
                 <com.example.img_decorat.ui.animation.LoadingAnimation
                     android:id="@+id/loading_animation"
                     android:layout_width="wrap_content"

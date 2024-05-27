@@ -11,8 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/backgroundcolor"
-        >
+        android:background="@color/backgroundcolor">
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="52dp"

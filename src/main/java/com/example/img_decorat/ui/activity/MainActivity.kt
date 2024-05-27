@@ -43,7 +43,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
     MenuAdapter.OnItemClickListener,
     LayerAdapter.OnLayerItemClickListener {
     private val viewModel: MainViewModel by viewModels()
-    private lateinit var drawerToggle: ActionBarDrawerToggle
     private lateinit var menuAdapter: MenuAdapter
     private lateinit var layerAdapter: LayerAdapter
     private lateinit var uiHelper: MainActivityHelper

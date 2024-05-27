@@ -29,8 +29,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -65,8 +67,15 @@ object Util{
     }
 
     fun uriToBitmap(context: Context, imageUri: Uri): Bitmap? {
-        context.contentResolver.openInputStream(imageUri).use { inputStream ->
-            return BitmapFactory.decodeStream(inputStream)
+        var inputStream: InputStream? = null
+        return try {
+            inputStream = context.contentResolver.openInputStream(imageUri)
+            BitmapFactory.decodeStream(inputStream)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+            null
+        } finally {
+            inputStream?.close()
         }
     }
 

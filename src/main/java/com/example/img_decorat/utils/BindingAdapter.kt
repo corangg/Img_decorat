@@ -34,18 +34,4 @@ object BindingAdapter {
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
     }
-    @JvmStatic
-    @BindingAdapter("onMenuSaveDataOpenClick")
-    fun setOnMenuItemClickListener(toolbar: Toolbar, viewModel: SaveDataViewModel) {
-        toolbar.setOnMenuItemClickListener { item ->
-            if (item.itemId == R.id.menu_save_data_open) {
-                viewModel.onMenuSaveDataOpenClicked(item)
-                true
-            } else {
-                false
-            }
-        }
-    }
-
-
 }

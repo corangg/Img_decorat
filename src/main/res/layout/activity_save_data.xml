@@ -15,15 +15,65 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#121212"
+        android:background="@color/backgroundcolor"
         tools:context=".ui.activity.SaveDataActivity">
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:id="@+id/save_toolbar"
-            app:menu="@menu/menu_savedata"
-            app:onMenuSaveDataOpenClick="@{viewmodel}"
-            />
+            android:layout_height="52dp"
+            android:background="@color/white"
+            android:id="@+id/save_toolbar" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageButton
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:id="@+id/img_btn_back"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_back"
+                    android:backgroundTint="@color/pointcolor"
+                    android:onClick="@{()->viewmodel.clickedBack()}"/>
+
+
+                <ImageButton
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:id="@+id/menu_linear"
+                    android:layout_marginEnd="16dp"
+                    android:layout_toStartOf="@+id/menu_gride"
+                    android:background="@drawable/ic_linear"
+                    android:backgroundTint="@color/backgroundcolor"
+                    android:layout_centerVertical="true"
+                    android:onClick="@{()->viewmodel.clickedLinearRecycler()}"/>
+
+                <ImageButton
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:id="@+id/menu_gride"
+                    android:layout_marginEnd="16dp"
+                    android:layout_toStartOf="@+id/menu_open"
+                    android:background="@drawable/ic_grid"
+                    android:backgroundTint="@color/backgroundcolor"
+                    android:layout_centerVertical="true"
+                    android:onClick="@{()->viewmodel.clickedGrideRecycler()}"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/menu_open"
+                    android:layout_marginEnd="12dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="열기"
+                    android:textColor="@color/pointcolor"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:backgroundTint="@color/pointcolor"
+                    android:onClick="@{()->viewmodel.clickedOpenLoadData()}" />
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
