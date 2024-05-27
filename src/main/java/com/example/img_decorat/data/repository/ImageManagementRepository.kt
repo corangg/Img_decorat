@@ -21,6 +21,7 @@ import com.example.img_decorat.utils.Util.bitmapToUri
 import com.example.img_decorat.utils.Util.getBackgroundColor
 import com.example.img_decorat.utils.Util.getBackgroundImage
 import com.example.img_decorat.utils.Util.getBitmapFromView
+import com.example.img_decorat.utils.UtilList
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileOutputStream
@@ -95,8 +96,6 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
                     img?.let {
                         uri = bitmapToUri(context,it).toString()
                     }
-                    val mat = i.img.getMatrixValues()
-
                     val saveData = SaveViewDataInfo(
                         type = i.type,
                         visible = i.visible,
@@ -124,7 +123,7 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
                         textSize = i.text.getTextSizeValue(),
                         textColor = i.text.getTextColor(),
                         bgColor = i.text.getBackgroundColor(),
-                        font = i.text.getTextTypeface().toString()
+                        font = UtilList.typefaces.indexOf(i.text.getTextTypeface())
                     )
                     saveViewDataInfoList.add(saveData)
                 }

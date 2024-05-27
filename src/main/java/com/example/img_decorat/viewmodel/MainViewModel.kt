@@ -310,7 +310,6 @@ class MainViewModel @Inject constructor(
         liveLayerList.value = layerListRepository.layerViewUpdateText(text)
     }
 
-
     fun selectToolbarMenu(position: Int,view: FrameLayout){
         closeOverFlowMenu()
         when(position){

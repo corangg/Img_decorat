@@ -12,7 +12,6 @@ object UtilList {
     val menuList = listOf("열기", "저장", "출력")
     fun initialize(context: Context) {
         typefaces = listOf(
-
             ResourcesCompat.getFont(context, R.font.font_hsyeoleum),
             ResourcesCompat.getFont(context, R.font.font_movesans),
             ResourcesCompat.getFont(context, R.font.font_freesentation),

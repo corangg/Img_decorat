@@ -232,7 +232,7 @@ class TextImageView @JvmOverloads constructor(
     }
 
     fun getTextSizeValue(): Int{
-        return textSize.toInt()
+        return (textSize/3).toInt()
     }
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {

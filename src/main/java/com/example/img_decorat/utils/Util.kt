@@ -62,10 +62,6 @@ object Util{
         return id
     }
 
-    fun stringToTypeface(fontName: String): Typeface {
-        return Typeface.create(fontName, Typeface.NORMAL)
-    }
-
     fun uriToBitmap(context: Context, imageUri: Uri): Bitmap? {
         var inputStream: InputStream? = null
         return try {

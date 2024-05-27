@@ -84,6 +84,6 @@ data class SaveViewDataInfo(
     val textSize : Int = 24,
     val textColor : Int = Color.TRANSPARENT,
     var bgColor : Int = Color.TRANSPARENT,
-    val font : String = Typeface.DEFAULT.toString()
+    val font : Int = -1
 )
 

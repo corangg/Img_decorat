@@ -26,6 +26,7 @@ import com.example.img_decorat.utils.Util.resizeBitmap
 import com.example.img_decorat.utils.Util.setID
 import com.example.img_decorat.utils.Util.stringToTypeface
 import com.example.img_decorat.utils.Util.uriToBitmap
+import com.example.img_decorat.utils.UtilList
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Collections
 import java.util.LinkedList
@@ -388,7 +389,7 @@ class LayerListRepository @Inject constructor(
                     addEditTextViewViewList(idValue,i.text)
                     layerTextViewSetTextColor(id = idValue, color = i.textColor)
                     layerTextViewSetTextBackgroundColor(id = idValue, color = i.bgColor)
-                    layerTextViewSetTextFont(id = idValue, font = stringToTypeface(i.font))
+                    layerTextViewSetTextFont(id = idValue, font = UtilList.typefaces[i.font])
                 }
             }
         }
@@ -424,7 +425,8 @@ class LayerListRepository @Inject constructor(
                             matrixValue = data.matrixValue,
                             scale = data.scale,
                             degrees = data.rotationDegrees)
-                        typeface = stringToTypeface(data.font)
+                        typeface = UtilList.typefaces[data.font]
+                        setTextSize(data.textSize.toFloat())
                     }
                     viewList[i].text.setSaturation(data.saturationValue.toFloat())
                     viewList[i].text.setBrightness(data.brightnessValue.toFloat())
@@ -432,7 +434,6 @@ class LayerListRepository @Inject constructor(
                     viewList[i].text.setText(data.text)
                     viewList[i].text.setTextColor(data.textColor)
                     viewList[i].text.setBackgroundClolor(data.bgColor)
-                    viewList[i].text.setTextSize(data.textSize.toFloat())
                 }
             }
             viewList[i].saturation = data.saturationValue

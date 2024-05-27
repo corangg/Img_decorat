@@ -94,6 +94,7 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_view"
                     android:id="@+id/img_view"
                      />
                 <com.example.img_decorat.ui.animation.LoadingAnimation
