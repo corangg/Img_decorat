@@ -6,7 +6,6 @@
         <variable
             name="viewmodel"
             type="com.example.img_decorat.viewmodel.MainViewModel" />
-
     </data>
 
     <LinearLayout
@@ -29,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
                 android:gravity="center"
-                android:text="채도"
+                android:text="@string/saturation"
                 android:textSize="16sp"
                 android:textColor="@color/pointcolor"
                 android:textStyle="bold"/>
@@ -44,7 +43,6 @@
                 android:textSize="16sp"
                 android:textColor="@color/pointcolor"
                 android:textStyle="bold"/>
-
             <SeekBar
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -72,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
                 android:gravity="center"
-                android:text="명도"
+                android:text="@string/brightness"
                 android:textSize="16sp"
                 android:textColor="@color/pointcolor"
                 android:textStyle="bold"/>
@@ -103,8 +101,6 @@
                 android:progress="@={viewmodel.imageBrightnessValue}"/>
         </LinearLayout>
 
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -116,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
                 android:gravity="center"
-                android:text="투명도"
+                android:text="@string/transparency"
                 android:textSize="16sp"
                 android:textColor="@color/pointcolor"
                 android:textStyle="bold"/>
@@ -131,7 +127,6 @@
                 android:textSize="16sp"
                 android:textColor="@color/pointcolor"
                 android:textStyle="bold"/>
-
             <SeekBar
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

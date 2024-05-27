@@ -26,18 +26,18 @@
                 android:layout_weight="4"
                 android:background="@drawable/bg_roundview"
                 android:id="@+id/img_search_edit"
-                android:hint="Keword"
+                android:hint="@string/keword"
                 android:text="@={viewmodel.imgSearch}"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:paddingLeft="16dp"
+                android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                android:textSize="16dp"/>
+                android:textSize="16sp"/>
             <ImageButton
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:id="@+id/img_search_btn"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:onClick="@{()->viewmodel.clickedImageSearch()}"
                 android:background="@drawable/ic_search"
                 android:backgroundTint="@color/pointcolor"/>
@@ -45,7 +45,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/image_recycle"
                 android:layout_width="match_parent"
@@ -54,7 +53,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHeight_max="300dp" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

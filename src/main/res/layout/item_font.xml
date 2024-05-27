@@ -4,9 +4,8 @@
     android:layout_height="52dp"
     android:padding="10dp"
     android:id="@+id/font_item"
-    android:text="Aa"
+    android:text="@string/fontex"
     android:gravity="center"
     android:textColor="@color/pointcolor"
     android:textSize="18sp">
-
 </TextView>

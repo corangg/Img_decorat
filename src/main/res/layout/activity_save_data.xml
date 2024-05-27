@@ -64,7 +64,7 @@
                     android:layout_marginEnd="12dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:text="열기"
+                    android:text="@string/open"
                     android:textColor="@color/pointcolor"
                     android:gravity="center"
                     android:textSize="20sp"

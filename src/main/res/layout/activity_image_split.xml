@@ -106,7 +106,7 @@
                 android:background="@drawable/ic_point"
                 android:backgroundTint="@color/pointcolor"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10sp"/>
+                android:layout_marginStart="10sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
