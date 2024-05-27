@@ -59,6 +59,7 @@ class MainViewModel @Inject constructor(
     val openGalleryEvent : MutableLiveData<Unit> = MutableLiveData()
     val openSaveDataActivity :MutableLiveData<Unit> = MutableLiveData()
     val openMenuEvent : MutableLiveData<Boolean> = MutableLiveData()
+    val openDrawerLayout : MutableLiveData<Unit> = MutableLiveData()
 
     val liveLayerList : MutableLiveData<LinkedList<LayerItemData>> = MutableLiveData(LinkedList<LayerItemData>())
     val liveViewList : MutableLiveData<LinkedList<ViewItemData>> = MutableLiveData(LinkedList<ViewItemData>())
@@ -94,6 +95,10 @@ class MainViewModel @Inject constructor(
         screenSize = size
         layerListRepository.setViewSize(size)
         selectBackgroundScale(0)
+    }
+
+    fun openDrawerLayout(){
+        openDrawerLayout.value = Unit
     }
 
     fun openGallery(){
@@ -313,6 +318,7 @@ class MainViewModel @Inject constructor(
                 openSaveDataActivity.value = Unit
             }
             1->{
+                startloading.value = true
                 saveViewData(view)
                 overflowMenuToast.value = position
             }
@@ -327,6 +333,7 @@ class MainViewModel @Inject constructor(
                 showToast.value = 2
             }
         }
+
     }
 
     fun loadData(name: String?){
@@ -358,7 +365,6 @@ class MainViewModel @Inject constructor(
 
     private fun saveViewData(view: FrameLayout){
         viewModelScope.launch {
-            startloading.value = true
             val flagLastTouchedImageId = lastTouchedImageId.value
             lastTouchedImageId.value = -1
             val list = liveViewList.value
@@ -394,10 +400,14 @@ class MainViewModel @Inject constructor(
     }
 
     private fun clickedNavText(){
-        liveLayerList.value = layerListRepository.editTextViewAddList()
-        liveViewList.value = layerListRepository.viewList
-        selectLayer(liveLayerList.value!!.size - 1)
-        selectNavigationItem.value = 4
+        lastTouchedImageId.value?.let {
+            if(layerListRepository.checkEditableTextView(it)){
+                liveLayerList.value = layerListRepository.editTextViewAddList()
+                liveViewList.value = layerListRepository.viewList
+                selectLayer(liveLayerList.value!!.size - 1)
+            }
+            selectNavigationItem.value = 4
+        }
     }
 
     private fun layerListSizeCheck(position: Int):Boolean{

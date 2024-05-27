@@ -16,8 +16,7 @@
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:id="@+id/toolbar_split"
-            app:title="">
+            android:id="@+id/toolbar_split">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

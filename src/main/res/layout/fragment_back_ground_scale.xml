@@ -46,6 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="1 : 1"
+                    android:textColor="@color/pointcolor"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="6dp" />
             </LinearLayout>
@@ -75,6 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="4 : 3"
+                    android:textColor="@color/pointcolor"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="6dp" />
             </LinearLayout>
@@ -104,6 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="3 : 4"
+                    android:textColor="@color/pointcolor"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="6dp" />
             </LinearLayout>
@@ -133,6 +136,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="3 : 2"
+                    android:textColor="@color/pointcolor"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="6dp" />
             </LinearLayout>
@@ -162,6 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="2 : 3"
+                    android:textColor="@color/pointcolor"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="6dp" />
             </LinearLayout>
@@ -191,6 +196,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="16 : 9"
+                    android:textColor="@color/pointcolor"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="6dp" />
             </LinearLayout>
@@ -220,6 +226,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="9 : 16"
+                    android:textColor="@color/pointcolor"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="6dp" />
             </LinearLayout>

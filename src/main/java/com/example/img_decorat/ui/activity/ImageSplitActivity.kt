@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBarDrawerToggle
 import com.example.img_decorat.R
 import com.example.img_decorat.databinding.ActivityImageSplitBinding
 import com.example.img_decorat.data.repository.LayerListRepository
@@ -30,6 +31,7 @@ class ImageSplitActivity : BaseActivity<ActivityImageSplitBinding>() {
 
     override fun initializeUI() {
         binding.viewmodel = viewmodel
+        setToolbar()
         setIntent()
     }
 
@@ -120,6 +122,11 @@ class ImageSplitActivity : BaseActivity<ActivityImageSplitBinding>() {
                 binding.imgBtnNext.backgroundTintList = ColorStateList.valueOf(0xFF494949.toInt())
             }
         }
+    }
+
+    private fun setToolbar(){
+        setSupportActionBar(binding.toolbarSplit)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     private fun setResultIntent(){

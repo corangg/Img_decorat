@@ -19,11 +19,11 @@ import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.data.model.dataModels.SaveViewData
 import com.example.img_decorat.data.model.dataModels.SaveViewDataInfo
 import com.example.img_decorat.data.model.dataModels.ViewItemData
-import com.example.img_decorat.ui.view.TextImageView
 import com.example.img_decorat.utils.Util.bitmapToUri
 import com.example.img_decorat.utils.Util.createEditableImageView
 import com.example.img_decorat.utils.Util.createEditableTextView
 import com.example.img_decorat.utils.Util.resizeBitmap
+import com.example.img_decorat.utils.Util.setID
 import com.example.img_decorat.utils.Util.stringToTypeface
 import com.example.img_decorat.utils.Util.uriToBitmap
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -34,8 +34,7 @@ import javax.inject.Singleton
 
 @Singleton
 class LayerListRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val imageDataRepository: ImageDataRepository) {
+    @ApplicationContext private val context: Context) {
     var layerList = LinkedList<LayerItemData>()
     var viewList = LinkedList<ViewItemData>()
     lateinit var lastSelectView : ViewItemData
@@ -51,7 +50,7 @@ class LayerListRepository @Inject constructor(
             for (i in 0 until it.itemCount) {
                 val imageUri: Uri = it.getItemAt(i).uri
                 val bitmap = uriToBitmap(context = context, imageUri = imageUri)
-                val id = imageDataRepository.setID()
+                val id = setID()
                 bitmap?.let {
                     val resizeBitmap = resizeBitmap(bitmap,viewSize)
                     addLayerList(id, resizeBitmap.first,false)
@@ -154,6 +153,16 @@ class LayerListRepository @Inject constructor(
         return -1
     }
 
+    fun checkEditableTextView(id: Int): Boolean{
+        val findItem = viewList.find { it.id == id }
+        findItem?.let {
+            if (it.type == 1){
+                return false
+            }
+        }
+        return true
+    }
+
     fun checkLastSelectImage(id: Int):Boolean{
         val selectedItem = layerList.find { it.select }
         selectedItem?.let {
@@ -254,7 +263,7 @@ class LayerListRepository @Inject constructor(
 
     fun emojiAddLayer(bitmap: Bitmap):LinkedList<LayerItemData>{
         val resizeBitmap = resizeBitmap(bitmap,viewSize).first
-        val id = imageDataRepository.setID()
+        val id = setID()
         val layerItemData = LayerItemData(context = context, check = true, id = id, bitMap = resizeBitmap)
         layerList.add(layerItemData)
         imageAddViewList(id,resizeBitmap,true,0.4f)
@@ -296,7 +305,7 @@ class LayerListRepository @Inject constructor(
     }
 
     fun editTextViewAddList():LinkedList<LayerItemData>{
-        val textId = imageDataRepository.setID()
+        val textId = setID()
         addEditTextViewViewList(textId,"")
         editTextViewAddViewList(textId,true)
         return layerList
@@ -365,13 +374,9 @@ class LayerListRepository @Inject constructor(
         return viewList
     }
 
-    fun deleteBorder(){
-
-    }
-
     private fun setLoadLayerData(list : List<SaveViewDataInfo>){
         for (i in list){
-            val idValue = imageDataRepository.setID()
+            val idValue = setID()
             when(i.type){
                 0->{
                     val bitmap = uriToBitmap(context, i.img.toUri())
@@ -415,7 +420,7 @@ class LayerListRepository @Inject constructor(
                         visibility = data.visible
                     )
                     viewList[i].text.apply {
-                        setMatreixData(
+                        setMatrixData(
                             matrixValue = data.matrixValue,
                             scale = data.scale,
                             degrees = data.rotationDegrees)

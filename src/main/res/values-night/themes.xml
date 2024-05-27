@@ -3,14 +3,14 @@
     <style name="Theme.Img_decorat" parent="Theme.AppCompat.DayNight.NoActionBar" >
         <item name="overlapAnchor">false</item>
         <item name="android:dropDownVerticalOffset">?attr/actionBarSize</item>
-        <item name="colorPrimary">@color/black</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="colorOnPrimary">@color/white</item>
         <item name="actionBarPopupTheme">@style/CustomPopupMenu</item>
         <item name="android:popupMenuStyle">@style/CustomPopupMenuItem</item>
 
-
+        <item name="toolbarNavigationButtonStyle">@style/ToolbarNavigationButton</item>
     </style>
 
+    <style name="ToolbarNavigationButton" parent="">
+        <item name="android:tint">@color/pointcolor</item>
+    </style>
 
 </resources>

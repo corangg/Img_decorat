@@ -30,7 +30,7 @@ class SaveDataActivity : BaseActivity<ActivitySaveDataBinding>(),LoadViewAdapter
         binding.viewmodel = viewModel
 
         setSupportActionBar(binding.saveToolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

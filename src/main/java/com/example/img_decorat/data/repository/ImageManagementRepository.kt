@@ -43,14 +43,18 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
             folder.mkdirs()
         }
 
-        val file = File(folder, "$fileName.png")
+        var file = File(folder, "$fileName.png")
+        var fileIndex = 1
+        while (file.exists()) {
+            file = File(folder, "${fileName}_$fileIndex.png")
+            fileIndex++
+        }
         try {
             val outputStream = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
             outputStream.flush()
             outputStream.close()
             MediaScannerConnection.scanFile(context, arrayOf(file.toString()), null, null)
-
 
         } catch (e: IOException) {
             e.printStackTrace()

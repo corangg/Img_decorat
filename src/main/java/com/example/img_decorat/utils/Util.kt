@@ -1,5 +1,6 @@
 package com.example.img_decorat.utils
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -15,6 +16,7 @@ import android.net.Uri
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.FileProvider
@@ -34,10 +36,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 object Util{
-    fun createDefaultBitmap(): Bitmap {
-        val bitmap = Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888)
-        return bitmap
-    }
     fun bitmapToUri(context: Context, bitmap: Bitmap): Uri? {
         val file = File(context.cacheDir, "${System.currentTimeMillis()}.png")
         return try {
@@ -79,10 +77,10 @@ object Util{
         return bitmap
     }
 
-    fun FloatArray.toMatrix(): Matrix {
+    /*fun FloatArray.toMatrix(): Matrix {
         if (this.size != 9) throw IllegalArgumentException("Array must have exactly 9 elements to convert to a Matrix")
         return Matrix().apply { setValues(this@toMatrix) }
-    }
+    }*///문제생기면 살려보자
 
     fun createEditableImageView(
         context : Context,
@@ -160,8 +158,12 @@ object Util{
         return bitmap
     }
 
-
-
-
+    fun hideSoftKeyboard(activity: Activity) {
+        val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val currentFocus = activity.currentFocus
+        currentFocus?.let {
+            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+    }
 }
 

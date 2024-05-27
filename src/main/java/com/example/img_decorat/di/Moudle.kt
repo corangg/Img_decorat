@@ -3,7 +3,6 @@ package com.example.img_decorat.di
 import android.content.Context
 import com.example.img_decorat.data.repository.BackgroundRepository
 import com.example.img_decorat.data.repository.DBRepository
-import com.example.img_decorat.data.repository.ImageDataRepository
 import com.example.img_decorat.data.repository.ImageManagementRepository
 import com.example.img_decorat.data.repository.LayerListRepository
 import com.example.img_decorat.data.repository.SaveDataRepository
@@ -24,14 +23,13 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object Moudle {
-
     @Provides
     @Singleton
     fun provideContext(@ApplicationContext context: Context): Context = context
 
     @Provides
     @Singleton
-    fun provideLayerAnimation(context: Context, imageDataRepository: ImageDataRepository): BTNAnimation {
+    fun provideLayerAnimation(context: Context): BTNAnimation {
         return BTNAnimation(context)
     }
 
@@ -41,17 +39,10 @@ object Moudle {
         return ImageManagementRepository(context)
     }
 
-
-    @Singleton
-    @Provides
-    fun provideImageDataRepository(): ImageDataRepository {
-        return ImageDataRepository()
-    }
-
     @Provides
     @Singleton
-    fun provideLayerListRepository(context: Context, imageDataRepository: ImageDataRepository): LayerListRepository {
-        return LayerListRepository(context, imageDataRepository)
+    fun provideLayerListRepository(context: Context): LayerListRepository {
+        return LayerListRepository(context)
     }
 
     @Singleton

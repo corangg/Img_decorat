@@ -6,4 +6,15 @@
     <color name="clickedlayer">#FF202020</color>
     <color name="clickedItem">#FF999999</color>
     <color name="disabledItem">#FF494949</color>
+
+
+    <color name="transparent">#00ff0000</color>
+    <color name="pointcolor">#E3CDF2</color>
+    <color name="backgroundcolor">#DFDFDF</color>
+    <color name="selectcolor">#C0C0C0</color>
+
+
+
+
+
 </resources>

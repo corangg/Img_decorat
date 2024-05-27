@@ -1,20 +1,18 @@
 package com.example.img_decorat.ui.view
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Typeface
-import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.ViewCompat
@@ -38,6 +36,8 @@ class TextImageView @JvmOverloads constructor(
     var saturationValue = 1f
     var brightnessValue = 1f
 
+    private var touchListener = true
+
     private var isEditable = false
 
     private var viewModel: MainViewModel? = null
@@ -53,14 +53,25 @@ class TextImageView @JvmOverloads constructor(
         gravity = Gravity.CENTER
     }
 
-    override fun onTouch(v: View, event: MotionEvent): Boolean {
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        super.dispatchTouchEvent(event)
+        if(!touchListener){
+            (parent as? ViewGroup)?.onTouchEvent(event)
+        }
+        return touchListener
+    }
+
+    override fun onTouch(v: View?, event: MotionEvent): Boolean {
+        touchListener = true
         val transPos = getTransformedPoints()
 
-        if (!jundgeTouchableArea(event.x, event.y, transPos)) {
+        if (!judgeTouchableArea(event.x, event.y, transPos)) {
             isEditable = false
             clearFocus()
             hideKeyboard()
             viewModel?.setViewText(this.text.toString())
+            touchListener = false
+
             return false
         }
 
@@ -147,20 +158,7 @@ class TextImageView @JvmOverloads constructor(
         return points
     }
 
-    fun getMatrixValues(): FloatArray {
-        val matrixValues = FloatArray(9)
-        matrix.getValues(matrixValues)
-        return matrixValues
-    }
-
-    fun setMatreixData(matrixValue: FloatArray, scale: Float, degrees: Float){
-        matrix.setValues(matrixValue)
-        scaleFactor = scale
-        rotationDegrees = degrees
-
-    }
-
-    private fun jundgeTouchableArea(x: Float, y: Float, polygon: FloatArray): Boolean {
+    private fun judgeTouchableArea(x: Float, y: Float, polygon: FloatArray): Boolean {
         var intersectCount = 0
         for (i in polygon.indices step 2) {
             val x1 = polygon[i]
@@ -169,8 +167,7 @@ class TextImageView @JvmOverloads constructor(
             val y2 = polygon[(i + 3) % polygon.size]
 
             if (((y1 > y) != (y2 > y)) &&
-                (x < (x2 - x1) * (y - y1) / (y2 - y1) + x1)
-            ) {
+                (x < (x2 - x1) * (y - y1) / (y2 - y1) + x1)) {
                 intersectCount++
             }
         }
@@ -188,6 +185,19 @@ class TextImageView @JvmOverloads constructor(
     private fun hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    fun getMatrixValues(): FloatArray {
+        val matrixValues = FloatArray(9)
+        matrix.getValues(matrixValues)
+        return matrixValues
+    }
+
+    fun setMatrixData(matrixValue: FloatArray, scale: Float, degrees: Float){
+        matrix.setValues(matrixValue)
+        scaleFactor = scale
+        rotationDegrees = degrees
+
     }
 
     fun setTransparency(alpha: Float) {

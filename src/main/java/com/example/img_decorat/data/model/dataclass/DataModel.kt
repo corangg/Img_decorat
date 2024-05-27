@@ -14,7 +14,6 @@ import androidx.room.TypeConverters
 import com.example.img_decorat.data.source.local.RoomTypeConverter
 import com.example.img_decorat.ui.view.EditableImageView
 import com.example.img_decorat.ui.view.TextImageView
-import com.example.img_decorat.utils.Util.createDefaultBitmap
 
 data class LayerItemData(
     val context: Context,

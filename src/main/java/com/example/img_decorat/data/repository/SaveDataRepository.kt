@@ -21,7 +21,6 @@ class SaveDataRepository@Inject constructor(
                 )
                 loadDataList.add(loadData)
             }
-
         }
         return loadDataList
     }

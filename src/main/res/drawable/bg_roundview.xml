@@ -4,7 +4,5 @@
 
     <corners
         android:radius="40dp"/>
-    <!--android:topRightRadius="20dp"
-    android:topLeftRadius="20dp"-->
 
 </shape>

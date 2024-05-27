@@ -31,7 +31,6 @@ class MenuAdapter(val menuList: List<String>, val animation: BTNAnimation, val o
 
         fun clickedItem(position: Int){
             binding.itemMenu.setOnClickListener {
-                animation.textAnimaation(binding.menuText)
                 onItemClickListener.onItemClick(position)
             }
         }

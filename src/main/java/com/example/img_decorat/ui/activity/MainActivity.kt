@@ -6,12 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -87,13 +89,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
         itemTouchHelper()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(drawerToggle.onOptionsItemSelected(item)){
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onItemClick(position: Int) {
         viewModel.selectToolbarMenu(position, binding.imgView)
     }
@@ -111,6 +106,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
     }
 
     override fun setObserve(){
+        viewModel.openDrawerLayout.observe(this){
+            binding.drawerLayout.openDrawer(Gravity.LEFT)
+        }
+
         viewModel.openGalleryEvent.observe(this){
             animation.buttionAnimation(binding.menuAdd)
             openGalleryEvent()
@@ -216,10 +215,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
     private fun setToolbar(){
         setSupportActionBar(binding.mainToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        drawerToggle = ActionBarDrawerToggle(this, binding.drawerLayout, com.example.img_decorat.R.string.drawer_open,
-            com.example.img_decorat.R.string.drawer_close)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        drawerToggle.syncState()
     }
 
     private fun menuAdapterSet(){///흐으음 맘에 너무 안드는데
