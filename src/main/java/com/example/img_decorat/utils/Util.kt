@@ -3,41 +3,82 @@ package com.example.img_decorat.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Matrix
-import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
-import android.widget.TextView
+import android.widget.ImageButton
+import androidx.activity.result.ActivityResult
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
-import com.example.img_decorat.ui.view.EditableImageView
-import com.example.img_decorat.ui.view.TextImageView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.io.ByteArrayOutputStream
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.img_decorat.R
+import com.example.img_decorat.presentation.ui.activity.ImageSplitActivity
+import com.example.img_decorat.presentation.ui.view.EditableImageView
+import com.example.img_decorat.presentation.ui.view.TextImageView
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Date
 
-object Util{
+object Util {
+
+
+    fun setLinearAdapter(
+        recyclerView: RecyclerView,
+        context: Context,
+        adapter: RecyclerView.Adapter<*>,
+        type: Int = 0
+    ) {
+        val linearLayoutManager = if (type == 0) {
+            LinearLayoutManager.VERTICAL
+        } else {
+            LinearLayoutManager.HORIZONTAL
+        }
+        recyclerView.layoutManager = LinearLayoutManager(context, linearLayoutManager, false)
+        recyclerView.adapter = adapter
+    }
+
+    fun setGridAdapter(
+        recyclerView: RecyclerView,
+        context: Context,
+        spanCount: Int,
+        adapter: RecyclerView.Adapter<*>,
+        type: Int = 0
+    ) {
+        val gridLayoutManager = if (type == 0) {
+            GridLayoutManager.VERTICAL
+        } else {
+            GridLayoutManager.HORIZONTAL
+        }
+        recyclerView.layoutManager = GridLayoutManager(context, spanCount, gridLayoutManager, false)
+        recyclerView.adapter = adapter
+    }
+
+    fun buttonColorToggle(btn: ImageButton, firstColor: Int, secondColor: Int, toggle: Boolean){
+        if(toggle){
+            btn.backgroundTintList = ColorStateList.valueOf(firstColor)
+        }else{
+            btn.backgroundTintList = ColorStateList.valueOf(secondColor)
+        }
+    }
+
+
+
+
+
     fun bitmapToUri(context: Context, bitmap: Bitmap): Uri? {
         val file = File(context.cacheDir, "${System.currentTimeMillis()}.png")
         return try {
@@ -52,7 +93,7 @@ object Util{
         }
     }
 
-    fun setID() : Int{
+    fun setID(): Int {
         val id =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 View.generateViewId()
@@ -75,25 +116,22 @@ object Util{
         }
     }
 
-    fun getBitmapFromView(view: View): Bitmap{
+    fun getBitmapFromView(view: View): Bitmap {
         val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         view.draw(canvas)
         return bitmap
     }
 
-    /*fun FloatArray.toMatrix(): Matrix {
-        if (this.size != 9) throw IllegalArgumentException("Array must have exactly 9 elements to convert to a Matrix")
-        return Matrix().apply { setValues(this@toMatrix) }
-    }*///문제생기면 살려보자
 
     fun createEditableImageView(
-        context : Context,
-        viewId :Int,
+        context: Context,
+        viewId: Int,
         bitmap: Bitmap,
-        scale : Float = 1.0f,
-        withSize : Int = FrameLayout.LayoutParams.WRAP_CONTENT,
-        heightSize : Int = FrameLayout.LayoutParams.WRAP_CONTENT): EditableImageView{
+        scale: Float = 1.0f,
+        withSize: Int = FrameLayout.LayoutParams.WRAP_CONTENT,
+        heightSize: Int = FrameLayout.LayoutParams.WRAP_CONTENT
+    ): EditableImageView {
         val imageView = EditableImageView(context).apply {
             layoutParams = FrameLayout.LayoutParams(
                 withSize,
@@ -108,11 +146,12 @@ object Util{
     }
 
     fun createEditableTextView(
-        context : Context,
-        viewId :Int,
-        textSize : Float = 24f,
-        withSize : Int = FrameLayout.LayoutParams.WRAP_CONTENT,
-        heightSize : Int = FrameLayout.LayoutParams.WRAP_CONTENT): TextImageView{
+        context: Context,
+        viewId: Int,
+        textSize: Float = 24f,
+        withSize: Int = FrameLayout.LayoutParams.WRAP_CONTENT,
+        heightSize: Int = FrameLayout.LayoutParams.WRAP_CONTENT
+    ): TextImageView {
         val editView = TextImageView(context).apply {
             layoutParams = FrameLayout.LayoutParams(
                 withSize,
@@ -125,16 +164,16 @@ object Util{
         return editView
     }
 
-    fun resizeBitmap(bitmap: Bitmap,size: Int): Pair<Bitmap,Float>{
-        return if(bitmap.height > bitmap.width){
-            val scale = bitmap.height.toFloat()/bitmap.width.toFloat()
-            val height = scale*size
-            Pair(Bitmap.createScaledBitmap(bitmap,size,height.toInt(),true),scale)
+    fun resizeBitmap(bitmap: Bitmap, size: Int): Pair<Bitmap, Float> {
+        return if (bitmap.height > bitmap.width) {
+            val scale = bitmap.height.toFloat() / bitmap.width.toFloat()
+            val height = scale * size
+            Pair(Bitmap.createScaledBitmap(bitmap, size, height.toInt(), true), scale)
 
-        }else{
-            val scale = bitmap.width.toFloat()/bitmap.height.toFloat()
-            val width = scale*size
-            Pair(Bitmap.createScaledBitmap(bitmap,width.toInt(),size,true),scale)
+        } else {
+            val scale = bitmap.width.toFloat() / bitmap.height.toFloat()
+            val width = scale * size
+            Pair(Bitmap.createScaledBitmap(bitmap, width.toInt(), size, true), scale)
         }
     }
 
@@ -156,7 +195,11 @@ object Util{
         if (drawable is BitmapDrawable) {
             return drawable.bitmap
         }
-        val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
         val canvas = Canvas(bitmap)
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)
@@ -164,7 +207,8 @@ object Util{
     }
 
     fun hideSoftKeyboard(activity: Activity) {
-        val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val currentFocus = activity.currentFocus
         currentFocus?.let {
             inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)

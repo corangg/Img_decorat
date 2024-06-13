@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(
     val emojiTab : MutableLiveData<Int> = MutableLiveData(0)
     val textSize : MutableLiveData<Int> = MutableLiveData(24)
     val overflowMenuToast : MutableLiveData<Int> = MutableLiveData(-1)
-    val showToast : MutableLiveData<Int> = MutableLiveData(-1)
+    val showToast : MutableLiveData<Int> = MutableLiveData()
 
     val openGalleryEvent : MutableLiveData<Unit> = MutableLiveData()
     val openSaveDataActivity :MutableLiveData<Unit> = MutableLiveData()
@@ -128,11 +128,11 @@ class MainViewModel @Inject constructor(
                 return true
             }
             R.id.menu_navi_hue->{
-                selectNavigationItem.value = 2
+                selectNavigationItem.value = 1
                 return true
             }
             R.id.menu_navi_sticker->{
-                selectNavigationItem.value = 3
+                selectNavigationItem.value = 2
                 return true
             }
             R.id.munu_navi_text->{
@@ -390,7 +390,7 @@ class MainViewModel @Inject constructor(
                 val uri = layerListRepository.setLastTouchedImage(id)
                 uri?.let {
                     lastTouchedImage = it
-                    selectNavigationItem.value = 1
+                    selectNavigationItem.value = 4
                 }
             }else{
                 showToast.value = 0
@@ -405,7 +405,7 @@ class MainViewModel @Inject constructor(
                 liveViewList.value = layerListRepository.viewList
                 selectLayer(liveLayerList.value!!.size - 1)
             }
-            selectNavigationItem.value = 4
+            selectNavigationItem.value = 3
         }
     }
 

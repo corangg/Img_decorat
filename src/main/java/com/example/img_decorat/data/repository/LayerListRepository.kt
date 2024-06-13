@@ -24,7 +24,6 @@ import com.example.img_decorat.utils.Util.createEditableImageView
 import com.example.img_decorat.utils.Util.createEditableTextView
 import com.example.img_decorat.utils.Util.resizeBitmap
 import com.example.img_decorat.utils.Util.setID
-import com.example.img_decorat.utils.Util.stringToTypeface
 import com.example.img_decorat.utils.Util.uriToBitmap
 import com.example.img_decorat.utils.UtilList
 import dagger.hilt.android.qualifiers.ApplicationContext

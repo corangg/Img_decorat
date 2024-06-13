@@ -97,7 +97,7 @@
                     android:background="@drawable/bg_view"
                     android:id="@+id/img_view"
                      />
-                <com.example.img_decorat.ui.animation.LoadingAnimation
+                <com.example.img_decorat.presentation.ui.animation.LoadingAnimation
                     android:id="@+id/loading_animation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

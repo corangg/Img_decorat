@@ -2,18 +2,14 @@ package com.example.img_decorat.data.model.dataModels
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Typeface
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.img_decorat.data.source.local.RoomTypeConverter
-import com.example.img_decorat.ui.view.EditableImageView
-import com.example.img_decorat.ui.view.TextImageView
+import com.example.img_decorat.presentation.ui.view.EditableImageView
+import com.example.img_decorat.presentation.ui.view.TextImageView
 
 data class LayerItemData(
     val context: Context,

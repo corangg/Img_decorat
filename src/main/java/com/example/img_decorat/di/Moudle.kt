@@ -12,7 +12,7 @@ import com.example.img_decorat.data.source.local.DB.EmojiDB
 import com.example.img_decorat.data.source.local.DB.ViewDB
 import com.example.img_decorat.data.source.local.Dao.EmojiDao
 import com.example.img_decorat.data.source.local.Dao.ViewDao
-import com.example.img_decorat.ui.view.BTNAnimation
+import com.example.img_decorat.presentation.ui.view.BTNAnimation
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

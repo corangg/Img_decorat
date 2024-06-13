@@ -17,4 +17,21 @@
     <string name="brightness">명도</string>
     <string name="transparency">투명도</string>
     <string name="fontex">Aa</string>
+
+
+
+
+
+    <string name="splitBitmap">splitBitmap</string>
+    <string name="name">name</string>
+    <string name="intentImageType">image/*</string>
+    <string name="image">image</string>
+    <string name="saveToast">선택된 이미지가 없습니다.</string>
+   <!-- <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>-->
+
+
+
+
 </resources>
