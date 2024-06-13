@@ -1,8 +1,17 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+}
+
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { load(it) }
+    }
 }
 
 android {
@@ -11,12 +20,15 @@ android {
 
     defaultConfig {
         applicationId = "com.example.img_decorat"
-        minSdk = 31
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "UNSPLASH_API_KEY", "\"${localProperties["unsplashApiKey"]}\"")
+        buildConfigField("String", "EMOJI_API_KEY", "\"${localProperties["EmojiApiKey"]}\"")
     }
 
     buildTypes {
@@ -39,6 +51,7 @@ android {
     buildFeatures{
         viewBinding = true
         dataBinding = true
+        buildConfig = true
     }
 
 }
