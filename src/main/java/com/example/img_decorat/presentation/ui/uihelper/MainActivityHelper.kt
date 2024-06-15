@@ -16,7 +16,7 @@ import com.example.img_decorat.databinding.ActivityMainBinding
 import com.example.img_decorat.presentation.ui.adapter.LayerAdapter
 import com.example.img_decorat.presentation.ui.adapter.MenuAdapter
 import com.example.img_decorat.utils.RequestCode
-import com.example.img_decorat.viewmodel.MainViewModel
+import com.example.img_decorat.presentation.viewmodel.MainViewModel
 import java.util.LinkedList
 
 class MainActivityHelper(

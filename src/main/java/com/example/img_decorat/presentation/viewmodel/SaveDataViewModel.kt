@@ -1,4 +1,4 @@
-package com.example.img_decorat.viewmodel
+package com.example.img_decorat.presentation.viewmodel
 
 import android.app.Application
 import android.view.MenuItem

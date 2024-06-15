@@ -5,7 +5,7 @@ import androidx.core.content.ContextCompat
 import com.example.img_decorat.R
 import com.example.img_decorat.databinding.FragmentBackGroundScaleBinding
 import com.example.img_decorat.presentation.ui.base.BaseFragment
-import com.example.img_decorat.viewmodel.MainViewModel
+import com.example.img_decorat.presentation.viewmodel.MainViewModel
 
 class BackGroundScaleFragment : BaseFragment<FragmentBackGroundScaleBinding, MainViewModel>() {
     private lateinit var selectScaleItem: LinearLayout

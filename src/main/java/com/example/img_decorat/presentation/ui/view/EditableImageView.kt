@@ -13,7 +13,7 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import com.example.img_decorat.presentation.ui.uihelper.ViewHelper
-import com.example.img_decorat.viewmodel.MainViewModel
+import com.example.img_decorat.presentation.viewmodel.MainViewModel
 
 class EditableImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0

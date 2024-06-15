@@ -16,7 +16,7 @@ import com.example.img_decorat.utils.ItemClickInterface
 import com.example.img_decorat.utils.Util
 import com.example.img_decorat.utils.Util.buttonColorToggle
 import com.example.img_decorat.utils.Util.setLinearAdapter
-import com.example.img_decorat.viewmodel.SaveDataViewModel
+import com.example.img_decorat.presentation.viewmodel.SaveDataViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

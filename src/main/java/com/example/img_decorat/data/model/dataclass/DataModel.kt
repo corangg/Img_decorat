@@ -8,8 +8,32 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.img_decorat.data.source.local.RoomTypeConverter
+import com.example.img_decorat.domain.usecase.layerlistusecase.CheckLastSelectImageUseCase
+import com.example.img_decorat.domain.usecase.layerlistusecase.CheckedListUseCase
+import com.example.img_decorat.domain.usecase.layerlistusecase.CheckedViewTypeUseCase
+import com.example.img_decorat.domain.usecase.layerlistusecase.DeleteListUseCase
+import com.example.img_decorat.domain.usecase.layerlistusecase.ImageAddListUseCase
+import com.example.img_decorat.domain.usecase.layerlistusecase.LoadListUseCase
+import com.example.img_decorat.domain.usecase.layerlistusecase.SelectLastImageUseCase
+import com.example.img_decorat.domain.usecase.layerlistusecase.SelectLayerUseCase
+import com.example.img_decorat.domain.usecase.layerlistusecase.SetLastTouchedImageUseCase
+import com.example.img_decorat.domain.usecase.layerlistusecase.SplitImageChangeListUseCase
+import com.example.img_decorat.domain.usecase.layerlistusecase.SwapImageViewUseCase
 import com.example.img_decorat.presentation.ui.view.EditableImageView
 import com.example.img_decorat.presentation.ui.view.TextImageView
+import java.util.LinkedList
+
+data class ListData(
+    var layerList : LinkedList<LayerItemData>,
+    var viewList : LinkedList<ViewItemData>
+)
+
+data class Hue(
+    val saturatio: Int,
+    val brightness: Int,
+    val transparency: Int
+)
+
 
 data class LayerItemData(
     val context: Context,
@@ -81,5 +105,19 @@ data class SaveViewDataInfo(
     val textColor : Int = Color.TRANSPARENT,
     var bgColor : Int = Color.TRANSPARENT,
     val font : Int = -1
+)
+
+data class LayerListUseCases(
+    val checkedListUseCase: CheckedListUseCase,
+    val checkedViewTypeUseCase: CheckedViewTypeUseCase,
+    val checkLastSelectImageUseCase: CheckLastSelectImageUseCase,
+    val deleteListUseCase: DeleteListUseCase,
+    val imageAddListUseCase: ImageAddListUseCase,
+    val loadListUseCase: LoadListUseCase,
+    val selectLastImageUseCase: SelectLastImageUseCase,
+    val selectLayerUseCase: SelectLayerUseCase,
+    val setLastTouchedImageUseCase: SetLastTouchedImageUseCase,
+    val splitImageChangeListUseCase: SplitImageChangeListUseCase,
+    val swapImageViewUseCase: SwapImageViewUseCase
 )
 

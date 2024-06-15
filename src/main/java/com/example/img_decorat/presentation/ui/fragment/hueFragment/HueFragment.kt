@@ -3,7 +3,7 @@ package com.example.img_decorat.presentation.ui.fragment.hueFragment
 import com.example.img_decorat.R
 import com.example.img_decorat.databinding.FragmentHueBinding
 import com.example.img_decorat.presentation.ui.base.BaseFragment
-import com.example.img_decorat.viewmodel.MainViewModel
+import com.example.img_decorat.presentation.viewmodel.MainViewModel
 
 class HueFragment : BaseFragment<FragmentHueBinding, MainViewModel>() {
 

@@ -10,7 +10,7 @@ import com.example.img_decorat.presentation.ui.base.BaseFragment
 import com.example.img_decorat.utils.ItemClickInterface
 import com.example.img_decorat.utils.Util
 import com.example.img_decorat.utils.UtilList
-import com.example.img_decorat.viewmodel.MainViewModel
+import com.example.img_decorat.presentation.viewmodel.MainViewModel
 
 class TextFontFragment : BaseFragment<FragmentTextFontBinding, MainViewModel>(),
     ItemClickInterface {

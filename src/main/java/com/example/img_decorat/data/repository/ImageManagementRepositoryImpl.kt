@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import com.example.img_decorat.data.model.dataModels.SaveViewData
 import com.example.img_decorat.data.model.dataModels.SaveViewDataInfo
 import com.example.img_decorat.data.model.dataModels.ViewItemData
+import com.example.img_decorat.domain.repository.ImageManagementRepository
 import com.example.img_decorat.utils.Util.bitmapToUri
 import com.example.img_decorat.utils.Util.getBackgroundColor
 import com.example.img_decorat.utils.Util.getBackgroundImage
@@ -21,8 +22,9 @@ import java.io.IOException
 import javax.inject.Singleton
 
 @Singleton
-class ImageManagementRepository(@ApplicationContext private val context: Context) {
-    fun editViewSave(view: View, fileName: String) {
+class ImageManagementRepositoryImpl(@ApplicationContext private val context: Context) :
+    ImageManagementRepository {
+    override fun editViewSave(view: View, fileName: String) {
         val bitmap = getBitmapFromView(view)
         saveBitmapToFile(bitmap, fileName)
     }
@@ -53,7 +55,7 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
         }
     }
 
-    fun saveView(
+    override fun saveView(
         list: List<ViewItemData>,
         view: FrameLayout,
         scale: Float,
@@ -82,7 +84,7 @@ class ImageManagementRepository(@ApplicationContext private val context: Context
         }
     }
 
-    fun saveViewDataSet(list: List<ViewItemData>): List<SaveViewDataInfo> {
+    override fun saveViewDataSet(list: List<ViewItemData>): List<SaveViewDataInfo> {
         val saveViewDataInfoList: MutableList<SaveViewDataInfo> = mutableListOf()
         for (i in list) {
             when (i.type) {

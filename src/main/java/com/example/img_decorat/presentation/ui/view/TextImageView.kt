@@ -17,7 +17,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.ViewCompat
 import com.example.img_decorat.presentation.ui.uihelper.ViewHelper
-import com.example.img_decorat.viewmodel.MainViewModel
+import com.example.img_decorat.presentation.viewmodel.MainViewModel
 import kotlin.math.abs
 
 class TextImageView @JvmOverloads constructor(

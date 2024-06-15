@@ -24,7 +24,7 @@ import com.example.img_decorat.utils.ItemClickInterface
 import com.example.img_decorat.utils.Util.setLinearAdapter
 import com.example.img_decorat.utils.UtilList
 import com.example.img_decorat.utils.toastMessageUtil
-import com.example.img_decorat.viewmodel.MainViewModel
+import com.example.img_decorat.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.LinkedList
 

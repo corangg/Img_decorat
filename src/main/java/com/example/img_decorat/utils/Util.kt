@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.R
+import com.example.img_decorat.data.model.dataModels.ViewItemData
 import com.example.img_decorat.presentation.ui.activity.ImageSplitActivity
 import com.example.img_decorat.presentation.ui.view.EditableImageView
 import com.example.img_decorat.presentation.ui.view.TextImageView
@@ -32,6 +33,7 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import java.util.LinkedList
 
 object Util {
 
@@ -76,9 +78,6 @@ object Util {
     }
 
 
-
-
-
     fun bitmapToUri(context: Context, bitmap: Bitmap): Uri? {
         val file = File(context.cacheDir, "${System.currentTimeMillis()}.png")
         return try {
@@ -94,13 +93,14 @@ object Util {
     }
 
     fun setID(): Int {
-        val id =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                View.generateViewId()
-            } else {
-                ViewCompat.generateViewId()
-            }
-        return id
+        return View.generateViewId()
+    }
+
+    fun getLastSelectView(viewList: LinkedList<ViewItemData>, id: Int): ViewItemData?{
+        viewList.find { it.id == id }?.let {
+            return it
+        }
+        return null
     }
 
     fun uriToBitmap(context: Context, imageUri: Uri): Bitmap? {

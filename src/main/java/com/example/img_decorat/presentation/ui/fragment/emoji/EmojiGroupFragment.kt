@@ -7,7 +7,7 @@ import com.example.img_decorat.R
 import com.example.img_decorat.databinding.FragmentEmojiGroupBinding
 import com.example.img_decorat.presentation.ui.adapter.EmojiGroupAdapter
 import com.example.img_decorat.presentation.ui.base.BaseFragment
-import com.example.img_decorat.viewmodel.MainViewModel
+import com.example.img_decorat.presentation.viewmodel.MainViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
