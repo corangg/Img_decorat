@@ -11,6 +11,7 @@ import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.net.Uri
 import android.widget.FrameLayout
+import com.example.img_decorat.domain.repository.SplitRepository
 import com.example.img_decorat.presentation.ui.view.SplitCircleView
 import com.example.img_decorat.presentation.ui.view.SplitPolygonView
 import com.example.img_decorat.presentation.ui.view.SplitSquareView
@@ -18,52 +19,46 @@ import com.example.img_decorat.utils.Util
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class SplitRepository @Inject constructor(
+class SplitRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) {
+): SplitRepository {
     private val layout = FrameLayout.LayoutParams(
         FrameLayout.LayoutParams.MATCH_PARENT,
         FrameLayout.LayoutParams.MATCH_PARENT
     )
 
-    fun getIntentBitmap(uri: Uri): Bitmap? {
+    override fun getIntentBitmap(uri: Uri): Bitmap? {
         return Util.uriToBitmap(context = context, imageUri = uri)
     }
 
-    fun setIntentUri(bitmap: Bitmap): Uri? {
+    override fun setIntentUri(bitmap: Bitmap): Uri? {
         return Util.bitmapToUri(context = context, bitmap = bitmap)
     }
 
 
-    fun squareSplitView(): SplitSquareView {
+    override fun squareSplitView(): SplitSquareView {
         val splitArea = SplitSquareView(context).apply {
             layoutParams = layout
-            setImageBitmap(createTransparentBitmap(512, 512))//얜 이게 왜 필요하냐???ㅅㅅㅂ
+            setImageBitmap(createTransparentBitmap())
         }
         return splitArea
     }
 
-    fun createTransparentBitmap(width: Int, height: Int): Bitmap {
-        return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).apply {
-            eraseColor(Color.TRANSPARENT)
-        }
-    }
-
-    fun circleSplitView(): SplitCircleView {
+    override fun circleSplitView(): SplitCircleView {
         val splitArea = SplitCircleView(context).apply {
             layoutParams = layout
         }
         return splitArea
     }
 
-    fun polygoneSplitView(): SplitPolygonView {
+    override fun polygoneSplitView(): SplitPolygonView {
         val splitArea = SplitPolygonView(context, type = 0).apply {
             layoutParams = layout
         }
         return splitArea
     }
 
-    fun cropSquareImage(splitAreaView: SplitSquareView, bitmap: Bitmap): Bitmap {
+    override fun cropSquareImage(splitAreaView: SplitSquareView, bitmap: Bitmap): Bitmap {
         val viewSize = splitAreaView.getParentSize()
         val areaPoints = splitAreaView.areaPoint()
         val path = Path().apply {
@@ -78,7 +73,7 @@ class SplitRepository @Inject constructor(
         return createScaledBitmap(bitmap, viewSize, path, scale, offsetX, offsetY)
     }
 
-    fun cropCircleImage(circleView: SplitCircleView, bitmap: Bitmap): Bitmap {
+    override fun cropCircleImage(circleView: SplitCircleView, bitmap: Bitmap): Bitmap {
         val (centerX, centerY) = circleView.getCurrentImagePosition()
         val radius = circleView.radius
         val circlePath = Path().apply {
@@ -90,7 +85,7 @@ class SplitRepository @Inject constructor(
         return createScaledBitmap(bitmap, viewSize, circlePath, scale, offsetX, offsetY)
     }
 
-    fun cropPolygonImage(splitAreaView: SplitPolygonView, bitmap: Bitmap): Bitmap {
+    override fun cropPolygonImage(splitAreaView: SplitPolygonView, bitmap: Bitmap): Bitmap {
         val polygonPath = splitAreaView.getPolygonPath()
         val viewSize = splitAreaView.getParentSize()
         val (scale, offsetX, offsetY) = calculateScaleAndOffset(viewSize, bitmap)
@@ -98,7 +93,13 @@ class SplitRepository @Inject constructor(
         return createScaledBitmap(bitmap, viewSize, polygonPath, scale, offsetX, offsetY)
     }
 
-    fun calculateScaleAndOffset(
+    private fun createTransparentBitmap(): Bitmap {
+        return Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888).apply {
+            eraseColor(Color.TRANSPARENT)
+        }
+    }
+
+    private fun calculateScaleAndOffset(
         viewSize: Pair<Int, Int>,
         bitmap: Bitmap
     ): Triple<Float, Float, Float> {
@@ -117,11 +118,10 @@ class SplitRepository @Inject constructor(
             offsetX = (viewSize.first - scale * bitmap.width) / 2
             offsetY = 0f
         }
-
         return Triple(scale, offsetX, offsetY)
     }
 
-    fun createScaledBitmap(
+    private fun createScaledBitmap(
         bitmap: Bitmap,
         viewSize: Pair<Int, Int>,
         path: Path,

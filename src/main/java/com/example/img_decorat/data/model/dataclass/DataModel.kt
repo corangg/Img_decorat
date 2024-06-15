@@ -28,6 +28,14 @@ import com.example.img_decorat.domain.usecase.layerlistusecase.SelectLayerUseCas
 import com.example.img_decorat.domain.usecase.layerlistusecase.SetLastTouchedImageUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.SplitImageChangeListUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.SwapImageViewUseCase
+import com.example.img_decorat.domain.usecase.splitusecase.CircleSplitViewUseCase
+import com.example.img_decorat.domain.usecase.splitusecase.CropCircleImageUseCase
+import com.example.img_decorat.domain.usecase.splitusecase.CropPolygonImageUseCase
+import com.example.img_decorat.domain.usecase.splitusecase.CropSquareImageUseCase
+import com.example.img_decorat.domain.usecase.splitusecase.GetIntentBitmapUseCase
+import com.example.img_decorat.domain.usecase.splitusecase.PolygoneSplitViewUseCase
+import com.example.img_decorat.domain.usecase.splitusecase.SetIntentUriUseCase
+import com.example.img_decorat.domain.usecase.splitusecase.SquareSplitViewUseCase
 import com.example.img_decorat.domain.usecase.textviewusecase.AddEditTextViewViewListUseCase
 import com.example.img_decorat.domain.usecase.textviewusecase.CheckEditableTextViewUseCase
 import com.example.img_decorat.domain.usecase.textviewusecase.EditTextViewAddListUseCase
@@ -45,8 +53,8 @@ import com.example.img_decorat.presentation.ui.view.TextImageView
 import java.util.LinkedList
 
 data class ListData(
-    var layerList : LinkedList<LayerItemData>,
-    var viewList : LinkedList<ViewItemData>
+    var layerList: LinkedList<LayerItemData>,
+    var viewList: LinkedList<ViewItemData>
 )
 
 data class Hue(
@@ -58,74 +66,74 @@ data class Hue(
 
 data class LayerItemData(
     val context: Context,
-    var check : Boolean = false,
-    var select : Boolean = false,
-    val id : Int,
+    var check: Boolean = false,
+    var select: Boolean = false,
+    val id: Int,
     var type: Int = 0,
-    var bitMap : Bitmap
+    var bitMap: Bitmap
     = Bitmap.createBitmap(1024, 1024, Bitmap.Config.ARGB_8888).apply { (Color.TRANSPARENT) }
-){
+) {
     var text: TextView = TextView(context)
 }
 
 data class ViewItemData(
     val context: Context,
-    var visible : Boolean = true,
-    val id : Int,
-    var type : Int = 0,
-    var saturation : Int = 0,
-    var brightness : Int = 0,
-    var transparency : Int = 100
-){
+    var visible: Boolean = true,
+    val id: Int,
+    var type: Int = 0,
+    var saturation: Int = 0,
+    var brightness: Int = 0,
+    var transparency: Int = 100
+) {
     var img: EditableImageView = EditableImageView(context)
     var text: TextImageView = TextImageView(context)
 }
 
 
 data class EmojiList(
-    val groupName : String,
-    val groupList : MutableList<Bitmap>
+    val groupName: String,
+    val groupList: MutableList<Bitmap>
 )
 
 data class LoadData(
     val titleImage: Bitmap,
-    val title : String
+    val title: String
 )
 
 @Entity(tableName = "emoji_list")
 @TypeConverters(RoomTypeConverter::class)
 data class EmojiDBData(
-    @PrimaryKey val groupName : String,
-    val groupList : List<String>
+    @PrimaryKey val groupName: String,
+    val groupList: List<String>
 )
 
 @Entity(tableName = "save_view_data")
 @TypeConverters(RoomTypeConverter::class)
 data class SaveViewData(
     @PrimaryKey
-    val name : String,
-    val data : List<SaveViewDataInfo>,
+    val name: String,
+    val data: List<SaveViewDataInfo>,
     val scale: Float = 1f,
-    var bgColor : Int = Color.TRANSPARENT,
-    var bgImg : String = "",
-    val titleImage : String
+    var bgColor: Int = Color.TRANSPARENT,
+    var bgImg: String = "",
+    val titleImage: String
 )
 
 data class SaveViewDataInfo(
     val type: Int,
-    var visible : Boolean,
+    var visible: Boolean,
     val scale: Float,
     val rotationDegrees: Float,
     var saturationValue: Int,
     var brightnessValue: Int,
     var transparencyValue: Int,
-    var matrixValue : FloatArray,
+    var matrixValue: FloatArray,
     val img: String = "",
     val text: String = "",
-    val textSize : Int = 24,
-    val textColor : Int = Color.TRANSPARENT,
-    var bgColor : Int = Color.TRANSPARENT,
-    val font : Int = -1
+    val textSize: Int = 24,
+    val textColor: Int = Color.TRANSPARENT,
+    var bgColor: Int = Color.TRANSPARENT,
+    val font: Int = -1
 )
 
 data class LayerListUseCases(
@@ -173,5 +181,16 @@ data class TextViewUseCases(
     val layerTextViewSetTextColorUseCase: LayerTextViewSetTextColorUseCase,
     val layerTextViewSetTextBackgroundColorUseCase: LayerTextViewSetTextBackgroundColorUseCase,
     val layerTextViewSetTextFontUseCase: LayerTextViewSetTextFontUseCase
+)
+
+data class SplitUseCases(
+    val getIntentBitmapUseCase: GetIntentBitmapUseCase,
+    val setIntentUriUseCase: SetIntentUriUseCase,
+    val squareSplitViewUseCase: SquareSplitViewUseCase,
+    val circleSplitViewUseCase: CircleSplitViewUseCase,
+    val polygoneSplitViewUseCase: PolygoneSplitViewUseCase,
+    val cropSquareImageUseCase: CropSquareImageUseCase,
+    val cropCircleImageUseCase: CropCircleImageUseCase,
+    val cropPolygonImageUseCase: CropPolygonImageUseCase,
 )
 

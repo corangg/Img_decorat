@@ -3,10 +3,8 @@ package com.example.img_decorat.di
 import android.content.Context
 import com.example.img_decorat.data.repository.BackgroundRepositoryImpl
 import com.example.img_decorat.data.repository.DBRepository
-import com.example.img_decorat.data.repository.SaveDataRepositoryImpl
-import com.example.img_decorat.data.repository.SplitRepository
+import com.example.img_decorat.data.repository.SplitRepositoryImpl
 import com.example.img_decorat.data.repository.SplitStackRepository
-import com.example.img_decorat.data.repository.TextViewRepositoryImpl
 import com.example.img_decorat.data.source.local.DB.EmojiDB
 import com.example.img_decorat.data.source.local.DB.ViewDB
 import com.example.img_decorat.data.source.local.Dao.EmojiDao
@@ -58,11 +56,7 @@ object Moudle {
         return SplitStackRepository()
     }
 
-    @Provides
-    @Singleton
-    fun provideSplitRepository(context: Context): SplitRepository {
-        return SplitRepository(context)
-    }
+
 
     @Provides
     @Singleton

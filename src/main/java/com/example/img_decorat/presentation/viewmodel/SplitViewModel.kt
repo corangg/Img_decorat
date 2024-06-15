@@ -8,7 +8,8 @@ import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.img_decorat.R
-import com.example.img_decorat.data.repository.SplitRepository
+import com.example.img_decorat.data.model.dataModels.SplitUseCases
+import com.example.img_decorat.data.repository.SplitRepositoryImpl
 import com.example.img_decorat.data.repository.SplitStackRepository
 import com.example.img_decorat.presentation.ui.view.SplitCircleView
 import com.example.img_decorat.presentation.ui.view.SplitPolygonView
@@ -20,7 +21,7 @@ import javax.inject.Inject
 class SplitViewModel @Inject constructor(
     application: Application,
     private val splitStackRepository: SplitStackRepository,
-    private val splitRepository: SplitRepository
+    private val splitUseCases: SplitUseCases
 ) : AndroidViewModel(application) {
     val previousStackState: MutableLiveData<Boolean> = MutableLiveData(false)
     val nextStackState: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -48,13 +49,13 @@ class SplitViewModel @Inject constructor(
     }
 
     private fun createSplitView() {
-        splitSquareView.value = splitRepository.squareSplitView()
-        splitCircleView.value = splitRepository.circleSplitView()
-        splitPolygonView.value = splitRepository.polygoneSplitView()
+        splitSquareView.value = splitUseCases.squareSplitViewUseCase.excute()
+        splitCircleView.value = splitUseCases.circleSplitViewUseCase.excute()
+        splitPolygonView.value = splitUseCases.polygoneSplitViewUseCase.excute()
     }
 
     fun intentToBitmap(uri: String) {
-        splitRepository.getIntentBitmap(uri.toUri())?.let {
+        splitUseCases.getIntentBitmapUseCase.excute(uri.toUri())?.let {
             currentImage.value = it
         }
     }
@@ -147,7 +148,7 @@ class SplitViewModel @Inject constructor(
     private fun clickedCompleteButoon(item: Int) {
         val image = currentImage.value
         image?.let {
-            splitRepository.setIntentUri(it)?.let {
+            splitUseCases.setIntentUriUseCase.excute(it)?.let {
                 splitImageUri = it
                 selectToolbar.value = item
             }
@@ -158,17 +159,17 @@ class SplitViewModel @Inject constructor(
         when (selectSplitItem.value) {
             0 -> {
                 currentImage.value =
-                    splitRepository.cropSquareImage(splitSquareView.value!!, currentImage.value!!)
+                    splitUseCases.cropSquareImageUseCase.excute(splitSquareView.value!!, currentImage.value!!)
             }
 
             1 -> {
                 currentImage.value =
-                    splitRepository.cropCircleImage(splitCircleView.value!!, currentImage.value!!)
+                    splitUseCases.cropCircleImageUseCase.excute(splitCircleView.value!!, currentImage.value!!)
             }
 
             2 -> {
                 currentImage.value =
-                    splitRepository.cropPolygonImage(splitPolygonView.value!!, currentImage.value!!)
+                    splitUseCases.cropPolygonImageUseCase.excute(splitPolygonView.value!!, currentImage.value!!)
             }
         }
     }
