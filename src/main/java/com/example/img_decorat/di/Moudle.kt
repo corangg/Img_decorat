@@ -3,9 +3,7 @@ package com.example.img_decorat.di
 import android.content.Context
 import com.example.img_decorat.data.repository.BackgroundRepositoryImpl
 import com.example.img_decorat.data.repository.DBRepository
-import com.example.img_decorat.data.repository.EmojiRepositoryImpl
-import com.example.img_decorat.data.repository.HueRepositoryImpl
-import com.example.img_decorat.data.repository.SaveDataRepository
+import com.example.img_decorat.data.repository.SaveDataRepositoryImpl
 import com.example.img_decorat.data.repository.SplitRepository
 import com.example.img_decorat.data.repository.SplitStackRepository
 import com.example.img_decorat.data.repository.TextViewRepositoryImpl
@@ -15,7 +13,6 @@ import com.example.img_decorat.data.source.local.Dao.EmojiDao
 import com.example.img_decorat.data.source.local.Dao.ViewDao
 import com.example.img_decorat.domain.repository.BackgroundRepository
 import com.example.img_decorat.domain.usecase.backgroundusecase.SetBackgroundScaleUseCase
-import com.example.img_decorat.domain.usecase.layerlistusecase.ImageAddViewUseCase
 import com.example.img_decorat.presentation.ui.view.BTNAnimation
 import dagger.Module
 import dagger.Provides
@@ -50,19 +47,9 @@ object Moudle {
     }
 
 
-    @Provides
-    @Singleton
-    fun provideHueRepository(): HueRepositoryImpl {
-        return HueRepositoryImpl()
-    }
 
 
 
-    @Provides
-    @Singleton
-    fun provideTextViewRepository(context: Context): TextViewRepositoryImpl {
-        return TextViewRepositoryImpl(context)
-    }
 
 
     @Provides
@@ -83,11 +70,7 @@ object Moudle {
         return DBRepository(emojiDao, viewDao)
     }
 
-    @Provides
-    @Singleton
-    fun provideSaveDataRepository(context: Context): SaveDataRepository {
-        return SaveDataRepository(context)
-    }
+
 
     @Singleton
     @Provides

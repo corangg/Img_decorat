@@ -12,16 +12,16 @@ import com.example.img_decorat.R
 import com.example.img_decorat.data.model.dataModels.EmojiList
 import com.example.img_decorat.data.model.dataModels.EmojiUseCases
 import com.example.img_decorat.data.model.dataModels.Hue
+import com.example.img_decorat.data.model.dataModels.HueUseCases
 import com.example.img_decorat.data.model.dataModels.ImageManagementUseCases
 import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.data.model.dataModels.LayerListUseCases
 import com.example.img_decorat.data.model.dataModels.ListData
 import com.example.img_decorat.data.model.dataModels.SaveViewData
+import com.example.img_decorat.data.model.dataModels.TextViewUseCases
 import com.example.img_decorat.data.model.dataModels.ViewItemData
 import com.example.img_decorat.data.model.dataModels.unsplashimagedata.UnsplashData
 import com.example.img_decorat.data.repository.DBRepository
-import com.example.img_decorat.data.repository.HueRepositoryImpl
-import com.example.img_decorat.data.repository.TextViewRepositoryImpl
 import com.example.img_decorat.data.source.remote.retrofit.EmojiRetrofit
 import com.example.img_decorat.data.source.remote.retrofit.UnsplashRetrofit
 import com.example.img_decorat.domain.usecase.backgroundusecase.SetBackgroundScaleUseCase
@@ -37,10 +37,10 @@ class MainViewModel @Inject constructor(
     private val layerListUseCases: LayerListUseCases,
     private val imageManagementUseCases: ImageManagementUseCases,
     private val setBackgroundScaleUseCase: SetBackgroundScaleUseCase,
+    private val hueUseCases: HueUseCases,
     private val emojiUseCases: EmojiUseCases,
+    private val textViewUseCases: TextViewUseCases,
     private val dbRepository: DBRepository,
-    private val hueRepositoryImpl: HueRepositoryImpl,
-    private val textViewRepositoryImpl: TextViewRepositoryImpl
 ) : AndroidViewModel(application) {
     val startloading: MutableLiveData<Boolean> = MutableLiveData(false)
 
@@ -87,13 +87,13 @@ class MainViewModel @Inject constructor(
     init {
         getDB()
         imageSaturationValue.observeForever {
-            listData.viewList = hueRepositoryImpl.editViewSaturation(listData, it)
+            listData.viewList = hueUseCases.hueEditViewSaturationUseCase.excute(listData, it)
         }
         imageBrightnessValue.observeForever {
-            listData.viewList = hueRepositoryImpl.editImageViewBrightness(listData, it)
+            listData.viewList = hueUseCases.hueEditViewBrightnessUseCase.excute(listData, it)
         }
         imageTransparencyValue.observeForever {
-            listData.viewList = hueRepositoryImpl.editViewTransparency(listData, it)
+            listData.viewList = hueUseCases.hueEditViewTransparencyUseCase.excute(listData, it)
         }
     }
 
@@ -184,7 +184,11 @@ class MainViewModel @Inject constructor(
                 selectTextMenu.value = 2
                 textSize.observeForever {
                     lastTouchedImageId.value?.let { id ->
-                        textViewRepositoryImpl.editTextViewSetTextSize(listData.viewList, id, it)
+                        textViewUseCases.editTextViewSetTextSizeUseCase.excute(
+                            listData.viewList,
+                            id,
+                            it
+                        )
                     }
                 }
                 return true
@@ -246,7 +250,7 @@ class MainViewModel @Inject constructor(
             lastTouchedImageId.value = id
 
             setHue()?.let {
-                hueRepositoryImpl.checkHue(listData.viewList, id, it)?.let {
+                hueUseCases.hueCheckUseCase.excute(listData.viewList, id, it)?.let {
                     imageSaturationValue.value = it.saturatio
                     imageBrightnessValue.value = it.brightness
                     imageTransparencyValue.value = it.transparency
@@ -341,27 +345,21 @@ class MainViewModel @Inject constructor(
 
     fun textColorSet(position: Int) {//근데 이러면 뷰에 색은 안바뀔거 같은데??
         lastTouchedImageId.value?.let { id ->
-            textViewRepositoryImpl.editTextViewSetTextColor(
+            textViewUseCases.editTextViewSetTextColorUseCase.excute(
                 listData,
                 id,
                 UtilList.colorsList[position]
-            )?.let {
-                listData = it
-                liveLayerList.value = listData.layerList
-            }
+            )
         }
     }
 
     fun textBackgroundColorSet(position: Int) {
         lastTouchedImageId.value?.let { id ->
-            textViewRepositoryImpl.editTextViewSetBackgroundColor(
+            textViewUseCases.editTextViewSetBackgroundColorUseCase.excute(
                 listData,
                 id,
                 UtilList.colorsList[position]
-            )?.let {
-                listData = it
-                liveLayerList.value = listData.layerList
-            }
+            )
         }
     }
 
@@ -369,17 +367,13 @@ class MainViewModel @Inject constructor(
     fun textFontSet(position: Int) {
         val font = UtilList.typefaces[position]
         lastTouchedImageId.value?.let { id ->
-            textViewRepositoryImpl.editTextViewSetFont(listData, id, font)?.let {
-                listData = it
-                liveLayerList.value = listData.layerList
-            }
+            textViewUseCases.editTextViewSetFontUseCase.excute(listData, id, font)
         }
     }
 
     fun setViewText(text: String) {
         lastTouchedImageId.value?.let {
-            listData.layerList = textViewRepositoryImpl.layerViewUpdateText(listData, it, text)
-            liveLayerList.value = listData.layerList
+            textViewUseCases.layerViewUpdateTextUseCase.excute(listData, it, text)
         }
     }
 
@@ -476,8 +470,8 @@ class MainViewModel @Inject constructor(
 
     private fun clickedNavText() {
         lastTouchedImageId.value?.let {
-            if (textViewRepositoryImpl.checkEditableTextView(listData.viewList, it)) {
-                listData = textViewRepositoryImpl.editTextViewAddList(listData, screenSize)
+            if (textViewUseCases.checkEditableTextViewUseCase.excute(listData.viewList, it)) {
+                listData = textViewUseCases.editTextViewAddListUseCase.excute(listData, screenSize)
                 setList()
                 selectLayer(listData.layerList.size - 1)
             }

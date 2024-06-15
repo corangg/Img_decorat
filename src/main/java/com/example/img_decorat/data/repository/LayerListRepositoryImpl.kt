@@ -9,6 +9,7 @@ import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.data.model.dataModels.ListData
 import com.example.img_decorat.data.model.dataModels.SaveViewData
 import com.example.img_decorat.data.model.dataModels.SaveViewDataInfo
+import com.example.img_decorat.data.model.dataModels.TextViewUseCases
 import com.example.img_decorat.data.model.dataModels.ViewItemData
 import com.example.img_decorat.domain.repository.LayerListRepository
 import com.example.img_decorat.utils.Util.bitmapToUri
@@ -26,7 +27,7 @@ import javax.inject.Singleton
 @Singleton
 class LayerListRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val textViewRepositoryImpl: TextViewRepositoryImpl
+    private val textViewUseCases: TextViewUseCases
 ) : LayerListRepository {
     override fun imgAddList(data: Intent?, listData: ListData, viewSize: Int): ListData? {
         data?.clipData?.let {
@@ -253,19 +254,18 @@ class LayerListRepositoryImpl @Inject constructor(
                 }
 
                 1 -> {
-                    layerList =
-                        textViewRepositoryImpl.addEditTextViewViewList(layerList, idValue, i.text)
-                    layerList = textViewRepositoryImpl.layerTextViewSetTextColor(
+                    layerList = textViewUseCases.addEditTextViewViewListUseCase.excute(layerList, idValue, i.text)
+                    textViewUseCases.layerTextViewSetTextColorUseCase.excute(
                         layerList,
                         idValue,
                         i.textColor
                     )
-                    layerList = textViewRepositoryImpl.layerTextViewSetTextBackgroundColor(
+                    textViewUseCases.layerTextViewSetTextBackgroundColorUseCase.excute(
                         layerList,
                         idValue,
                         i.bgColor
                     )
-                    layerList = textViewRepositoryImpl.layerTextViewSetTextFont(
+                    textViewUseCases.layerTextViewSetTextFontUseCase.excute(
                         layerList,
                         idValue,
                         UtilList.typefaces[i.font]
@@ -307,7 +307,7 @@ class LayerListRepositoryImpl @Inject constructor(
                 }
 
                 1 -> {
-                    viewList = textViewRepositoryImpl.editTextViewAddViewList(
+                    viewList = textViewUseCases.editTextViewAddViewListUseCase.excute(
                         viewList,
                         viewSize,
                         layerList[i].id,

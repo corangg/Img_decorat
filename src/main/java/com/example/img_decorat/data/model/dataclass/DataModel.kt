@@ -11,6 +11,10 @@ import com.example.img_decorat.data.source.local.RoomTypeConverter
 import com.example.img_decorat.domain.usecase.emojiusecase.EmojiAddLayerUseCase
 import com.example.img_decorat.domain.usecase.emojiusecase.EmojiDBListClassificationUseCase
 import com.example.img_decorat.domain.usecase.emojiusecase.EmojiDataStringToBitmapUseCase
+import com.example.img_decorat.domain.usecase.hueusecase.HueCheckUseCase
+import com.example.img_decorat.domain.usecase.hueusecase.HueEditViewBrightnessUseCase
+import com.example.img_decorat.domain.usecase.hueusecase.HueEditViewSaturationUseCase
+import com.example.img_decorat.domain.usecase.hueusecase.HueEditViewTransparencyUseCase
 import com.example.img_decorat.domain.usecase.imagemanagementusecase.EditViewUseCase
 import com.example.img_decorat.domain.usecase.imagemanagementusecase.SaveViewUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.CheckLastSelectImageUseCase
@@ -24,6 +28,18 @@ import com.example.img_decorat.domain.usecase.layerlistusecase.SelectLayerUseCas
 import com.example.img_decorat.domain.usecase.layerlistusecase.SetLastTouchedImageUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.SplitImageChangeListUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.SwapImageViewUseCase
+import com.example.img_decorat.domain.usecase.textviewusecase.AddEditTextViewViewListUseCase
+import com.example.img_decorat.domain.usecase.textviewusecase.CheckEditableTextViewUseCase
+import com.example.img_decorat.domain.usecase.textviewusecase.EditTextViewAddListUseCase
+import com.example.img_decorat.domain.usecase.textviewusecase.EditTextViewAddViewListUseCase
+import com.example.img_decorat.domain.usecase.textviewusecase.EditTextViewSetBackgroundColorUseCase
+import com.example.img_decorat.domain.usecase.textviewusecase.EditTextViewSetFontUseCase
+import com.example.img_decorat.domain.usecase.textviewusecase.EditTextViewSetTextColorUseCase
+import com.example.img_decorat.domain.usecase.textviewusecase.EditTextViewSetTextSizeUseCase
+import com.example.img_decorat.domain.usecase.textviewusecase.LayerTextViewSetTextBackgroundColorUseCase
+import com.example.img_decorat.domain.usecase.textviewusecase.LayerTextViewSetTextColorUseCase
+import com.example.img_decorat.domain.usecase.textviewusecase.LayerTextViewSetTextFontUseCase
+import com.example.img_decorat.domain.usecase.textviewusecase.LayerViewUpdateTextUseCase
 import com.example.img_decorat.presentation.ui.view.EditableImageView
 import com.example.img_decorat.presentation.ui.view.TextImageView
 import java.util.LinkedList
@@ -135,5 +151,27 @@ data class EmojiUseCases(
     val emojiAddLayerUseCase: EmojiAddLayerUseCase,
     val emojiDataStringToBitmapUseCase: EmojiDataStringToBitmapUseCase,
     val emojiDBListClassificationUseCase: EmojiDBListClassificationUseCase
+)
+
+data class HueUseCases(
+    val hueCheckUseCase: HueCheckUseCase,
+    val hueEditViewBrightnessUseCase: HueEditViewBrightnessUseCase,
+    val hueEditViewSaturationUseCase: HueEditViewSaturationUseCase,
+    val hueEditViewTransparencyUseCase: HueEditViewTransparencyUseCase
+)
+
+data class TextViewUseCases(
+    val checkEditableTextViewUseCase: CheckEditableTextViewUseCase,
+    val editTextViewAddListUseCase: EditTextViewAddListUseCase,
+    val editTextViewSetTextColorUseCase: EditTextViewSetTextColorUseCase,
+    val editTextViewSetBackgroundColorUseCase: EditTextViewSetBackgroundColorUseCase,
+    val editTextViewSetTextSizeUseCase: EditTextViewSetTextSizeUseCase,
+    val editTextViewSetFontUseCase: EditTextViewSetFontUseCase,
+    val layerViewUpdateTextUseCase: LayerViewUpdateTextUseCase,
+    val addEditTextViewViewListUseCase: AddEditTextViewViewListUseCase,
+    val editTextViewAddViewListUseCase: EditTextViewAddViewListUseCase,
+    val layerTextViewSetTextColorUseCase: LayerTextViewSetTextColorUseCase,
+    val layerTextViewSetTextBackgroundColorUseCase: LayerTextViewSetTextBackgroundColorUseCase,
+    val layerTextViewSetTextFontUseCase: LayerTextViewSetTextFontUseCase
 )
 
