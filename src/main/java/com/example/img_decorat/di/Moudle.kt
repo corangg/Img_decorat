@@ -5,8 +5,6 @@ import com.example.img_decorat.data.repository.BackgroundRepositoryImpl
 import com.example.img_decorat.data.repository.DBRepository
 import com.example.img_decorat.data.repository.EmojiRepositoryImpl
 import com.example.img_decorat.data.repository.HueRepositoryImpl
-import com.example.img_decorat.data.repository.ImageManagementRepositoryImpl
-import com.example.img_decorat.data.repository.LayerListRepositoryImpl
 import com.example.img_decorat.data.repository.SaveDataRepository
 import com.example.img_decorat.data.repository.SplitRepository
 import com.example.img_decorat.data.repository.SplitStackRepository
@@ -16,13 +14,8 @@ import com.example.img_decorat.data.source.local.DB.ViewDB
 import com.example.img_decorat.data.source.local.Dao.EmojiDao
 import com.example.img_decorat.data.source.local.Dao.ViewDao
 import com.example.img_decorat.domain.repository.BackgroundRepository
-import com.example.img_decorat.domain.repository.ImageManagementRepository
-import com.example.img_decorat.domain.repository.LayerListRepository
-import com.example.img_decorat.domain.usecase.EditViewUseCase
-import com.example.img_decorat.domain.usecase.SaveViewDataSetUseCase
-import com.example.img_decorat.domain.usecase.SaveViewUseCase
-import com.example.img_decorat.domain.usecase.SetBackgroundScaleUseCase
-import com.example.img_decorat.domain.usecase.layerlistusecase.CheckedListUseCase
+import com.example.img_decorat.domain.usecase.backgroundusecase.SetBackgroundScaleUseCase
+import com.example.img_decorat.domain.usecase.layerlistusecase.ImageAddViewUseCase
 import com.example.img_decorat.presentation.ui.view.BTNAnimation
 import dagger.Module
 import dagger.Provides
@@ -41,13 +34,7 @@ object Moudle {
     @Provides
     @Singleton
     fun provideLayerAnimation(context: Context): BTNAnimation {
-        return BTNAnimation(context)
-    }
-
-    @Provides
-    @Singleton
-    fun provideImageManagementRepository(context: Context): ImageManagementRepository {
-        return ImageManagementRepositoryImpl(context)
+        return BTNAnimation(provideContext(context))
     }
 
     @Singleton
@@ -56,34 +43,11 @@ object Moudle {
         return BackgroundRepositoryImpl()
     }
 
-
-    @Provides
-    @Singleton
-    fun provideEditViewUseCase(imageManagementRepository: ImageManagementRepository): EditViewUseCase {
-        return EditViewUseCase(imageManagementRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSaveViewDataUseCase(imageManagementRepository: ImageManagementRepository): SaveViewDataSetUseCase {
-        return SaveViewDataSetUseCase(imageManagementRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSaveViewUseCase(imageManagementRepository: ImageManagementRepository): SaveViewUseCase {
-        return SaveViewUseCase(imageManagementRepository)
-    }
-
-
     @Provides
     @Singleton
     fun provideSetBackgroundScaleUseCase(backgroundRepository: BackgroundRepository): SetBackgroundScaleUseCase {
         return SetBackgroundScaleUseCase(backgroundRepository)
     }
-
-
-
 
 
     @Provides
@@ -92,14 +56,7 @@ object Moudle {
         return HueRepositoryImpl()
     }
 
-    @Provides
-    @Singleton
-    fun provideImojiRepository(
-        context: Context,
-        layerListRepositoryImpl: LayerListRepositoryImpl
-    ): EmojiRepositoryImpl {
-        return EmojiRepositoryImpl(context, layerListRepositoryImpl)
-    }
+
 
     @Provides
     @Singleton

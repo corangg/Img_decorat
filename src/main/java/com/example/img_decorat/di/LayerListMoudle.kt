@@ -10,6 +10,7 @@ import com.example.img_decorat.domain.usecase.layerlistusecase.CheckedListUseCas
 import com.example.img_decorat.domain.usecase.layerlistusecase.CheckedViewTypeUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.DeleteListUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.ImageAddListUseCase
+import com.example.img_decorat.domain.usecase.layerlistusecase.ImageAddViewUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.LoadListUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.SelectLastImageUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.SelectLayerUseCase
@@ -52,4 +53,11 @@ object LayerListMoudle {
             swapImageViewUseCase = SwapImageViewUseCase(layerListRepository)
         )
     }
+
+    @Provides
+    @Singleton
+    fun provideImageAddViewUseCase(layerListRepository: LayerListRepository): ImageAddViewUseCase{
+        return ImageAddViewUseCase(layerListRepository)
+    }
+
 }

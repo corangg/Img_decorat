@@ -1,4 +1,4 @@
-package com.example.img_decorat.domain.usecase
+package com.example.img_decorat.domain.usecase.backgroundusecase
 
 import android.widget.FrameLayout
 import com.example.img_decorat.domain.repository.BackgroundRepository

@@ -9,6 +9,8 @@ import com.example.img_decorat.data.model.dataModels.EmojiData
 import com.example.img_decorat.data.model.dataModels.EmojiList
 import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.data.model.dataModels.ListData
+import com.example.img_decorat.domain.repository.EmojiRepository
+import com.example.img_decorat.domain.usecase.layerlistusecase.ImageAddViewUseCase
 import com.example.img_decorat.utils.Util
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -17,9 +19,9 @@ import javax.inject.Singleton
 @Singleton
 class EmojiRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val layerListRepositoryImpl: LayerListRepositoryImpl
-) {
-    fun emojiDataStringToBitmap(list: List<EmojiDBData>): List<EmojiList> {
+    private val imageAddViewUseCase: ImageAddViewUseCase
+) : EmojiRepository {
+    override fun emojiDataStringToBitmap(list: List<EmojiDBData>): List<EmojiList> {
         val transformationList = mutableListOf<EmojiList>()
         for (i in list) {
             val groupName = i.groupName
@@ -32,7 +34,7 @@ class EmojiRepositoryImpl @Inject constructor(
         return transformationList
     }
 
-    fun emojiDBListClassification(list: List<EmojiData>): List<EmojiDBData> {
+    override fun emojiDBListClassification(list: List<EmojiData>): List<EmojiDBData> {
         val classification = mutableListOf<EmojiDBData>()
         var groupName = list[0].group
         var emojiBitmapList = mutableListOf<String>()
@@ -53,13 +55,13 @@ class EmojiRepositoryImpl @Inject constructor(
         return classification
     }
 
-    fun emojiAddLayer(listData: ListData, viewSize: Int, bitmap: Bitmap): ListData {
+    override fun emojiAddLayer(listData: ListData, viewSize: Int, bitmap: Bitmap): ListData {
         val id = Util.setID()
         val resizeBitmap = Util.resizeBitmap(bitmap, viewSize).first
         val layerItemData =
             LayerItemData(context = context, check = true, id = id, bitMap = resizeBitmap)
         listData.layerList.add(layerItemData)
-        layerListRepositoryImpl.imageAddViewList(listData.viewList, id, resizeBitmap, true, 0.4f)?.let {
+        imageAddViewUseCase.execute(listData.viewList, id, resizeBitmap, true, 0.4f)?.let {
             listData.viewList = it
         }
         return listData
@@ -81,6 +83,4 @@ class EmojiRepositoryImpl @Inject constructor(
 
         return image
     }
-
-
 }

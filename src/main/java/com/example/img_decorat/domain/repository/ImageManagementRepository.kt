@@ -16,7 +16,4 @@ interface ImageManagementRepository {
         scale: Float,
         name: String
     ): SaveViewData
-
-    fun saveViewDataSet(list: List<ViewItemData>): List<SaveViewDataInfo>
-
 }

@@ -10,7 +10,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.img_decorat.R
 import com.example.img_decorat.data.model.dataModels.EmojiList
+import com.example.img_decorat.data.model.dataModels.EmojiUseCases
 import com.example.img_decorat.data.model.dataModels.Hue
+import com.example.img_decorat.data.model.dataModels.ImageManagementUseCases
 import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.data.model.dataModels.LayerListUseCases
 import com.example.img_decorat.data.model.dataModels.ListData
@@ -18,15 +20,11 @@ import com.example.img_decorat.data.model.dataModels.SaveViewData
 import com.example.img_decorat.data.model.dataModels.ViewItemData
 import com.example.img_decorat.data.model.dataModels.unsplashimagedata.UnsplashData
 import com.example.img_decorat.data.repository.DBRepository
-import com.example.img_decorat.data.repository.EmojiRepositoryImpl
 import com.example.img_decorat.data.repository.HueRepositoryImpl
-import com.example.img_decorat.data.repository.LayerListRepositoryImpl
 import com.example.img_decorat.data.repository.TextViewRepositoryImpl
 import com.example.img_decorat.data.source.remote.retrofit.EmojiRetrofit
 import com.example.img_decorat.data.source.remote.retrofit.UnsplashRetrofit
-import com.example.img_decorat.domain.usecase.EditViewUseCase
-import com.example.img_decorat.domain.usecase.SaveViewUseCase
-import com.example.img_decorat.domain.usecase.SetBackgroundScaleUseCase
+import com.example.img_decorat.domain.usecase.backgroundusecase.SetBackgroundScaleUseCase
 import com.example.img_decorat.utils.UtilList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -37,12 +35,11 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     application: Application,
     private val layerListUseCases: LayerListUseCases,
-    private val dbRepository: DBRepository,
-    private val editViewUseCase: EditViewUseCase,
-    private val saveViewUseCase: SaveViewUseCase,
+    private val imageManagementUseCases: ImageManagementUseCases,
     private val setBackgroundScaleUseCase: SetBackgroundScaleUseCase,
+    private val emojiUseCases: EmojiUseCases,
+    private val dbRepository: DBRepository,
     private val hueRepositoryImpl: HueRepositoryImpl,
-    private val emojiRepositoryImpl: EmojiRepositoryImpl,
     private val textViewRepositoryImpl: TextViewRepositoryImpl
 ) : AndroidViewModel(application) {
     val startloading: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -186,7 +183,7 @@ class MainViewModel @Inject constructor(
             R.id.menu_text_size -> {
                 selectTextMenu.value = 2
                 textSize.observeForever {
-                    lastTouchedImageId.value?.let {id->
+                    lastTouchedImageId.value?.let { id ->
                         textViewRepositoryImpl.editTextViewSetTextSize(listData.viewList, id, it)
                     }
                 }
@@ -234,7 +231,8 @@ class MainViewModel @Inject constructor(
 
     fun selectLayer(position: Int) {
         if (layerListSizeCheck(position)) {
-            listData.layerList = layerListUseCases.selectLayerUseCase.excute(listData.layerList, position)
+            listData.layerList =
+                layerListUseCases.selectLayerUseCase.excute(listData.layerList, position)
             liveLayerList.value = listData.layerList
             lastTouchedImageId.value = listData.layerList[position].id
         }
@@ -242,7 +240,8 @@ class MainViewModel @Inject constructor(
 
     fun selectLastImage(id: Int) {
         if (layerListUseCases.checkLastSelectImageUseCase.excute(listData.layerList, id)) {
-            listData.layerList = layerListUseCases.selectLastImageUseCase.excute(listData.layerList, id)
+            listData.layerList =
+                layerListUseCases.selectLastImageUseCase.excute(listData.layerList, id)
             setList()
             lastTouchedImageId.value = id
 
@@ -309,8 +308,8 @@ class MainViewModel @Inject constructor(
     fun getEmoji() {
         viewModelScope.launch {
             EmojiRetrofit.getEmojis()?.let {
-                val list = emojiRepositoryImpl.emojiDBListClassification(it)
-                emojiList.value = emojiRepositoryImpl.emojiDataStringToBitmap(list)
+                val list = emojiUseCases.emojiDBListClassificationUseCase.excute(it)
+                emojiList.value = emojiUseCases.emojiDataStringToBitmapUseCase.excute(list)
                 dbRepository.insertEmojiData(list)
             }
         }
@@ -322,7 +321,7 @@ class MainViewModel @Inject constructor(
             if (it.size == 0) {
                 getEmoji()
             } else {
-                emojiList.value = emojiRepositoryImpl.emojiDataStringToBitmap(it)
+                emojiList.value = emojiUseCases.emojiDataStringToBitmapUseCase.excute(it)
             }
         }
     }
@@ -330,7 +329,7 @@ class MainViewModel @Inject constructor(
     fun addEmogeLayer(emojiPosition: Int) {
         emojiList.value?.let { list ->
             emojiTab.value?.let { tab ->
-                listData = emojiRepositoryImpl.emojiAddLayer(
+                listData = emojiUseCases.emojiAddLayerUseCase.excute(
                     listData,
                     screenSize,
                     list[tab].groupList[emojiPosition]
@@ -354,7 +353,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun textBackgroundColorSet(position: Int) {
-        lastTouchedImageId.value?.let {id->
+        lastTouchedImageId.value?.let { id ->
             textViewRepositoryImpl.editTextViewSetBackgroundColor(
                 listData,
                 id,
@@ -367,12 +366,9 @@ class MainViewModel @Inject constructor(
     }
 
 
-
-
-
     fun textFontSet(position: Int) {
         val font = UtilList.typefaces[position]
-        lastTouchedImageId.value?.let {id->
+        lastTouchedImageId.value?.let { id ->
             textViewRepositoryImpl.editTextViewSetFont(listData, id, font)?.let {
                 listData = it
                 liveLayerList.value = listData.layerList
@@ -404,7 +400,7 @@ class MainViewModel @Inject constructor(
                 startloading.value = true
                 val flagLastTouchedImageId = lastTouchedImageId.value
                 lastTouchedImageId.value = -1
-                editViewUseCase.execute(view, imgTitle.value!!)
+                imageManagementUseCases.editViewUseCase.execute(view, imgTitle.value!!)
                 overflowMenuToast.value = position
                 lastTouchedImageId.value = flagLastTouchedImageId!!
                 startloading.value = false
@@ -448,7 +444,7 @@ class MainViewModel @Inject constructor(
             val list = liveViewList.value
             val name = imgTitle.value
             if (list != null && name != null) {
-                val data = saveViewUseCase.execute(
+                val data = imageManagementUseCases.saveViewUseCase.execute(
                     list = list,
                     view = view,
                     scale = selectBackgroundScaleType,
@@ -466,7 +462,8 @@ class MainViewModel @Inject constructor(
         val lastTouchedId = lastTouchedImageId.value
         lastTouchedId?.let { id ->
             if (layerListUseCases.checkedViewTypeUseCase.excute(listData.layerList, id) == 0) {
-                val uri = layerListUseCases.setLastTouchedImageUseCase.excute(listData.layerList, id)
+                val uri =
+                    layerListUseCases.setLastTouchedImageUseCase.excute(listData.layerList, id)
                 uri?.let {
                     lastTouchedImage = it
                     selectNavigationItem.value = 4

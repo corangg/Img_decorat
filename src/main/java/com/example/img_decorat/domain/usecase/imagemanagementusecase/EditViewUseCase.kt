@@ -1,4 +1,4 @@
-package com.example.img_decorat.domain.usecase
+package com.example.img_decorat.domain.usecase.imagemanagementusecase
 
 import android.view.View
 import com.example.img_decorat.domain.repository.ImageManagementRepository

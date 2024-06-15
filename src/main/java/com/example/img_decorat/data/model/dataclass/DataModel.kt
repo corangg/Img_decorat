@@ -8,6 +8,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.img_decorat.data.source.local.RoomTypeConverter
+import com.example.img_decorat.domain.usecase.emojiusecase.EmojiAddLayerUseCase
+import com.example.img_decorat.domain.usecase.emojiusecase.EmojiDBListClassificationUseCase
+import com.example.img_decorat.domain.usecase.emojiusecase.EmojiDataStringToBitmapUseCase
+import com.example.img_decorat.domain.usecase.imagemanagementusecase.EditViewUseCase
+import com.example.img_decorat.domain.usecase.imagemanagementusecase.SaveViewUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.CheckLastSelectImageUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.CheckedListUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.CheckedViewTypeUseCase
@@ -119,5 +124,16 @@ data class LayerListUseCases(
     val setLastTouchedImageUseCase: SetLastTouchedImageUseCase,
     val splitImageChangeListUseCase: SplitImageChangeListUseCase,
     val swapImageViewUseCase: SwapImageViewUseCase
+)
+
+data class ImageManagementUseCases(
+    val editViewUseCase: EditViewUseCase,
+    val saveViewUseCase: SaveViewUseCase
+)
+
+data class EmojiUseCases(
+    val emojiAddLayerUseCase: EmojiAddLayerUseCase,
+    val emojiDataStringToBitmapUseCase: EmojiDataStringToBitmapUseCase,
+    val emojiDBListClassificationUseCase: EmojiDBListClassificationUseCase
 )
 

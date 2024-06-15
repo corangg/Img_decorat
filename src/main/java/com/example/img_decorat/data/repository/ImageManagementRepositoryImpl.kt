@@ -84,7 +84,7 @@ class ImageManagementRepositoryImpl(@ApplicationContext private val context: Con
         }
     }
 
-    override fun saveViewDataSet(list: List<ViewItemData>): List<SaveViewDataInfo> {
+    private fun saveViewDataSet(list: List<ViewItemData>): List<SaveViewDataInfo> {
         val saveViewDataInfoList: MutableList<SaveViewDataInfo> = mutableListOf()
         for (i in list) {
             when (i.type) {

@@ -158,6 +158,24 @@ class LayerListRepositoryImpl @Inject constructor(
         return ListData(layerList, viewList)
     }
 
+    override fun imageAddViewList(
+        viewList: LinkedList<ViewItemData>,
+        id: Int,
+        bitmap: Bitmap?,
+        visibility: Boolean,
+        scale: Float
+    ): LinkedList<ViewItemData>? {
+        bitmap?.let {
+            val imageView =
+                createEditableImageView(context = context, viewId = id, bitmap = it, scale = scale)
+            val viewData = ViewItemData(context = context, id = imageView.id, visible = visibility)
+            viewData.img = imageView
+            viewList.add(viewData)
+            return viewList
+        }
+        return null
+    }
+
 
     private fun addLayerList(
         layerList: LinkedList<LayerItemData>,
@@ -170,24 +188,6 @@ class LayerListRepositoryImpl @Inject constructor(
                 LayerItemData(context = context, check = check, id = id, bitMap = it)
             layerList.add(layerItemData)
             return layerList
-        }
-        return null
-    }
-
-    fun imageAddViewList(
-        viewList: LinkedList<ViewItemData>,
-        id: Int,
-        bitmap: Bitmap?,
-        visibility: Boolean,
-        scale: Float = 1.0f
-    ): LinkedList<ViewItemData>? {
-        bitmap?.let {
-            val imageView =
-                createEditableImageView(context = context, viewId = id, bitmap = it, scale = scale)
-            val viewData = ViewItemData(context = context, id = imageView.id, visible = visibility)
-            viewData.img = imageView
-            viewList.add(viewData)
-            return viewList
         }
         return null
     }

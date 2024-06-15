@@ -1,6 +1,7 @@
 package com.example.img_decorat.domain.repository
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import com.example.img_decorat.data.model.dataModels.LayerItemData
 import com.example.img_decorat.data.model.dataModels.ListData
@@ -34,4 +35,12 @@ interface LayerListRepository {
     fun checkedViewType(layerList: LinkedList<LayerItemData>, id: Int?): Int
 
     fun loadList(data: SaveViewData, viewSize: Int): ListData
+
+    fun imageAddViewList(
+        viewList: LinkedList<ViewItemData>,
+        id: Int,
+        bitmap: Bitmap?,
+        visibility: Boolean,
+        scale: Float = 1.0f
+    ): LinkedList<ViewItemData>?
 }
