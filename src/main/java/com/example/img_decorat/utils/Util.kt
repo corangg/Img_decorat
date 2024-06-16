@@ -2,7 +2,6 @@ package com.example.img_decorat.utils
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,21 +10,15 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.ImageButton
-import androidx.activity.result.ActivityResult
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.FileProvider
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.img_decorat.R
 import com.example.img_decorat.data.model.dataModels.ViewItemData
-import com.example.img_decorat.presentation.ui.activity.ImageSplitActivity
 import com.example.img_decorat.presentation.ui.view.EditableImageView
 import com.example.img_decorat.presentation.ui.view.TextImageView
 import java.io.File
@@ -36,8 +29,6 @@ import java.io.InputStream
 import java.util.LinkedList
 
 object Util {
-
-
     fun setLinearAdapter(
         recyclerView: RecyclerView,
         context: Context,
@@ -69,10 +60,10 @@ object Util {
         recyclerView.adapter = adapter
     }
 
-    fun buttonColorToggle(btn: ImageButton, firstColor: Int, secondColor: Int, toggle: Boolean){
-        if(toggle){
+    fun buttonColorToggle(btn: ImageButton, firstColor: Int, secondColor: Int, toggle: Boolean) {
+        if (toggle) {
             btn.backgroundTintList = ColorStateList.valueOf(firstColor)
-        }else{
+        } else {
             btn.backgroundTintList = ColorStateList.valueOf(secondColor)
         }
     }
@@ -96,7 +87,7 @@ object Util {
         return View.generateViewId()
     }
 
-    fun getLastSelectView(viewList: LinkedList<ViewItemData>, id: Int): ViewItemData?{
+    fun getLastSelectView(viewList: LinkedList<ViewItemData>, id: Int): ViewItemData? {
         viewList.find { it.id == id }?.let {
             return it
         }

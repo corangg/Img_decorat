@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.databinding.ItemMenuBinding
-import com.example.img_decorat.presentation.ui.view.BTNAnimation
 import com.example.img_decorat.utils.ItemClickInterface
 
 class MenuAdapter(

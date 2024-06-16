@@ -1,9 +1,7 @@
 package com.example.img_decorat.di
 
 import android.content.Context
-import com.example.img_decorat.data.repository.HueRepositoryImpl
 import com.example.img_decorat.data.repository.SaveDataRepositoryImpl
-import com.example.img_decorat.domain.repository.HueRepository
 import com.example.img_decorat.domain.repository.SaveDataRepository
 import com.example.img_decorat.domain.usecase.saveusecase.SaveSetLoadTitleUseCase
 import dagger.Module

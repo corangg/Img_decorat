@@ -8,45 +8,47 @@ class SplitStackRepository {
     val stackPrevious = Stack<Bitmap>()
     val stackNext = Stack<Bitmap>()
 
-    fun addPreviousStack(bitmap: Bitmap?){
-        if(bitmap!=null){
+    fun addPreviousStack(bitmap: Bitmap?) {
+        if (bitmap != null) {
             stackPrevious.push(bitmap)
         }
     }
 
-    fun addNextStack(bitmap: Bitmap?){
-        if(bitmap!=null){
+    fun addNextStack(bitmap: Bitmap?) {
+        if (bitmap != null) {
             stackNext.push(bitmap)
         }
     }
 
-    fun clearPreviousStack(){
+    fun clearPreviousStack() {
         stackPrevious.clear()
     }
-    fun clearNextStack(){
+
+    fun clearNextStack() {
         stackNext.clear()
     }
 
-    fun checkPreviousStackState():Boolean{
-        return if(stackPrevious.size>0){
+    fun checkPreviousStackState(): Boolean {
+        return if (stackPrevious.size > 0) {
             true
-        }else{
-            false
-        }
-    }
-    fun checkNextStackState():Boolean{
-        return if(stackNext.size>0){
-            true
-        }else{
+        } else {
             false
         }
     }
 
-    fun popPrevious():Bitmap{
+    fun checkNextStackState(): Boolean {
+        return if (stackNext.size > 0) {
+            true
+        } else {
+            false
+        }
+    }
+
+    fun popPrevious(): Bitmap {
         return stackPrevious.pop()
     }
 
-    fun popNext():Bitmap{
+    fun popNext(): Bitmap {
         return stackNext.pop()
     }
 }

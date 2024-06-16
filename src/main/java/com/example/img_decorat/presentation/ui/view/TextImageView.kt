@@ -43,8 +43,8 @@ class TextImageView @JvmOverloads constructor(
     private var viewModel: MainViewModel? = null
 
     var fillBackgroundPaint = Paint().apply {
-        color =Color.TRANSPARENT
-        style =Paint.Style.FILL
+        color = Color.TRANSPARENT
+        style = Paint.Style.FILL
     }
 
     init {
@@ -55,7 +55,7 @@ class TextImageView @JvmOverloads constructor(
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         super.dispatchTouchEvent(event)
-        if(!touchListener){
+        if (!touchListener) {
             (parent as? ViewGroup)?.onTouchEvent(event)
         }
         return touchListener
@@ -86,11 +86,12 @@ class TextImageView @JvmOverloads constructor(
                     isEditable = true
                     viewModel?.selectLastImage(this.id)
                 }
+
                 MotionEvent.ACTION_MOVE -> {
                     val dx = event.x - lastTouchX
                     val dy = event.y - lastTouchY
 
-                    if(abs(dx)>1|| abs(dy)>1){
+                    if (abs(dx) > 1 || abs(dy) > 1) {
                         isEditable = false
                     }
 
@@ -98,8 +99,9 @@ class TextImageView @JvmOverloads constructor(
                     lastTouchX = event.x
                     lastTouchY = event.y
                 }
-                MotionEvent.ACTION_UP->{
-                    if(isEditable){
+
+                MotionEvent.ACTION_UP -> {
+                    if (isEditable) {
                         showKeyboard()
                     }
                 }
@@ -127,16 +129,16 @@ class TextImageView @JvmOverloads constructor(
             close()
         }
 
-        if(viewModel?.lastTouchedImageId?.value == this.id){
-            canvas.drawPath(path, viewHelper.borderPaint(Color.WHITE,4f))
+        if (viewModel?.lastTouchedImageId?.value == this.id) {
+            canvas.drawPath(path, viewHelper.borderPaint(Color.WHITE, 4f))
             canvas.drawPath(path, fillBackgroundPaint)
-        }else{
+        } else {
             canvas.drawPath(path, viewHelper.borderPaint(Color.TRANSPARENT))
             canvas.drawPath(path, fillBackgroundPaint)
         }
     }
 
-    fun setBackgroundClolor(color: Int){
+    fun setBackgroundClolor(color: Int) {
         fillBackgroundPaint.color = color
         invalidate()
     }
@@ -167,7 +169,8 @@ class TextImageView @JvmOverloads constructor(
             val y2 = polygon[(i + 3) % polygon.size]
 
             if (((y1 > y) != (y2 > y)) &&
-                (x < (x2 - x1) * (y - y1) / (y2 - y1) + x1)) {
+                (x < (x2 - x1) * (y - y1) / (y2 - y1) + x1)
+            ) {
                 intersectCount++
             }
         }
@@ -193,7 +196,7 @@ class TextImageView @JvmOverloads constructor(
         return matrixValues
     }
 
-    fun setMatrixData(matrixValue: FloatArray, scale: Float, degrees: Float){
+    fun setMatrixData(matrixValue: FloatArray, scale: Float, degrees: Float) {
         matrix.setValues(matrixValue)
         scaleFactor = scale
         rotationDegrees = degrees
@@ -207,12 +210,12 @@ class TextImageView @JvmOverloads constructor(
     }
 
     fun setSaturation(saturation: Float) {
-        saturationValue = (saturation + 100f)/100f
+        saturationValue = (saturation + 100f) / 100f
         paint.colorFilter = viewHelper.applyColorFilter(saturationValue, brightnessValue)
     }
 
     fun setBrightness(brightness: Float) {
-        brightnessValue = 0.008f*brightness +1f
+        brightnessValue = 0.008f * brightness + 1f
         paint.colorFilter = viewHelper.applyColorFilter(saturationValue, brightnessValue)
     }
 
@@ -227,12 +230,13 @@ class TextImageView @JvmOverloads constructor(
     fun getTextTypeface(): Typeface {
         return typeface
     }
+
     fun getTextContent(): String {
         return text.toString()
     }
 
-    fun getTextSizeValue(): Int{
-        return (textSize/3).toInt()
+    fun getTextSizeValue(): Int {
+        return (textSize / 3).toInt()
     }
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {

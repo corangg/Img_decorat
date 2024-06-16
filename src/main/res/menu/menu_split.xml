@@ -3,23 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_split_square"
-        android:title="사각형"
         android:icon="@drawable/ic_square"
         android:iconTint="@color/white"
-        app:showAsAction="always"
-        />
+        android:title="@string/square"
+        app:showAsAction="always" />
     <item
         android:id="@+id/menu_split_circle"
-        android:title="원"
         android:icon="@drawable/ic_circle"
         android:iconTint="@color/white"
-        app:showAsAction="always"
-        />
+        android:title="@string/circle"
+        app:showAsAction="always" />
     <item
         android:id="@+id/menu_split_polygon"
-        android:title="다각형"
         android:icon="@drawable/ic_polygon"
         android:iconTint="@color/white"
-        app:showAsAction="always"
-        />
+        android:title="@string/polygon"
+        app:showAsAction="always" />
 </menu>

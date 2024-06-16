@@ -26,8 +26,9 @@ class SplitCircleView @JvmOverloads constructor(
         super.onDraw(canvas)
         drawBorder(canvas)
     }
+
     override fun onTouch(v: View, event: MotionEvent): Boolean {
-        if(!judgeTouchableArea(event)){
+        if (!judgeTouchableArea(event)) {
             return false
         }
 
@@ -39,6 +40,7 @@ class SplitCircleView @JvmOverloads constructor(
                     lastTouchX = event.x
                     lastTouchY = event.y
                 }
+
                 MotionEvent.ACTION_MOVE -> {
                     val dx = event.x - lastTouchX
                     val dy = event.y - lastTouchY
@@ -56,7 +58,7 @@ class SplitCircleView @JvmOverloads constructor(
 
     override fun drawBorder(canvas: Canvas) {
         val pos = getCurrentImagePosition()
-        canvas.drawCircle(pos.first,pos.second, radius, viewHelper.borderPaint(Color.WHITE,4f))
+        canvas.drawCircle(pos.first, pos.second, radius, viewHelper.borderPaint(Color.WHITE, 4f))
     }
 
     override fun judgeTouchableArea(event: MotionEvent): Boolean {
@@ -65,7 +67,12 @@ class SplitCircleView @JvmOverloads constructor(
         val pos = getCurrentImagePosition()
         val centerX = pos.first
         val centerY = pos.second
-        val distance = Math.sqrt(Math.pow((x - centerX).toDouble(), 2.0) + Math.pow((y - centerY).toDouble(), 2.0))
+        val distance = Math.sqrt(
+            Math.pow((x - centerX).toDouble(), 2.0) + Math.pow(
+                (y - centerY).toDouble(),
+                2.0
+            )
+        )
         return distance <= radius
     }
 

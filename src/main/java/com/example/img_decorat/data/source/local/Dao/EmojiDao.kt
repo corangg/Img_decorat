@@ -5,8 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.img_decorat.data.model.dataModels.EmojiDBData
-import com.example.img_decorat.data.model.dataModels.EmojiList
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EmojiDao {

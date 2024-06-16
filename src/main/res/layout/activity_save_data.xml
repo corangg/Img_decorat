@@ -1,89 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.example.img_decorat.presentation.viewmodel.SaveDataViewModel" />
-
     </data>
 
     <LinearLayout
         android:id="@+id/save_data"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/backgroundcolor"
+        android:orientation="vertical"
         tools:context=".ui.activity.SaveDataActivity">
+
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/save_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:background="@color/white"
-            android:id="@+id/save_toolbar" >
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/white">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageButton
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
                     android:id="@+id/img_btn_back"
+                    android:layout_width="@dimen/img_button_size"
+                    android:layout_height="@dimen/img_button_size"
                     android:layout_centerVertical="true"
                     android:background="@drawable/ic_back"
                     android:backgroundTint="@color/pointcolor"
-                    android:onClick="@{()->viewmodel.clickedBack()}"/>
+                    android:onClick="@{()->viewmodel.clickedBack()}" />
 
 
                 <ImageButton
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
                     android:id="@+id/menu_linear"
-                    android:layout_marginEnd="16dp"
+                    android:layout_width="@dimen/img_button_size"
+                    android:layout_height="@dimen/img_button_size"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/margin_img_button"
                     android:layout_toStartOf="@+id/menu_gride"
                     android:background="@drawable/ic_linear"
                     android:backgroundTint="@color/backgroundcolor"
-                    android:layout_centerVertical="true"
-                    android:onClick="@{()->viewmodel.clickedLinearRecycler()}"/>
+                    android:onClick="@{()->viewmodel.clickedLinearRecycler()}" />
 
                 <ImageButton
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
                     android:id="@+id/menu_gride"
-                    android:layout_marginEnd="16dp"
+                    android:layout_width="@dimen/img_button_size"
+                    android:layout_height="@dimen/img_button_size"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/margin_img_button"
                     android:layout_toStartOf="@+id/menu_open"
                     android:background="@drawable/ic_grid"
                     android:backgroundTint="@color/backgroundcolor"
-                    android:layout_centerVertical="true"
-                    android:onClick="@{()->viewmodel.clickedGrideRecycler()}"/>
+                    android:onClick="@{()->viewmodel.clickedGrideRecycler()}" />
 
                 <TextView
+                    android:id="@+id/menu_open"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/menu_open"
-                    android:layout_marginEnd="12dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/margin_img_button"
+                    android:backgroundTint="@color/pointcolor"
+                    android:gravity="center"
+                    android:onClick="@{()->viewmodel.clickedOpenLoadData()}"
                     android:text="@string/open"
                     android:textColor="@color/pointcolor"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:backgroundTint="@color/pointcolor"
-                    android:onClick="@{()->viewmodel.clickedOpenLoadData()}" />
+                    android:textSize="@dimen/save_text_btn" />
 
             </RelativeLayout>
 
         </androidx.appcompat.widget.Toolbar>
+
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_load_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:id="@+id/recycle_load_data" />
+            android:layout_marginTop="@dimen/margin_view_top" />
+
         <FrameLayout
+            android:id="@+id/test"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/test"
-            android:background="@color/white"/>
+            android:background="@color/white" />
     </LinearLayout>
 </layout>

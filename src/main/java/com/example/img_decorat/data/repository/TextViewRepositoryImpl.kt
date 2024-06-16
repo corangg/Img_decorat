@@ -16,7 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TextViewRepositoryImpl  @Inject constructor(
+class TextViewRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : TextViewRepository {
     override fun checkEditableTextView(viewList: LinkedList<ViewItemData>, id: Int): Boolean {
@@ -33,7 +33,8 @@ class TextViewRepositoryImpl  @Inject constructor(
         val textId = Util.setID()
         return ListData(
             addEditTextViewViewList(listData.layerList, textId, ""),
-            editTextViewAddViewList(listData.viewList, viewSize, textId, true))
+            editTextViewAddViewList(listData.viewList, viewSize, textId, true)
+        )
     }
 
     override fun editTextViewSetTextColor(listData: ListData, id: Int, color: Int) {
@@ -58,7 +59,7 @@ class TextViewRepositoryImpl  @Inject constructor(
         }
     }
 
-    override fun editTextViewSetTextSize(viewList: LinkedList<ViewItemData>, id: Int, size: Int){
+    override fun editTextViewSetTextSize(viewList: LinkedList<ViewItemData>, id: Int, size: Int) {
         Util.getLastSelectView(viewList, id)?.let {
             if (it.type == 1) {
                 it.text.apply {
@@ -68,7 +69,7 @@ class TextViewRepositoryImpl  @Inject constructor(
         }
     }
 
-    override fun editTextViewSetFont(listData: ListData, id: Int, font: Typeface){
+    override fun editTextViewSetFont(listData: ListData, id: Int, font: Typeface) {
         Util.getLastSelectView(listData.viewList, id)?.let {
             if (it.type == 1) {
                 layerTextViewSetTextFont(listData.layerList, id, font)
@@ -81,8 +82,8 @@ class TextViewRepositoryImpl  @Inject constructor(
 
     override fun layerViewUpdateText(listData: ListData, id: Int, textData: String) {
         Util.getLastSelectView(listData.viewList, id)?.let {
-            if(it.type == 1){
-                listData.layerList.find { it.select }?.let {layerItem ->
+            if (it.type == 1) {
+                listData.layerList.find { it.select }?.let { layerItem ->
                     layerItem.text.apply {
                         text = textData
                     }
@@ -91,7 +92,11 @@ class TextViewRepositoryImpl  @Inject constructor(
         }
     }
 
-    override fun addEditTextViewViewList(layerList: LinkedList<LayerItemData>, textId: Int, textValue: String) : LinkedList<LayerItemData>{
+    override fun addEditTextViewViewList(
+        layerList: LinkedList<LayerItemData>,
+        textId: Int,
+        textValue: String
+    ): LinkedList<LayerItemData> {
         val layerItemData = LayerItemData(context = context, check = true, id = textId, type = 1)
         layerItemData.text = TextView(context).apply {
             id = textId
@@ -106,7 +111,12 @@ class TextViewRepositoryImpl  @Inject constructor(
         return layerList
     }
 
-    override fun editTextViewAddViewList(viewList: LinkedList<ViewItemData>, viewSize: Int, addId: Int, visibility: Boolean): LinkedList<ViewItemData> {
+    override fun editTextViewAddViewList(
+        viewList: LinkedList<ViewItemData>,
+        viewSize: Int,
+        addId: Int,
+        visibility: Boolean
+    ): LinkedList<ViewItemData> {
         val editView = Util.createEditableTextView(
             context = context,
             viewId = addId,
@@ -120,7 +130,11 @@ class TextViewRepositoryImpl  @Inject constructor(
         return viewList
     }
 
-    override fun layerTextViewSetTextColor(layerList: LinkedList<LayerItemData>, id: Int, color: Int) {
+    override fun layerTextViewSetTextColor(
+        layerList: LinkedList<LayerItemData>,
+        id: Int,
+        color: Int
+    ) {
         layerList.find { it.id == id }?.let {
             it.text.apply {
                 setTextColor(color)
@@ -128,7 +142,11 @@ class TextViewRepositoryImpl  @Inject constructor(
         }
     }
 
-    override fun layerTextViewSetTextBackgroundColor(layerList: LinkedList<LayerItemData>, id: Int, color: Int)  {
+    override fun layerTextViewSetTextBackgroundColor(
+        layerList: LinkedList<LayerItemData>,
+        id: Int,
+        color: Int
+    ) {
         layerList.find { it.id == id }?.let {
             it.text.apply {
                 setBackgroundColor(color)
@@ -136,7 +154,11 @@ class TextViewRepositoryImpl  @Inject constructor(
         }
     }
 
-    override fun layerTextViewSetTextFont(layerList: LinkedList<LayerItemData>, id: Int, font: Typeface){
+    override fun layerTextViewSetTextFont(
+        layerList: LinkedList<LayerItemData>,
+        id: Int,
+        font: Typeface
+    ) {
         layerList.find { it.id == id }?.let {
             it.text.apply {
                 typeface = font

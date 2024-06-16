@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
 object EmojiRetrofit {
-    private val emojiInterface : EmojiApiInterface by lazy {
+    private val emojiInterface: EmojiApiInterface by lazy {
         Retrofit.Builder()
             .baseUrl(BaseURL.EMOJI_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

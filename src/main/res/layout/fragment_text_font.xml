@@ -3,24 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.example.img_decorat.presentation.viewmodel.MainViewModel" />
-
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/text_font_margin_start"
         android:orientation="horizontal"
-        android:layout_marginStart="20dp"
         tools:context=".ui.fragment.text.TextFontFragment">
+
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/text_font"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="6dp"
-            android:id="@+id/text_font"
-            android:scrollbars="horizontal"/>
-
+            android:paddingVertical="@dimen/text_font_padding_vertical"
+            android:scrollbars="horizontal" />
     </LinearLayout>
 </layout>

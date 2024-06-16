@@ -7,16 +7,13 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.img_decorat.data.model.dataModels.ViewItemData
 import com.example.img_decorat.databinding.ActivityMainBinding
-import com.example.img_decorat.presentation.ui.adapter.LayerAdapter
-import com.example.img_decorat.presentation.ui.adapter.MenuAdapter
-import com.example.img_decorat.utils.RequestCode
 import com.example.img_decorat.presentation.viewmodel.MainViewModel
+import com.example.img_decorat.utils.RequestCode
 import java.util.LinkedList
 
 class MainActivityHelper(
@@ -38,7 +35,7 @@ class MainActivityHelper(
         }
     }
 
-    fun loadingAnimaition(boolean: Boolean){
+    fun loadingAnimaition(boolean: Boolean) {
         if (boolean) {
             binding.loadingAnimation.visibility = View.VISIBLE
         } else {
@@ -51,12 +48,12 @@ class MainActivityHelper(
         return displayMetrics.widthPixels
     }
 
-/*
-    fun recycleViewSet() {
-        binding.recycleLayer.layoutManager = LinearLayoutManager(activity)
-        binding.recycleMeun.layoutManager = LinearLayoutManager(activity)
-    }
-*/
+    /*
+        fun recycleViewSet() {
+            binding.recycleLayer.layoutManager = LinearLayoutManager(activity)
+            binding.recycleMeun.layoutManager = LinearLayoutManager(activity)
+        }
+    */
 
     fun openMenuEvent(visibility: Boolean) {
         if (visibility) {

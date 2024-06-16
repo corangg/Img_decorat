@@ -12,15 +12,22 @@ import com.example.img_decorat.databinding.ItemLinearLoadDataBinding
 import com.example.img_decorat.utils.ItemClickInterface
 
 
-class LinearLoadViewAdapter(val list : List<LoadData>, val onItemClickListener: ItemClickInterface): RecyclerView.Adapter<LinearLoadViewAdapter.LinearLoadViewHolder>() {
+class LinearLoadViewAdapter(val list: List<LoadData>, val onItemClickListener: ItemClickInterface) :
+    RecyclerView.Adapter<LinearLoadViewAdapter.LinearLoadViewHolder>() {
     private var selectedPosition = -1
 
     override fun getItemCount(): Int {
         return list.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinearLoadViewHolder
-    = LinearLoadViewHolder(ItemLinearLoadDataBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinearLoadViewHolder =
+        LinearLoadViewHolder(
+            ItemLinearLoadDataBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
 
     override fun onBindViewHolder(holder: LinearLoadViewHolder, position: Int) {
         holder.setName(list[position].title)
@@ -29,23 +36,24 @@ class LinearLoadViewAdapter(val list : List<LoadData>, val onItemClickListener: 
         holder.clickedItem(position)
     }
 
-    inner class LinearLoadViewHolder(val binding: ItemLinearLoadDataBinding): RecyclerView.ViewHolder(binding.root){
-        fun setName(name: String){
+    inner class LinearLoadViewHolder(val binding: ItemLinearLoadDataBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun setName(name: String) {
             binding.loadName.text = name
         }
 
-        fun setView(bitmap: Bitmap){
+        fun setView(bitmap: Bitmap) {
             Glide.with(binding.root).load(bitmap).into(binding.loadView)
             binding.itemLinearLoadData.setBackgroundColor(Color.TRANSPARENT)
         }
 
-        fun clickedDelete(position: Int){
+        fun clickedDelete(position: Int) {
             binding.loadItemDelete.setOnClickListener {
                 onItemClickListener.onLoadItemClick(position = position, clickedItem = 1)
             }
         }
 
-        fun clickedItem(position: Int){
+        fun clickedItem(position: Int) {
             binding.itemLinearLoadData.setOnClickListener {
                 onItemClickListener.onLoadItemClick(position = position, clickedItem = 0)
                 val existingPosition = selectedPosition

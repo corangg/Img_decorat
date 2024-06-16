@@ -1,13 +1,11 @@
 package com.example.img_decorat.presentation.ui.base
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -16,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.img_decorat.presentation.ui.view.BTNAnimation
-import java.util.logging.Handler
 import javax.inject.Inject
 
 abstract class BaseActivity<B : ViewDataBinding, VM : ViewModel> : AppCompatActivity() {
@@ -62,9 +59,9 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ViewModel> : AppCompatActi
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
-    protected fun registerForActivityResultHandler(resultHandler: (ActivityResult)-> Unit) =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            if(it.resultCode == Activity.RESULT_OK){
+    protected fun registerForActivityResultHandler(resultHandler: (ActivityResult) -> Unit) =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
                 resultHandler(it)
             }
         }

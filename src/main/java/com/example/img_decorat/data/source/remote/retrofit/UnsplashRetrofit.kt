@@ -15,6 +15,7 @@ object UnsplashRetrofit {
             .build()
             .create()
     }
+
     suspend fun getRandomPhotos(query: String?): List<UnsplashData>? =
         unsplashApiInterface.getSearchedPhotos(query).body()
 }

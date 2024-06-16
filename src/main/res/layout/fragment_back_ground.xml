@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.example.img_decorat.presentation.viewmodel.MainViewModel" />
     </data>
 
     <LinearLayout
+        android:id="@+id/background_edit_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/background_edit_view">
+        android:orientation="vertical">
 
         <FrameLayout
+            android:id="@+id/background_item_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_basic"
-            android:id="@+id/background_item_view"/>
+            android:layout_marginBottom="@dimen/margin_layout_bottom"
+            android:background="@drawable/bg_basic" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/background_menu"
-            android:layout_width="280dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="@dimen/background_margin_navi"
             android:background="@drawable/bg_basic"
+            app:elevation="@dimen/elevation_navi"
             app:itemIconTint="@color/navigation_ic_color"
             app:itemTextColor="@color/navigation_ic_color"
             app:labelVisibilityMode="auto"
-            app:elevation="0dp"
             app:menu="@menu/menu_background"
-            app:onNavigationItemSelectedListener="@{(item)->viewmodel.bottomNavigationItemSelected(item)}"
-            />
+            app:onNavigationItemSelectedListener="@{(item)->viewmodel.bottomNavigationItemSelected(item)}" />
     </LinearLayout>
-
 </layout>

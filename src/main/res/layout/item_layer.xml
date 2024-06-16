@@ -1,70 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_layer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_horizontal"
     android:background="#00ff0000"
-    android:id="@+id/item_layer"
-    android:paddingVertical="10dp"
-    android:paddingHorizontal="10dp">
+    android:gravity="center_horizontal"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/item_layer_padding"
+    android:paddingVertical="@dimen/item_layer_padding">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <CheckBox
+            android:id="@+id/check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/check"
-            android:checked="true"
+            android:layout_gravity="center"
             android:backgroundTint="@color/white"
             android:buttonTint="@color/white"
-            android:layout_gravity="center" />
+            android:checked="true" />
+
         <TextView
+            android:id="@+id/layer_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/layer_num"
             android:layout_gravity="center"
-            android:textSize="16sp"
+            android:layout_marginBottom="@dimen/item_layer_margin_bottom_text"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_marginBottom="2dp" />
+            android:textSize="@dimen/item_layer_text"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="112dp"
-        android:layout_height="63dp"
+        android:layout_width="@dimen/item_layer_img_width"
+        android:layout_height="@dimen/item_layer_img_height"
         android:layout_gravity="bottom"
-        app:cardCornerRadius="12dp">
+        app:cardCornerRadius="@dimen/radius_navi">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:id="@+id/layer_img"
-                android:scaleType="centerCrop"
-                android:visibility="gone"/>
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <TextView
                 android:id="@+id/layer_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
     <ImageButton
-        android:layout_width="24dp"
-        android:layout_height="24dp"
         android:id="@+id/layer_delete"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="@dimen/item_layer_img_button_size"
+        android:layout_height="@dimen/item_layer_img_button_size"
         android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/item_layer_margin_start_img_button"
+        android:layout_marginTop="@dimen/item_layer_margin_top_img_button"
         android:background="@drawable/ic_delete"
-        android:backgroundTint="@color/white"
-        />
+        android:backgroundTint="@color/white" />
 </LinearLayout>

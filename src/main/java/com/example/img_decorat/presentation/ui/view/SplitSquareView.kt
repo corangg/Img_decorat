@@ -13,8 +13,8 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 
 class SplitSquareView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
-    : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener {
+    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
+) : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener {
 
     private val matrix = Matrix()
     private var scaleFactor = 1.0f
@@ -56,6 +56,7 @@ class SplitSquareView @JvmOverloads constructor(
                     lastTouchY = event.y
                     invalidate()
                 }
+
                 MotionEvent.ACTION_MOVE -> {
                     var dx = event.x - lastTouchX
                     var dy = event.y - lastTouchY
@@ -67,7 +68,8 @@ class SplitSquareView @JvmOverloads constructor(
 
                     // 부모 뷰의 경계를 넘지 않도록 처리
                     if (newPosX >= 0 && newRight <= parentWidth &&
-                        newPosY >= 0 && newBottom <= parentHeight) {
+                        newPosY >= 0 && newBottom <= parentHeight
+                    ) {
                         matrix.postTranslate(dx, dy)
                         imageMatrix = matrix
 
@@ -98,11 +100,12 @@ class SplitSquareView @JvmOverloads constructor(
         drawBorder(canvas)
     }
 
-    fun strokePaint(strokeColor: Int, thickness : Float):Paint{
+    fun strokePaint(strokeColor: Int, thickness: Float): Paint {
         return Paint().apply {
             color = strokeColor
             style = Paint.Style.STROKE
-            strokeWidth = thickness}
+            strokeWidth = thickness
+        }
     }
 
     fun areaPoint(): FloatArray {
@@ -138,12 +141,13 @@ class SplitSquareView @JvmOverloads constructor(
             point[0],
             point[1],
             point[2],
-            point[3])
+            point[3]
+        )
 
     }
 
-    fun getParentSize():Pair<Int,Int>{
-        return Pair(parentWidth,parentHeight)
+    fun getParentSize(): Pair<Int, Int> {
+        return Pair(parentWidth, parentHeight)
     }
 
     private fun drawBorder(canvas: Canvas) {
@@ -154,7 +158,7 @@ class SplitSquareView @JvmOverloads constructor(
             point[2],
             point[3]
         )
-        canvas.drawRect(borderRect, strokePaint(Color.WHITE,4f))
+        canvas.drawRect(borderRect, strokePaint(Color.WHITE, 4f))
     }
 
     fun getCurrentImageSize(): Pair<Float, Float> {
@@ -183,7 +187,10 @@ class SplitSquareView @JvmOverloads constructor(
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             var scale = detector.scaleFactor
             val currentScaleFactor = scaleFactor * scale
-            val maxScale = Math.min(parentWidth / drawable.intrinsicWidth.toFloat(),parentHeight / drawable.intrinsicHeight.toFloat())
+            val maxScale = Math.min(
+                parentWidth / drawable.intrinsicWidth.toFloat(),
+                parentHeight / drawable.intrinsicHeight.toFloat()
+            )
             val minScale = 0.1f
 
             if (currentScaleFactor > maxScale) {

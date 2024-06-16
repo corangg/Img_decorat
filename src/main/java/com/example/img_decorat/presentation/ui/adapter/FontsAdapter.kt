@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.img_decorat.databinding.ItemFontBinding
 import com.example.img_decorat.utils.ItemClickInterface
 
-class FontsAdapter(val fontsList : List<Typeface>,val onItemClickListener: ItemClickInterface):RecyclerView.Adapter<FontsAdapter.FontsViewHolder>() {
+class FontsAdapter(val fontsList: List<Typeface>, val onItemClickListener: ItemClickInterface) :
+    RecyclerView.Adapter<FontsAdapter.FontsViewHolder>() {
     private var selectedPosition = -1
 
 
@@ -17,21 +18,22 @@ class FontsAdapter(val fontsList : List<Typeface>,val onItemClickListener: ItemC
         return fontsList.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FontsViewHolder
-            = FontsViewHolder(ItemFontBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FontsViewHolder =
+        FontsViewHolder(ItemFontBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: FontsViewHolder, position: Int) {
         holder.applyFont(fontsList[position])
         holder.clickedItem(position)
     }
 
-    inner class FontsViewHolder(val binding: ItemFontBinding): RecyclerView.ViewHolder(binding.root){
-        fun applyFont(font: Typeface){
+    inner class FontsViewHolder(val binding: ItemFontBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun applyFont(font: Typeface) {
             binding.fontItem.typeface = font
             binding.fontItem.setBackgroundColor(Color.TRANSPARENT)
         }
 
-        fun clickedItem(position: Int){
+        fun clickedItem(position: Int) {
             binding.fontItem.setOnClickListener {
                 onItemClickListener.onItemClick(position)
                 val existingPosition = selectedPosition

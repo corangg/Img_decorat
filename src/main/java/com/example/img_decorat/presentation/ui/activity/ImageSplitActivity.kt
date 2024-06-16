@@ -8,8 +8,8 @@ import com.example.img_decorat.presentation.ui.base.BaseActivity
 import com.example.img_decorat.presentation.ui.view.SplitCircleView
 import com.example.img_decorat.presentation.ui.view.SplitPolygonView
 import com.example.img_decorat.presentation.ui.view.SplitSquareView
-import com.example.img_decorat.utils.Util.buttonColorToggle
 import com.example.img_decorat.presentation.viewmodel.SplitViewModel
+import com.example.img_decorat.utils.Util.buttonColorToggle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

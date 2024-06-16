@@ -17,7 +17,7 @@ class ViewHelper {
         }
     }
 
-    fun applyColorFilter(saturationValue: Float, brightnessValue:Float) :ColorFilter{
+    fun applyColorFilter(saturationValue: Float, brightnessValue: Float): ColorFilter {
         val colorMatrix = ColorMatrix()
 
         val saturationMatrix = ColorMatrix()

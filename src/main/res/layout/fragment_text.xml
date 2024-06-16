@@ -17,24 +17,23 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/margin_layout_bottom"
             android:background="@drawable/bg_basic"
             android:id="@+id/text_item_view"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/text_menu"
-            android:layout_width="280dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/bg_basic"
+            android:layout_marginHorizontal="@dimen/text_margin_navi"
             app:itemIconTint="@color/navigation_ic_color"
             app:itemTextColor="@color/navigation_ic_color"
             app:labelVisibilityMode="auto"
-            app:elevation="0dp"
+            app:elevation="@dimen/elevation_navi"
             app:menu="@menu/menu_text"
             app:onNavigationItemSelectedListener="@{(item)->viewmodel.bottomNavigationItemSelected(item)}"
             />
-
-
     </LinearLayout>
 </layout>

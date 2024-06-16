@@ -20,7 +20,7 @@ object UtilList {
         ).filterNotNull()
     }
 
-    val colorsList : MutableList<Int> = mutableListOf(
+    val colorsList: MutableList<Int> = mutableListOf(
         Color.BLACK,
         Color.WHITE,
         Color.TRANSPARENT,

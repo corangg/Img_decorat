@@ -1,10 +1,7 @@
 package com.example.img_decorat.presentation.ui.activity
 
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.img_decorat.R
 import com.example.img_decorat.data.model.dataModels.LoadData
@@ -12,11 +9,11 @@ import com.example.img_decorat.databinding.ActivitySaveDataBinding
 import com.example.img_decorat.presentation.ui.adapter.GridLoadViewAdapter
 import com.example.img_decorat.presentation.ui.adapter.LinearLoadViewAdapter
 import com.example.img_decorat.presentation.ui.base.BaseActivity
+import com.example.img_decorat.presentation.viewmodel.SaveDataViewModel
 import com.example.img_decorat.utils.ItemClickInterface
 import com.example.img_decorat.utils.Util
 import com.example.img_decorat.utils.Util.buttonColorToggle
 import com.example.img_decorat.utils.Util.setLinearAdapter
-import com.example.img_decorat.presentation.viewmodel.SaveDataViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -75,7 +72,7 @@ class SaveDataActivity : BaseActivity<ActivitySaveDataBinding, SaveDataViewModel
         viewModel.openLoadData.observe(this) {
             if (it) {
                 val title = viewModel.selectItemName
-                setResultIntent(Intent().putExtra(getString(R.string.name),title))
+                setResultIntent(Intent().putExtra(getString(R.string.name), title))
             }
         }
     }

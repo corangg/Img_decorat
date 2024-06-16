@@ -2,31 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_navi_background"
-        android:icon="@drawable/ic_background"
         android:enabled="true"
-        android:title="배경" />
+        android:icon="@drawable/ic_background"
+        android:title="@string/backbround" />
 
     <item
         android:id="@+id/menu_navi_split"
-        android:icon="@drawable/ic_split"
         android:enabled="true"
-        android:title="자르기" />
+        android:icon="@drawable/ic_split"
+        android:title="@string/split" />
 
     <item
         android:id="@+id/menu_navi_hue"
-        android:icon="@drawable/ic_hue"
         android:enabled="true"
-        android:title="색조" />
+        android:icon="@drawable/ic_hue"
+        android:title="@string/hue" />
 
     <item
         android:id="@+id/menu_navi_sticker"
-        android:icon="@drawable/ic_sticker"
         android:enabled="true"
-        android:title="스티커" />
+        android:icon="@drawable/ic_sticker"
+        android:title="@string/emoji" />
 
     <item
         android:id="@+id/munu_navi_text"
-        android:icon="@drawable/ic_text"
         android:enabled="true"
-        android:title="텍스트" />
+        android:icon="@drawable/ic_text"
+        android:title="@string/text" />
 </menu>

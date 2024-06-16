@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--share-->
+    <dimen name="toolbar_height">60dp</dimen>
+    <dimen name="margin_view_top">16dp</dimen>
+    <dimen name="img_button_size">32dp</dimen>
+    <dimen name="margin_img_button">16dp</dimen>
+    <dimen name="margin_layout_bottom">16dp</dimen>
+    <dimen name="elevation_navi">0dp</dimen>
+    <dimen name="radius_navi">12dp</dimen>
+
+    <!--main-->
+    <dimen name="main_text_title_size">20sp</dimen>
+
+    <dimen name="main_toggle_btn_size">40dp</dimen>
+    <dimen name="main_menu_width">80dp</dimen>
+    <dimen name="main_draw_width">200dp</dimen>
+
+    <dimen name="main_margin_end_edit">20dp</dimen>
+    <dimen name="main_margin_view_bottom">20dp</dimen>
+    <dimen name="main_margin_menu_top">6dp</dimen>
+    <dimen name="main_margin_vertical">80dp</dimen>
+
+    <dimen name="main_padding_horizontal_edit">10dp</dimen>
+    <dimen name="main_padding_vertical_navi">6dp</dimen>
+    <dimen name="main_padding_vertical_draw">20dp</dimen>
+
+    <!--split-->
+    <dimen name="split_polygon_height">40dp</dimen>
+    <dimen name="split_polygon_text">16sp</dimen>
+
+    <dimen name="split_margin_bottom">40dp</dimen>
+    <dimen name="split_margin_navi_horizontal">40dp</dimen>
+    <dimen name="split_margin_polygon_seekbar_horizontal">16dp</dimen>
+
+    <dimen name="split_margin_polygon_start">10dp</dimen>
+    <dimen name="split_margin_polygon_text_start">4dp</dimen>
+
+    <!--save-->
+    <dimen name="save_text_btn">20sp</dimen>
+
+    <!--background-->
+    <dimen name="background_margin_navi">60dp</dimen>
+
+    <!--background_color-->
+    <dimen name="background_color_padding_layout">8dp</dimen>
+
+    <dimen name="background_color_margin_layout">12dp</dimen>
+
+    <!--background_image-->
+    <dimen name="background_image_text_search">16sp</dimen>
+
+    <dimen name="background_image_search_button_size">42dp</dimen>
+    <dimen name="background_image_view_max_height">300dp</dimen>
+
+    <dimen name="background_image_padding_search_layout">10dp</dimen>
+    <dimen name="background_image_padding_search_edit_horizontal">16dp</dimen>
+    <dimen name="background_image_padding_search_edit_vertical">8dp</dimen>
+    <dimen name="background_image_padding_horizontal">16dp</dimen>
+
+    <!--background_scale-->
+    <dimen name="background_scale_layout_width">72dp</dimen>
+    <dimen name="background_scale_relative_layout_height">60dp</dimen>
+    <dimen name="background_scale_view_11_size">48dp</dimen>
+    <dimen name="background_scale_view_4">48dp</dimen>
+    <dimen name="background_scale_view_3">36dp</dimen>
+    <dimen name="background_scale_view_2">24dp</dimen>
+    <dimen name="background_scale_view_16">48dp</dimen>
+    <dimen name="background_scale_view_9">27dp</dimen>
+
+    <dimen name="background_scale_margin_top_text">6dp</dimen>
+
+    <dimen name="background_scale_padding_layout">10dp</dimen>
+
+    <!--emoji-->
+    <dimen name="emoji_layout_height">280dp</dimen>
+    <dimen name="emoji_padding_horizontal">16dp</dimen>
+
+    <!--emoji_group-->
+    <dimen name="emoji_group_layout_height">200dp</dimen>
+
+    <!--hue-->
+    <dimen name="hue_text">16sp</dimen>
+
+    <dimen name="hue_margin_start">10dp</dimen>
+    <dimen name="hue_margin_horizontal_seek_bar">6dp</dimen>
+    <dimen name="hue_margin_vertical_layout">12dp</dimen>
+
+    <dimen name="hue_padding_horizontal_layout">20dp</dimen>
+    <dimen name="hue_padding_vertical_layout">10dp</dimen>
+
+    <!--text-->
+    <dimen name="text_margin_navi">60dp</dimen>
+
+    <!--text_color-->
+    <dimen name="text_color_img_text_size">36dp</dimen>
+    <dimen name="text_color_img_background_size">40dp</dimen>
+
+    <dimen name="text_color_margin_img_text">2dp</dimen>
+
+    <dimen name="text_color_padding">10dp</dimen>
+    <dimen name="text_color_padding_color">8dp</dimen>
+
+    <!--text_font-->
+    <dimen name="text_font_margin_start">20dp</dimen>
+    <dimen name="text_font_padding_vertical">6dp</dimen>
+
+    <!--text_scale-->
+    <dimen name="text_scale_text">16sp</dimen>
+
+    <dimen name="text_scale_margin_end_seek_bar">10dp</dimen>
+
+    <dimen name="text_scale_padding_horizontal_layout">20dp</dimen>
+    <dimen name="text_scale_padding_vertical_layout">10dp</dimen>
+
+    <!--item_color-->
+    <dimen name="item_color_width">36dp</dimen>
+    <dimen name="item_color_height">52dp</dimen>
+
+    <!--item_emoji-->
+    <dimen name="item_emoji_size">24dp</dimen>
+    <dimen name="item_emoji_margin_vertical">6dp</dimen>
+
+    <!--item_font-->
+    <dimen name="item_font_text">18sp</dimen>
+
+    <dimen name="item_font_size">52dp</dimen>
+    <dimen name="item_font_padding">10dp</dimen>
+
+    <!--item_image-->
+    <dimen name="item_image_width">60dp</dimen>
+    <dimen name="item_image_height">100dp</dimen>
+    <dimen name="item_image_padding">8dp</dimen>
+
+    <!--item_layer-->
+    <dimen name="item_layer_text">16sp</dimen>
+
+    <dimen name="item_layer_img_width">112dp</dimen>
+    <dimen name="item_layer_img_height">63dp</dimen>
+    <dimen name="item_layer_img_button_size">24dp</dimen>
+
+    <dimen name="item_layer_margin_bottom_text">2dp</dimen>
+    <dimen name="item_layer_margin_start_img_button">6dp</dimen>
+    <dimen name="item_layer_margin_top_img_button">4dp</dimen>
+
+    <dimen name="item_layer_padding">10dp</dimen>
+
+    <!--item_menu-->
+    <dimen name="item_menu_text">20sp</dimen>
+    <dimen name="item_menu_padding">10dp</dimen>
+
+    <!--item_load_grid-->
+    <dimen name="item_load_grid_text">18sp</dimen>
+
+    <dimen name="item_load_grid_img_height">160dp</dimen>
+    <dimen name="item_load_grid_img_button_size">16dp</dimen>
+
+    <dimen name="item_load_grid_margin">6dp</dimen>
+    <dimen name="item_load_grid_margin_start">4dp</dimen>
+    <dimen name="item_load_grid_margin_layout">6dp</dimen>
+
+    <dimen name="item_load_grid_padding">12dp</dimen>
+
+    <!--item_load_linear-->
+    <dimen name="item_linear_text">18sp</dimen>
+
+    <dimen name="item_linear_img_size">80dp</dimen>
+    <dimen name="item_linear_img_button_size">24dp</dimen>
+
+    <dimen name="item_linear_margin">4dp</dimen>
+    <dimen name="item_linear_margin_start">12dp</dimen>
+
+    <dimen name="item_linear_padding">8dp</dimen>
+</resources>

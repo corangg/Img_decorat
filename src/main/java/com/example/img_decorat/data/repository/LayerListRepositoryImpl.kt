@@ -254,7 +254,11 @@ class LayerListRepositoryImpl @Inject constructor(
                 }
 
                 1 -> {
-                    layerList = textViewUseCases.addEditTextViewViewListUseCase.excute(layerList, idValue, i.text)
+                    layerList = textViewUseCases.addEditTextViewViewListUseCase.excute(
+                        layerList,
+                        idValue,
+                        i.text
+                    )
                     textViewUseCases.layerTextViewSetTextColorUseCase.excute(
                         layerList,
                         idValue,

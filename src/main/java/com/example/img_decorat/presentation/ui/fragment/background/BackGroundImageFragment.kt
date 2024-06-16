@@ -5,9 +5,9 @@ import com.example.img_decorat.data.model.dataModels.unsplashimagedata.UnsplashD
 import com.example.img_decorat.databinding.FragmentBackGroundImageBinding
 import com.example.img_decorat.presentation.ui.adapter.ImageAdapter
 import com.example.img_decorat.presentation.ui.base.BaseFragment
+import com.example.img_decorat.presentation.viewmodel.MainViewModel
 import com.example.img_decorat.utils.ItemClickInterface
 import com.example.img_decorat.utils.Util
-import com.example.img_decorat.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

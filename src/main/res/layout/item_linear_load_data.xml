@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_linear_load_data"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:id="@+id/item_linear_load_data"
+    android:layout_margin="@dimen/item_linear_margin"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="@dimen/item_linear_padding">
+
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="12dp">
+        app:cardCornerRadius="@dimen/radius_navi">
+
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:id="@+id/load_view"/>
+            android:id="@+id/load_view"
+            android:layout_width="@dimen/item_linear_img_size"
+            android:layout_height="@dimen/item_linear_img_size" />
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/load_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/item_linear_margin_start"
         android:layout_weight="4"
-        android:layout_gravity="center"
-        android:layout_marginStart="12dp"
-        android:maxLines="2"
         android:ellipsize="end"
-        android:textSize="18sp"
-        android:id="@+id/load_name"
-        android:textColor="@color/white"/>
+        android:maxLines="2"
+        android:textColor="@color/white"
+        android:textSize="@dimen/item_linear_text" />
+
     <ImageButton
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:background="@drawable/ic_delete"
         android:id="@+id/load_item_delete"
-        android:backgroundTint="@color/white"
+        android:layout_width="@dimen/item_linear_img_button_size"
+        android:layout_height="@dimen/item_linear_img_button_size"
         android:layout_gravity="center"
-        android:layout_marginStart="12dp"/>
-
-
+        android:layout_marginStart="@dimen/item_linear_margin_start"
+        android:background="@drawable/ic_delete"
+        android:backgroundTint="@color/white" />
 </LinearLayout>

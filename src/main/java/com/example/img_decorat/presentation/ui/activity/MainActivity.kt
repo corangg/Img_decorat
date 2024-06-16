@@ -20,11 +20,11 @@ import com.example.img_decorat.presentation.ui.fragment.emoji.EmojiGroupFragment
 import com.example.img_decorat.presentation.ui.fragment.hueFragment.HueFragment
 import com.example.img_decorat.presentation.ui.fragment.text.TextFragment
 import com.example.img_decorat.presentation.ui.uihelper.MainActivityHelper
+import com.example.img_decorat.presentation.viewmodel.MainViewModel
 import com.example.img_decorat.utils.ItemClickInterface
 import com.example.img_decorat.utils.Util.setLinearAdapter
 import com.example.img_decorat.utils.UtilList
 import com.example.img_decorat.utils.toastMessageUtil
-import com.example.img_decorat.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.LinkedList
 

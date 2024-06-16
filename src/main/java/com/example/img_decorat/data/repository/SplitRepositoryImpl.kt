@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 class SplitRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
-): SplitRepository {
+) : SplitRepository {
     private val layout = FrameLayout.LayoutParams(
         FrameLayout.LayoutParams.MATCH_PARENT,
         FrameLayout.LayoutParams.MATCH_PARENT

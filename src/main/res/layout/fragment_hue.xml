@@ -3,143 +3,153 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.example.img_decorat.presentation.viewmodel.MainViewModel" />
     </data>
 
     <LinearLayout
+        android:id="@+id/hue_edit_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_basic"
         android:orientation="vertical"
-        android:id="@+id/hue_edit_view"
-        android:paddingVertical="10dp"
-        android:paddingHorizontal="20dp"
+        android:paddingHorizontal="@dimen/hue_padding_horizontal_layout"
+        android:paddingVertical="@dimen/hue_padding_vertical_layout"
         tools:context=".ui.fragment.hueFragment.HueFragment">
+
         <LinearLayout
+            android:id="@+id/slider_saturation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/slider_saturation"
             android:gravity="center"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
                 android:gravity="center"
                 android:text="@string/saturation"
-                android:textSize="16sp"
                 android:textColor="@color/pointcolor"
-                android:textStyle="bold"/>
+                android:textSize="@dimen/hue_text"
+                android:textStyle="bold" />
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/hue_margin_start"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
                 android:text="@{String.valueOf(viewmodel.imageSaturationValue)}"
-                android:textSize="16sp"
                 android:textColor="@color/pointcolor"
-                android:textStyle="bold"/>
+                android:textSize="@dimen/hue_text"
+                android:textStyle="bold" />
+
             <SeekBar
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/hue_margin_horizontal_seek_bar"
                 android:layout_weight="6"
                 android:background="@drawable/bg_unselect_roundview"
                 android:gravity="center"
-                android:min="-100"
                 android:max="100"
-                android:layout_marginHorizontal="6dp"
+                android:min="-100"
+                android:progress="@={viewmodel.imageSaturationValue}"
                 android:progressTint="@color/pointcolor"
-                android:thumbTint="@color/pointcolor"
-                android:layout_gravity="center"
-                android:progress="@={viewmodel.imageSaturationValue}"/>
+                android:thumbTint="@color/pointcolor" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/slider_brightness"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/slider_brightness"
-            android:layout_marginVertical="12dp"
+            android:layout_marginVertical="@dimen/hue_margin_vertical_layout"
             android:gravity="center"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
                 android:gravity="center"
                 android:text="@string/brightness"
-                android:textSize="16sp"
                 android:textColor="@color/pointcolor"
-                android:textStyle="bold"/>
+                android:textSize="@dimen/hue_text"
+                android:textStyle="bold" />
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/hue_margin_start"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
                 android:text="@{String.valueOf(viewmodel.imageBrightnessValue)}"
-                android:textSize="16sp"
                 android:textColor="@color/pointcolor"
-                android:textStyle="bold"/>
+                android:textSize="@dimen/hue_text"
+                android:textStyle="bold" />
 
             <SeekBar
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:gravity="center"
-                android:background="@drawable/bg_unselect_roundview"
-                android:min="-100"
-                android:max="100"
-                android:layout_marginHorizontal="6dp"
-                android:progressTint="@color/pointcolor"
-                android:thumbTint="@color/pointcolor"
                 android:layout_gravity="center"
-                android:progress="@={viewmodel.imageBrightnessValue}"/>
+                android:layout_marginHorizontal="@dimen/hue_margin_horizontal_seek_bar"
+                android:layout_weight="6"
+                android:background="@drawable/bg_unselect_roundview"
+                android:gravity="center"
+                android:max="100"
+                android:min="-100"
+                android:progress="@={viewmodel.imageBrightnessValue}"
+                android:progressTint="@color/pointcolor"
+                android:thumbTint="@color/pointcolor" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/slider_transparency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/slider_transparency"
             android:gravity="center"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
                 android:gravity="center"
                 android:text="@string/transparency"
-                android:textSize="16sp"
                 android:textColor="@color/pointcolor"
-                android:textStyle="bold"/>
+                android:textSize="@dimen/hue_text"
+                android:textStyle="bold" />
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/hue_margin_start"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
                 android:text="@{String.valueOf(viewmodel.imageTransparencyValue)}"
-                android:textSize="16sp"
                 android:textColor="@color/pointcolor"
-                android:textStyle="bold"/>
+                android:textSize="@dimen/hue_text"
+                android:textStyle="bold" />
+
             <SeekBar
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:gravity="center"
-                android:background="@drawable/bg_unselect_roundview"
-                android:min="0"
-                android:max="100"
-                android:layout_marginHorizontal="6dp"
-                android:progressTint="@color/pointcolor"
-                android:thumbTint="@color/pointcolor"
                 android:layout_gravity="center"
-                android:progress="@={viewmodel.imageTransparencyValue}"/>
+                android:layout_marginHorizontal="@dimen/hue_margin_horizontal_seek_bar"
+                android:layout_weight="6"
+                android:background="@drawable/bg_unselect_roundview"
+                android:gravity="center"
+                android:max="100"
+                android:min="0"
+                android:progress="@={viewmodel.imageTransparencyValue}"
+                android:progressTint="@color/pointcolor"
+                android:thumbTint="@color/pointcolor" />
         </LinearLayout>
     </LinearLayout>
 </layout>

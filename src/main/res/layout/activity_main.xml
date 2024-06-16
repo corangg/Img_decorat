@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="viewmodel"
             type="com.example.img_decorat.presentation.viewmodel.MainViewModel" />
     </data>
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -17,63 +19,68 @@
             android:id="@+id/main"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <View
                 android:id="@+id/outside_touch_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:onClick="@{()->viewmodel.closeOverFlowMenu()}"/>
+                android:onClick="@{()->viewmodel.closeOverFlowMenu()}" />
+
             <androidx.appcompat.widget.Toolbar
+                android:id="@+id/main_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@color/white"
-                android:id="@+id/main_toolbar">
+                android:layout_height="@dimen/toolbar_height"
+                android:background="@color/white">
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <ImageButton
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
                         android:id="@+id/menu_open_drawerlayout"
+                        android:layout_width="@dimen/main_toggle_btn_size"
+                        android:layout_height="@dimen/main_toggle_btn_size"
+                        android:layout_centerVertical="true"
                         android:background="@drawable/ic_menu"
                         android:backgroundTint="@color/pointcolor"
-                        android:layout_centerVertical="true"
-                        android:onClick="@{()->viewmodel.openDrawerLayout()}"/>
+                        android:onClick="@{()->viewmodel.openDrawerLayout()}" />
 
                     <EditText
+                        android:id="@+id/title_edit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/title_edit"
-                        android:textColor="@color/pointcolor"
-                        android:textSize="20sp"
-                        android:layout_toEndOf="@+id/menu_open_drawerlayout"
-                        android:layout_toStartOf="@+id/menu_add"
-                        android:paddingHorizontal="10dp"
                         android:layout_centerVertical="true"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        android:layout_marginEnd="20dp"
+                        android:layout_marginEnd="@dimen/main_margin_end_edit"
+                        android:layout_toStartOf="@+id/menu_add"
+                        android:layout_toEndOf="@+id/menu_open_drawerlayout"
                         android:background="@null"
-                        android:text= "@={viewmodel.imgTitle}" />
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingHorizontal="@dimen/main_padding_horizontal_edit"
+                        android:singleLine="true"
+                        android:text="@={viewmodel.imgTitle}"
+                        android:textColor="@color/pointcolor"
+                        android:textSize="@dimen/main_text_title_size" />
+
                     <ImageButton
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
                         android:id="@+id/menu_add"
-                        android:layout_marginEnd="16dp"
+                        android:layout_width="@dimen/img_button_size"
+                        android:layout_height="@dimen/img_button_size"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/margin_img_button"
                         android:layout_toStartOf="@+id/menu_more"
                         android:background="@drawable/ic_add"
                         android:backgroundTint="@color/pointcolor"
-                        android:layout_centerVertical="true"
-                        android:onClick="@{()->viewmodel.openGallery()}"/>
+                        android:onClick="@{()->viewmodel.openGallery()}" />
 
                     <ImageButton
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
                         android:id="@+id/menu_more"
-                        android:layout_marginEnd="6dp"
+                        android:layout_width="@dimen/img_button_size"
+                        android:layout_height="@dimen/img_button_size"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/margin_img_button"
                         android:background="@drawable/ic_more"
                         android:backgroundTint="@color/pointcolor"
                         android:onClick="@{()->viewmodel.showOverFlowMenu()}" />
@@ -84,82 +91,83 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/main_toolbar"
                 android:layout_above="@id/detail_navigaionView"
-                android:layout_centerVertical="true"
+                android:layout_below="@+id/main_toolbar"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp">
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/margin_view_top"
+                android:layout_marginBottom="@dimen/main_margin_view_bottom">
 
                 <FrameLayout
+                    android:id="@+id/img_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_view"
-                    android:id="@+id/img_view"
-                     />
+                    android:background="@drawable/bg_view" />
+
                 <com.example.img_decorat.presentation.ui.animation.LoadingAnimation
                     android:id="@+id/loading_animation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/darkGray"
                     android:alpha="0.5"
-                    android:visibility="gone"/>
+                    android:background="@color/darkGray"
+                    android:visibility="gone" />
 
             </FrameLayout>
+
             <FrameLayout
+                android:id="@+id/detail_navigaionView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/detail_navigaionView"
                 android:layout_above="@+id/bottom_navigation"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="@dimen/margin_layout_bottom" />
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="6dp"
+                android:layout_alignParentBottom="true"
                 android:background="@color/white"
+                android:paddingVertical="@dimen/main_padding_vertical_navi"
                 app:itemIconTint="@color/navigation_ic_color"
                 app:itemTextColor="@color/navigation_ic_color"
-                android:layout_alignParentBottom="true"
                 app:labelVisibilityMode="auto"
                 app:menu="@menu/bottom_navigation_menu"
-                app:onNavigationItemSelectedListener="@{(item)->viewmodel.bottomNavigationItemSelected(item)}"/>
+                app:onNavigationItemSelectedListener="@{(item)->viewmodel.bottomNavigationItemSelected(item)}" />
 
             <LinearLayout
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/menu_view"
-                android:background="@drawable/bg_menu"
-                android:orientation="vertical"
+                android:layout_width="@dimen/main_menu_width"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/main_toolbar"
                 android:layout_alignParentEnd="true"
                 android:layout_marginHorizontal="6dp"
-                android:layout_below="@+id/main_toolbar"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="@dimen/main_margin_menu_top"
+                android:background="@drawable/bg_menu"
+                android:orientation="vertical"
                 android:visibility="gone">
+
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycle_meun"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:id="@+id/recycle_meun" />
+                    android:layout_gravity="center" />
             </LinearLayout>
         </RelativeLayout>
-        
+
         <RelativeLayout
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="100dp"
-            android:layout_marginBottom="80dp"
-            android:background="@drawable/bg_drawer_layout"
             android:id="@+id/main_drawer_view"
-            android:layout_gravity="start" >
+            android:layout_width="@dimen/main_draw_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_marginVertical="@dimen/main_margin_vertical"
+            android:background="@drawable/bg_drawer_layout">
+
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycle_layer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:paddingTop="20dp"
-                android:layout_marginBottom="80dp"
-                android:id="@+id/recycle_layer" />
+                android:paddingVertical="@dimen/main_padding_vertical_draw" />
         </RelativeLayout>
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

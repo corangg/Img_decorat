@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_background_scale"
-        android:icon="@drawable/ic_scale"
         android:enabled="true"
-        android:title="비율" />
+        android:icon="@drawable/ic_scale"
+        android:title="@string/ratio" />
 
     <item
         android:id="@+id/menu_background_paint"
-        android:icon="@drawable/ic_paint"
         android:enabled="true"
-        android:title="컬러" />
+        android:icon="@drawable/ic_paint"
+        android:title="@string/color" />
 
     <item
         android:id="@+id/menu_background_image"
-        android:icon="@drawable/ic_image"
         android:enabled="true"
-        android:title="이미지" />
+        android:icon="@drawable/ic_image"
+        android:title="@string/image_item" />
 </menu>

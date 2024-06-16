@@ -8,5 +8,5 @@ import retrofit2.http.Query
 
 interface UnsplashApiInterface {
     @GET("photos/random/?" + BuildConfig.UNSPLASH_API_KEY + "&count=20")
-    suspend fun getSearchedPhotos(@Query("query") query: String?):Response<List<UnsplashData>>
+    suspend fun getSearchedPhotos(@Query("query") query: String?): Response<List<UnsplashData>>
 }

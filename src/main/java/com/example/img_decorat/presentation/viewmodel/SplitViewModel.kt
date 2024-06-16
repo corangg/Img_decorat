@@ -9,7 +9,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.img_decorat.R
 import com.example.img_decorat.data.model.dataModels.SplitUseCases
-import com.example.img_decorat.data.repository.SplitRepositoryImpl
 import com.example.img_decorat.data.repository.SplitStackRepository
 import com.example.img_decorat.presentation.ui.view.SplitCircleView
 import com.example.img_decorat.presentation.ui.view.SplitPolygonView
@@ -159,17 +158,26 @@ class SplitViewModel @Inject constructor(
         when (selectSplitItem.value) {
             0 -> {
                 currentImage.value =
-                    splitUseCases.cropSquareImageUseCase.excute(splitSquareView.value!!, currentImage.value!!)
+                    splitUseCases.cropSquareImageUseCase.excute(
+                        splitSquareView.value!!,
+                        currentImage.value!!
+                    )
             }
 
             1 -> {
                 currentImage.value =
-                    splitUseCases.cropCircleImageUseCase.excute(splitCircleView.value!!, currentImage.value!!)
+                    splitUseCases.cropCircleImageUseCase.excute(
+                        splitCircleView.value!!,
+                        currentImage.value!!
+                    )
             }
 
             2 -> {
                 currentImage.value =
-                    splitUseCases.cropPolygonImageUseCase.excute(splitPolygonView.value!!, currentImage.value!!)
+                    splitUseCases.cropPolygonImageUseCase.excute(
+                        splitPolygonView.value!!,
+                        currentImage.value!!
+                    )
             }
         }
     }

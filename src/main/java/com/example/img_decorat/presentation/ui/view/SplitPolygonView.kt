@@ -35,6 +35,7 @@ class SplitPolygonView @JvmOverloads constructor(
                 lastTouchY = event.y
                 touchPoint(event)
             }
+
             MotionEvent.ACTION_MOVE -> {
                 if (movingPointIndex != -1) {
                     updatePointPosition(event)
@@ -50,6 +51,7 @@ class SplitPolygonView @JvmOverloads constructor(
                     lastTouchY = event.y
                 }
             }
+
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 movingPointIndex = -1
             }
@@ -93,7 +95,10 @@ class SplitPolygonView @JvmOverloads constructor(
         val rectF = RectF()
 
         path.computeBounds(rectF, true)
-        region.setPath(path, Region(rectF.left.toInt(), rectF.top.toInt(), rectF.right.toInt(), rectF.bottom.toInt()))
+        region.setPath(
+            path,
+            Region(rectF.left.toInt(), rectF.top.toInt(), rectF.right.toInt(), rectF.bottom.toInt())
+        )
         return region.contains(x.toInt(), y.toInt())
     }
 

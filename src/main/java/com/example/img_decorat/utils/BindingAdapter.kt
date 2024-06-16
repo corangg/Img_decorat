@@ -1,12 +1,8 @@
 package com.example.img_decorat.utils
 
-import android.view.MenuItem
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.img_decorat.R
 import com.example.img_decorat.presentation.viewmodel.MainViewModel
-import com.example.img_decorat.presentation.viewmodel.SaveDataViewModel
 import com.google.android.material.tabs.TabLayout
 
 object BindingAdapter {

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.example.img_decorat.presentation.viewmodel.MainViewModel" />
@@ -11,35 +12,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:paddingVertical="10dp"
-        android:paddingHorizontal="20dp"
         android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/text_scale_padding_horizontal_layout"
+        android:paddingVertical="@dimen/text_scale_padding_vertical_layout"
         tools:context=".ui.fragment.text.TextSizeFragment">
 
         <EditText
+            android:id="@+id/size_edit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/size_edit"
-            android:inputType="number"
-            android:textSize="16sp"
             android:background="@null"
+            android:inputType="number"
+            android:text="@{String.valueOf(viewmodel.textSize)}"
             android:textColor="@color/pointcolor"
-            android:text="@{String.valueOf(viewmodel.textSize)}"/>
+            android:textSize="@dimen/text_scale_text" />
 
         <SeekBar
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/text_scale_margin_end_seek_bar"
             android:layout_weight="6"
             android:background="@drawable/bg_unselect_roundview"
             android:gravity="center"
-            android:min="2"
             android:max="102"
-            android:layout_marginEnd="10dp"
+            android:min="2"
+            android:progress="@={viewmodel.textSize}"
             android:progressTint="@color/pointcolor"
-            android:thumbTint="@color/pointcolor"
-            android:layout_gravity="center"
-            android:progress="@={viewmodel.textSize}"/>
+            android:thumbTint="@color/pointcolor" />
     </LinearLayout>
 </layout>

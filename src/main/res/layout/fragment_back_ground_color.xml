@@ -4,29 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.example.img_decorat.presentation.viewmodel.MainViewModel" />
     </data>
 
     <LinearLayout
+        android:id="@+id/color_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/color_view"
-        android:orientation="horizontal"
-        tools:context=".ui.fragment.background.BackGroundColorFragment"
-        android:padding="8dp"
+        android:layout_margin="@dimen/background_color_margin_layout"
         android:background="@drawable/bg_colorview"
-        android:layout_margin="12dp">
+        android:orientation="horizontal"
+        android:padding="@dimen/background_color_padding_layout"
+        tools:context=".ui.fragment.background.BackGroundColorFragment">
+
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp">
+            app:cardCornerRadius="@dimen/radius_navi">
+
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/color_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/color_recyclerview"
-                android:scrollbars="horizontal"/>
+                android:scrollbars="horizontal" />
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>

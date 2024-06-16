@@ -28,7 +28,7 @@ object EmojiMoudle {
 
     @Provides
     @Singleton
-    fun provideEmojiUseCase(emojiRepository: EmojiRepository): EmojiUseCases{
+    fun provideEmojiUseCase(emojiRepository: EmojiRepository): EmojiUseCases {
         return EmojiUseCases(
             emojiAddLayerUseCase = EmojiAddLayerUseCase(emojiRepository),
             emojiDataStringToBitmapUseCase = EmojiDataStringToBitmapUseCase(emojiRepository),

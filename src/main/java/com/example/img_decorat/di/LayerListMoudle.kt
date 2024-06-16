@@ -4,7 +4,6 @@ import android.content.Context
 import com.example.img_decorat.data.model.dataModels.LayerListUseCases
 import com.example.img_decorat.data.model.dataModels.TextViewUseCases
 import com.example.img_decorat.data.repository.LayerListRepositoryImpl
-import com.example.img_decorat.data.repository.TextViewRepositoryImpl
 import com.example.img_decorat.domain.repository.LayerListRepository
 import com.example.img_decorat.domain.usecase.layerlistusecase.CheckLastSelectImageUseCase
 import com.example.img_decorat.domain.usecase.layerlistusecase.CheckedListUseCase
@@ -57,7 +56,7 @@ object LayerListMoudle {
 
     @Provides
     @Singleton
-    fun provideImageAddViewUseCase(layerListRepository: LayerListRepository): ImageAddViewUseCase{
+    fun provideImageAddViewUseCase(layerListRepository: LayerListRepository): ImageAddViewUseCase {
         return ImageAddViewUseCase(layerListRepository)
     }
 }

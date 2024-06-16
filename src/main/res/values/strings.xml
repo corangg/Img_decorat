@@ -18,18 +18,28 @@
     <string name="transparency">투명도</string>
     <string name="fontex">Aa</string>
 
-
-
-
-
     <string name="splitBitmap">splitBitmap</string>
     <string name="name">name</string>
     <string name="intentImageType">image/*</string>
     <string name="image">image</string>
     <string name="saveToast">선택된 이미지가 없습니다.</string>
-   <!-- <string name=""></string>
-    <string name=""></string>
-    <string name=""></string>-->
+
+    <string name="backbround">배경</string>
+    <string name="split">자르기</string>
+    <string name="hue">색조</string>
+    <string name="emoji">스티커</string>
+    <string name="text">텍스트</string>
+
+    <string name="ratio">비율</string>
+    <string name="color">컬러</string>
+    <string name="image_item">이미지</string>
+
+    <string name="square">사각형</string>
+    <string name="circle">원</string>
+    <string name="polygon">다각형</string>
+
+    <string name="font">폰트</string>
+    <string name="scale">크기</string>
 
 
 

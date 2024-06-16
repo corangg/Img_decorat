@@ -1,6 +1,5 @@
 package com.example.img_decorat.presentation.ui.view
 
-import android.content.Context
 import android.view.MotionEvent
 import kotlin.math.atan2
 
@@ -39,6 +38,7 @@ class RotateGestureDetector(
                     isInProgress = true
                 }
             }
+
             MotionEvent.ACTION_MOVE -> {
                 if (isInProgress && event.pointerCount == 2) {
                     val newFx = event.getX(0)
@@ -52,6 +52,7 @@ class RotateGestureDetector(
                     listener.onRotate(this)
                 }
             }
+
             MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_UP -> {
                 isInProgress = false
             }

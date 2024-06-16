@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.example.img_decorat.presentation.viewmodel.MainViewModel" />
@@ -15,57 +15,58 @@
         tools:context=".ui.fragment.background.BackGroundFragment">
 
         <LinearLayout
+            android:id="@+id/background_scale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/background_scale">
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="72dp"
-                android:layout_height="match_parent"
                 android:id="@+id/scale_1_1"
-                android:orientation="vertical"
+                android:layout_width="@dimen/background_scale_layout_width"
+                android:layout_height="match_parent"
                 android:gravity="center_horizontal"
-                android:padding="10dp"
-                android:onClick="@{()->viewmodel.selectBackgroundScale(0)}">
+                android:onClick="@{()->viewmodel.selectBackgroundScale(0)}"
+                android:orientation="vertical"
+                android:padding="@dimen/background_scale_padding_layout">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/background_scale_relative_layout_height"
                     android:gravity="center">
 
                     <View
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="center_vertical"
+                        android:layout_width="@dimen/background_scale_view_11_size"
+                        android:layout_height="@dimen/background_scale_view_11_size"
+                        android:layout_gravity="center"
                         android:background="@drawable/bg_scale" />
                 </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/background_scale_margin_top_text"
+                    android:gravity="center_horizontal"
                     android:text="@string/scale11"
-                    android:textColor="@color/pointcolor"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="6dp" />
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="72dp"
-                android:layout_height="match_parent"
                 android:id="@+id/scale_4_3"
+                android:layout_width="@dimen/background_scale_layout_width"
+                android:layout_height="match_parent"
                 android:gravity="center_horizontal"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(1)}"
                 android:orientation="vertical"
-                android:padding="10dp"
-                android:onClick="@{()->viewmodel.selectBackgroundScale(1)}">
+                android:padding="@dimen/background_scale_padding_layout">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/background_scale_relative_layout_height"
                     android:gravity="center">
+
                     <View
-                        android:layout_width="48dp"
-                        android:layout_height="36dp"
+                        android:layout_width="@dimen/background_scale_view_4"
+                        android:layout_height="@dimen/background_scale_view_3"
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/bg_scale" />
                 </RelativeLayout>
@@ -73,29 +74,29 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/background_scale_margin_top_text"
+                    android:gravity="center_horizontal"
                     android:text="@string/scale43"
-                    android:textColor="@color/pointcolor"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="6dp" />
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="72dp"
-                android:layout_height="match_parent"
                 android:id="@+id/scale_3_4"
+                android:layout_width="@dimen/background_scale_layout_width"
+                android:layout_height="match_parent"
                 android:gravity="center_horizontal"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(2)}"
                 android:orientation="vertical"
-                android:padding="10dp"
-                android:onClick="@{()->viewmodel.selectBackgroundScale(2)}">
+                android:padding="@dimen/background_scale_padding_layout">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/background_scale_relative_layout_height"
                     android:gravity="center">
 
                     <View
-                        android:layout_width="36dp"
-                        android:layout_height="48dp"
+                        android:layout_width="@dimen/background_scale_view_3"
+                        android:layout_height="@dimen/background_scale_view_4"
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/bg_scale" />
                 </RelativeLayout>
@@ -103,29 +104,29 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/background_scale_margin_top_text"
+                    android:gravity="center_horizontal"
                     android:text="@string/scale34"
-                    android:textColor="@color/pointcolor"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="6dp" />
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="72dp"
-                android:layout_height="match_parent"
                 android:id="@+id/scale_3_2"
+                android:layout_width="@dimen/background_scale_layout_width"
+                android:layout_height="match_parent"
                 android:gravity="center_horizontal"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(3)}"
                 android:orientation="vertical"
-                android:padding="10dp"
-                android:onClick="@{()->viewmodel.selectBackgroundScale(3)}">
+                android:padding="@dimen/background_scale_padding_layout">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/background_scale_relative_layout_height"
                     android:gravity="center">
 
                     <View
-                        android:layout_width="36dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/background_scale_view_3"
+                        android:layout_height="@dimen/background_scale_view_2"
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/bg_scale" />
                 </RelativeLayout>
@@ -133,29 +134,29 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/background_scale_margin_top_text"
+                    android:gravity="center_horizontal"
                     android:text="@string/scale32"
-                    android:textColor="@color/pointcolor"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="6dp" />
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="72dp"
-                android:layout_height="match_parent"
                 android:id="@+id/scale_2_3"
+                android:layout_width="@dimen/background_scale_layout_width"
+                android:layout_height="match_parent"
                 android:gravity="center_horizontal"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(4)}"
                 android:orientation="vertical"
-                android:padding="10dp"
-                android:onClick="@{()->viewmodel.selectBackgroundScale(4)}">
+                android:padding="@dimen/background_scale_padding_layout">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/background_scale_relative_layout_height"
                     android:gravity="center">
 
                     <View
-                        android:layout_width="24dp"
-                        android:layout_height="36dp"
+                        android:layout_width="@dimen/background_scale_view_2"
+                        android:layout_height="@dimen/background_scale_view_3"
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/bg_scale" />
                 </RelativeLayout>
@@ -163,29 +164,29 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/background_scale_margin_top_text"
+                    android:gravity="center_horizontal"
                     android:text="@string/scale23"
-                    android:textColor="@color/pointcolor"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="6dp" />
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="72dp"
-                android:layout_height="match_parent"
                 android:id="@+id/scale_16_9"
+                android:layout_width="@dimen/background_scale_layout_width"
+                android:layout_height="match_parent"
                 android:gravity="center_horizontal"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(5)}"
                 android:orientation="vertical"
-                android:padding="10dp"
-                android:onClick="@{()->viewmodel.selectBackgroundScale(5)}">
+                android:padding="@dimen/background_scale_padding_layout">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/background_scale_relative_layout_height"
                     android:gravity="center">
 
                     <View
-                        android:layout_width="48dp"
-                        android:layout_height="27dp"
+                        android:layout_width="@dimen/background_scale_view_16"
+                        android:layout_height="@dimen/background_scale_view_9"
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/bg_scale" />
                 </RelativeLayout>
@@ -193,29 +194,29 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/scale169"
-                    android:textColor="@color/pointcolor"
+                    android:layout_marginTop="@dimen/background_scale_margin_top_text"
                     android:gravity="center_horizontal"
-                    android:layout_marginTop="6dp" />
+                    android:text="@string/scale169"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="72dp"
-                android:layout_height="match_parent"
                 android:id="@+id/scale_9_16"
+                android:layout_width="@dimen/background_scale_layout_width"
+                android:layout_height="match_parent"
                 android:gravity="center_horizontal"
+                android:onClick="@{()->viewmodel.selectBackgroundScale(6)}"
                 android:orientation="vertical"
-                android:padding="10dp"
-                android:onClick="@{()->viewmodel.selectBackgroundScale(6)}">
+                android:padding="@dimen/background_scale_padding_layout">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_height="@dimen/background_scale_relative_layout_height"
                     android:gravity="center">
 
                     <View
-                        android:layout_width="27dp"
-                        android:layout_height="48dp"
+                        android:layout_width="@dimen/background_scale_view_9"
+                        android:layout_height="@dimen/background_scale_view_16"
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/bg_scale" />
                 </RelativeLayout>
@@ -223,10 +224,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/scale916"
-                    android:textColor="@color/pointcolor"
+                    android:layout_marginTop="@dimen/background_scale_margin_top_text"
                     android:gravity="center_horizontal"
-                    android:layout_marginTop="6dp" />
+                    android:text="@string/scale916"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
         </LinearLayout>
